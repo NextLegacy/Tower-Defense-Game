@@ -1,9 +1,9 @@
+import engine.Engine;
 import engine.math.Vector;
 import engine.scene.Collisions;
 import engine.scene.GameObject;
 import engine.scene.Scene;
 import engine.scene.Collisions.LayerCollision;
-import engine.window.Window;
 import test.TestGameObject;
 import test.TestGameObject2;
 
@@ -15,10 +15,12 @@ public class Main
     
     public static void main(String[] args)
     {
-        Window window = new Window(WIDTH, HEIGHT);
-        for(String name : renderLayers) window.addLayer(name);
+        /*Window window = new Window(WIDTH, HEIGHT);
+        for(String name : renderLayers) window.addLayer(name);*/
         
-        Scene scene = new Scene(window, 2, new LayerCollision[] {new Collisions.LayerCollision(0, 1, true)});
+        Engine engine = new Engine(WIDTH, HEIGHT, renderLayers);
+        
+        Scene scene = new Scene(2, new LayerCollision[] {new Collisions.LayerCollision(0, 1, true)});
         
         GameObject go1 = new TestGameObject();
         GameObject go2 = new TestGameObject2();
@@ -27,7 +29,7 @@ public class Main
         scene.addObject(go1);
         scene.addObject(go2);
         
-        scene.startScene();
+        engine.loadScene(scene);
     }
     
 }

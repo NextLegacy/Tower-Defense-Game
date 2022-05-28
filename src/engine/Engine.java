@@ -3,7 +3,9 @@ package engine;
 public class Engine 
 {
     /**
-     * TODO@NextLegacy
+     * FIXME@El-Tigere
+     * DEPRECATED@El-Tigere
+     * ISSUE@El-Tigere
      */
     public static void RenderMandelBrotSet()
     {

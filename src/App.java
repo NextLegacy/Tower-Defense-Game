@@ -11,7 +11,7 @@ public class App
 {
     public static void main(String[] args) 
     {
-        final int WIDTH = 1080, HEIGHT = 720;
+        final int WIDTH = 1280, HEIGHT = 720;
 
         Window test = new Window(WIDTH, HEIGHT);
         test.addLayer("main");

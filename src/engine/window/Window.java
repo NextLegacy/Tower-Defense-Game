@@ -74,6 +74,7 @@ public class Window extends Frame
 
         return this;
     }
+    
     private class WindowListener extends WindowAdapter
     {
         @Override

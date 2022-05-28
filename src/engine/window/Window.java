@@ -1,5 +1,6 @@
 package engine.window;
 
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.event.WindowAdapter;
@@ -57,6 +58,12 @@ public class Window extends Frame
 
                 for (RenderLayer layer : this.layers.values())
                 {
+                    layer.getGraphics().setColor(new Color(0, 0, 0, 0));
+
+                    layer.getGraphics().fillRect(0, 0, layer.width, layer.height);
+
+                    layer.getGraphics().setColor(Color.black);
+
                     renderProcess.invoke(layer);
                     
                     graphics.drawImage(layer.image, 0, 0, null);

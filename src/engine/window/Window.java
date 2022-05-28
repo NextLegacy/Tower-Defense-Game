@@ -1,41 +1,43 @@
 package engine.window;
 
-import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
-import java.util.HashMap;
+import java.util.ArrayList;
 
 import engine.utils.Lambda.Action1;
 
 public class Window extends Frame
 {
-    private HashMap<String, RenderLayer> layers;
+    private ArrayList<RenderLayer> layers;
     private BufferStrategy strategy;
     
-    public Window(int width, int height)
+    public Window(final int WIDTH, final int HEIGHT)
     {
-        layers = new HashMap<>();
+        layers = new ArrayList<>();
 
         this.addWindowListener(new WindowListener());
 
-        setSize(width, height);
-        setLocationRelativeTo(null);
-        setVisible(true);
+        this.setSize(WIDTH, HEIGHT);
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
     } 
 
     public void addLayer(String name)
     {
         RenderLayer layer = new RenderLayer(name, this.getWidth(), this.getHeight());
 
-        this.layers.put(name, layer);
+        this.layers.add(layer);
     }
 
     public RenderLayer getLayer(String name)
     {
-        return layers.get(name);
+        return layers.stream()
+            .filter((layer) -> name.equals(layer.name()))
+            .findAny()
+            .orElse(null);
     }
 
     public Window render(Action1<RenderLayer> renderProcess)
@@ -56,17 +58,11 @@ public class Window extends Frame
 
                 //RENDER START
 
-                for (RenderLayer layer : this.layers.values())
+                for (RenderLayer layer : this.layers)
                 {
-                    layer.getGraphics().setColor(new Color(0, 0, 0, 0));
-
-                    layer.getGraphics().fillRect(0, 0, layer.width, layer.height);
-
-                    layer.getGraphics().setColor(Color.black);
-
                     renderProcess.invoke(layer);
                     
-                    graphics.drawImage(layer.image, 0, 0, null);
+                    graphics.drawImage(layer.image(), 0, 0, null);
                 }
 
                 //RENDER END
@@ -85,7 +81,8 @@ public class Window extends Frame
     private class WindowListener extends WindowAdapter
     {
         @Override
-        public void windowClosing(WindowEvent e) {
+        public void windowClosing(WindowEvent e) 
+        {
             dispose();
         }
     }

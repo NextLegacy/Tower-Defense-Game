@@ -1,17 +1,14 @@
 package engine.scene;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import engine.scene.Collisions.LayerCollision;
 import engine.window.RenderLayer;
 
-public class Scene
+public class Scene extends Activateable
 {
-    
-    private ArrayList<GameObject> objects;
-    private boolean started;
+    public final static Scene EMPTY_SCENE = new Scene(0, new LayerCollision[] { });
+    private ArrayList<GameObject> gameObjects;
     
     public final Collisions collisions;
     
@@ -19,9 +16,9 @@ public class Scene
     
     public Scene(int collisionLayerCount, LayerCollision[] layerCollisions)
     {
-        started = false;
+        deactivate();
         
-        objects = new ArrayList<GameObject>();
+        gameObjects = new ArrayList<GameObject>();
         
         // setup collisions
         collisions = new Collisions(collisionLayerCount, layerCollisions);
@@ -31,62 +28,68 @@ public class Scene
     
     public void addObject(GameObject o)
     {
-        objects.add(o);
+        gameObjects.add(o);
         o.setScene(this);
         
-        if(started) o.start();
+        if(isActive()) 
+            o.start();
     }
     
     public void removeObject(GameObject o)
     {
-        objects.remove(o);
+        gameObjects.remove(o);
         o.setScene(null);
     }
     
-    public void sceneStart()
+    public void start()
     {
-        started = true;
-        
-        // start game objects
-        for(GameObject o : objects)
-        {
-            o.start();
-        }
-        
-        // start updates
-        Timer t = new Timer();
-        t.scheduleAtFixedRate(new TimerTask()
-        {
-            @Override
-            public void run()
-            {
-                //sceneUpdate();
-            }
-        }, 0, FRAME_DELAY);
+        activate();
     }
     
-    public void sceneUpdate(RenderLayer layer)
+    public void update(double deltaTime)
     {
-        // update gameobjects
-        for(GameObject o : objects)
+        for(GameObject gameObject : gameObjects)
         {
-            o.update();
+            gameObject.update();
         }
         
         // collisions
         collisions.collisionsUpdate();
-        
-        // render scene
-        for(GameObject o : objects)
+    }
+
+    public void render(RenderLayer layer, double deltaTime)
+    {
+        for(GameObject gameObject : gameObjects)
         {
-            o.render(layer);
+            gameObject.update();
+        }
+        
+        collisions.collisionsUpdate();
+    }
+    
+    @Override
+    public void onActivate() 
+    {
+        for(GameObject gameObject : gameObjects)
+        {
+            gameObject.start();
         }
     }
-    
+
+    @Override
+    public void onDeactivate() 
+    {
+        for(GameObject gameObject : gameObjects)
+        {
+            //gameObject.end(); //TODO: macht das sinn?
+        }    
+    }
+
     public void destroy()
     {
-        started = false;
-        for(GameObject o : objects) o.destroy();
+        deactivate();
+
+        for(GameObject gameObject : gameObjects)
+            gameObject.destroy();
     }
-    
 }

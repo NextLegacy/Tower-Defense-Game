@@ -33,8 +33,8 @@ public class App
 
             test.render((layer) -> 
             {
-                (layer.getGraphics()).drawImage(image, null, null);
-                layer.getGraphics().dispose();
+                (layer.graphics()).drawImage(image, null, null);
+                layer.graphics().dispose();
             });
 
             int deltaTime = (int) ((time - last_time) / 1000000);

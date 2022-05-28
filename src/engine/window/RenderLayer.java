@@ -5,12 +5,12 @@ import java.awt.image.BufferedImage;
 
 public class RenderLayer 
 {
-    public final String name;
+    private final String name;
 
-    public int width;
-    public int height;
+    private int width;
+    private int height;
 
-    public BufferedImage image;
+    private BufferedImage image;
 
     public RenderLayer(String name, int width, int height)
     {
@@ -26,8 +26,13 @@ public class RenderLayer
         this.image = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
     }
 
-    public Graphics2D getGraphics()
+    public String name() { return this.name; }
+    public int width() { return this.width; }
+    public int height() { return this.height; }
+    public BufferedImage image() { return this.image; }
+
+    public Graphics2D graphics()
     {
-        return ((Graphics2D) this.image.getGraphics());
+        return this.image.createGraphics();
     }
 }

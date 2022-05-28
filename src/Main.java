@@ -1,26 +1,33 @@
-/*import engine.math.Vector;
+import engine.math.Vector;
 import engine.scene.Collisions;
 import engine.scene.GameObject;
 import engine.scene.Scene;
-import engine.scene.Collisions.LayerCollision;*/
+import engine.scene.Collisions.LayerCollision;
+import engine.window.Window;
+import test.TestGameObject;
+import test.TestGameObject2;
 
 public class Main
 {
     
+    private static final int WIDTH = 1280, HEIGHT = 720;
+    private static final String[] renderLayers = new String[] {"Background", "Test"};
+    
     public static void main(String[] args)
     {
-        /*
-        Scene s = new Scene(2, new LayerCollision[] {new Collisions.LayerCollision(0, 1, true)});
+        Window window = new Window(WIDTH, HEIGHT);
+        for(String name : renderLayers) window.addLayer(name);
+        
+        Scene scene = new Scene(window, 2, new LayerCollision[] {new Collisions.LayerCollision(0, 1, true)});
+        
         GameObject go1 = new TestGameObject();
         GameObject go2 = new TestGameObject2();
         go1.position = new Vector(100, 100);
-        go2.position = new Vector(350, 110);
-        s.addObject(go1);
-        s.addObject(go2);
-        s.startScene();
-        */
+        go2.position = new Vector(350, 150);
+        scene.addObject(go1);
+        scene.addObject(go2);
         
-        System.out.println("Test");
+        scene.startScene();
     }
     
 }

@@ -27,13 +27,11 @@ public class Vector
         return this;
     }
 
-    public Vector set(double n) 
-    { 
-        this.setX(n);
-        this.setY(n);
+    public Vector set(double x, double y) { return this.setX(x).setY(y); }
 
-        return this;
-    }
+    public Vector set(double x) { return this.setX(x); }
+    
+    public Vector fill(double n) { return this.set(n, n); }
 
     public Vector mul(Vector vec) {return new Vector(this.x * (vec.x), this.y * (vec.y)); }
     public Vector div(Vector vec) {return new Vector(this.x / (vec.x), this.y / (vec.y)); }

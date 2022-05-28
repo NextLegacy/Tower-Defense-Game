@@ -1,37 +1,46 @@
 package engine.window;
 
-import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 
 import engine.math.Vector;
 
-@SuppressWarnings("unused") //Nur um nervige Fehlermeldungen "stumm zu schalten"
-public class InputListener implements KeyListener, MouseListener, MouseWheelListener, MouseMotionListener
+//@SuppressWarnings("unused") //Nur um nervige Fehlermeldungen "stumm zu schalten"
+public class InputListener extends InputAdapter
 {
-    private KeyListener keyListener;
-    private MouseListener mouseListener;
+    private final HashMap<Integer, Key> KEY_MAP;
 
-    private HashMap<Integer, Key> keyMap;
+    private final Mouse MOUSE;
+
+    private final Button LEFT;
+    private final Button RIGHT;
+    private final Wheel WHEEL;
 
     public InputListener()
     {
+        this.LEFT  = new Button();
+        this.RIGHT = new Button();
+        this.WHEEL = new Wheel();
+
+        this.MOUSE = new Mouse();
+
+        this.KEY_MAP = new HashMap<>();
+
         this.initializeKeyDownMap();
     }
 
-    public Key getKey(int keyEvent)
-    {
-        return this.keyMap.get(keyEvent);
-    }
+    public Key key(int keyEvent) { return this.KEY_MAP.get(keyEvent); }
+
+    public Mouse mouse()  { return MOUSE; }
+
+    public Button left()  { return LEFT; }
+    public Button right() { return RIGHT; }
+
+    public Wheel wheel()  { return WHEEL; }
 
     private void initializeKeyDownMap()
     {
@@ -44,7 +53,7 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
                 try 
                 {
                     int event = (Integer) field.get(null);
-                    this.keyMap.put(event, new Key(event));
+                    this.KEY_MAP.put(event, new Key(event));
                 } 
                 catch (IllegalArgumentException | IllegalAccessException e) 
                 {
@@ -55,112 +64,167 @@ public class InputListener implements KeyListener, MouseListener, MouseWheelList
     }
 
     @Override
-    public void keyPressed(KeyEvent keyEvent) 
+    public void keyPressed(KeyEvent e) 
     {
-        Key key = keyMap.get(keyEvent.getKeyCode());
+        Key key = KEY_MAP.get(e.getKeyCode());
 
         key.isDown = true;
         key.timeOnStart = System.nanoTime();
-        key.downTime = System.nanoTime() - key.downTime;
     }
 
     @Override
-    public void keyReleased(KeyEvent keyEvent) 
+    public void keyReleased(KeyEvent e) 
     {
-        Key key = keyMap.get(keyEvent.getKeyCode());
+        Key key = KEY_MAP.get(e.getKeyCode());
         
         key.isDown = true;
-        key.isTyped = false;
         key.timeOnStart = System.nanoTime();
-        key.downTime = System.nanoTime() - key.downTime;
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) { }
+    public void mousePressed(MouseEvent e) 
+    { 
+        if (e.getButton() == MouseEvent.BUTTON1)
+        {
+            LEFT.isDown = true;
+            LEFT.timeOnStart = System.nanoTime();
+            return;
+        }
+        else if (e.getButton() == MouseEvent.BUTTON3)
+        {
+            RIGHT.isDown = true;
+            RIGHT.timeOnStart = System.nanoTime();
+            return;
+        }
+        else if (e.getButton() == MouseEvent.BUTTON2)
+        {
+            WHEEL.isDown = true;
+            WHEEL.timeOnStart = System.nanoTime();
+            return;
+        }
+    }
 
     @Override
-    public void mousePressed(MouseEvent e) { }
+    public void mouseReleased(MouseEvent e) 
+    { 
+        if (e.getButton() == MouseEvent.BUTTON1)
+        {
+            LEFT.isDown = false;
+            LEFT.timeOnStart = 0.0d;
+            return;
+        }
+        else if (e.getButton() == MouseEvent.BUTTON3)
+        {
+            RIGHT.isDown = false;
+            RIGHT.timeOnStart = 0.0d;
+            return;
+        }
+        else if (e.getButton() == MouseEvent.BUTTON2)
+        {
+            WHEEL.isDown = false;
+            WHEEL.timeOnStart = 0.0d;
+            return;
+        }
+    }
 
     @Override
-    public void mouseReleased(MouseEvent e) { }
+    public void mouseWheelMoved(MouseWheelEvent e) 
+    {
+        WHEEL.mouseWheelBefore = WHEEL.mouseWheelNow;
+        // WheelRotation -> int 'full' clicks only | PreciseWheelRotation -> double 'fraction + full' click
+        WHEEL.mouseWheelNow = e.getPreciseWheelRotation();
+    }
 
     @Override
-    public void mouseEntered(MouseEvent e) { }
-
-    @Override
-    public void mouseExited(MouseEvent e) { }
-
-    @Override
-    public void keyTyped(KeyEvent e) { }
-
-    @Override
-    public void mouseWheelMoved(MouseWheelEvent e) { }
-
-    @Override
-    public void mouseDragged(MouseEvent e) { }
-
-    @Override
-    public void mouseMoved(MouseEvent e) { }
+    public void mouseMoved(MouseEvent e) 
+    {
+        MOUSE.POSITION_BEFORE.set(MOUSE.POSITION_NOW);
+        MOUSE.POSITION_NOW.set(e.getX(), e.getY());
+    }
 
     public class Key
     {
         private final int keyEvent;
         private boolean isDown;
-        private boolean isTyped;
-        private double downTime;
         private double timeOnStart;
 
         public Key(int keyEvent)
         {
             this.keyEvent    = keyEvent;
             this.isDown      = false;
-            this.isTyped     = false;
-            this.downTime    = 0d;
+            this.timeOnStart = 0d;
+        }
+
+        public int keyEvent() { return this.keyEvent; }
+
+        public boolean isDown()     { return this.isDown; }
+        public boolean isUp()       { return !this.isDown; }
+        public double  downTime()   { return System.nanoTime() - this.timeOnStart; }
+        public double  timeOnStart(){ return this.timeOnStart; }
+    }
+
+    public final class Mouse
+    {
+        private final Vector POSITION_BEFORE;
+        private final Vector POSITION_NOW;
+
+        public Mouse()
+        {
+            this.POSITION_BEFORE = Vector.zero();
+            this.POSITION_NOW = Vector.zero();
+        }
+
+        public Vector position() { return this.POSITION_BEFORE; }
+        public Vector speed()    { return this.POSITION_NOW.sub(this.POSITION_BEFORE); }
+
+    }
+
+    public class Button
+    {
+        protected boolean isDown;
+        protected double timeOnStart;
+
+        private Button()
+        {
+            this.isDown = false;
             this.timeOnStart = 0d;
         }
 
         public boolean isDown()     { return this.isDown; }
-        public boolean isTyped()    { return this.isTyped; }
-        public double  downTime()   { return this.downTime; }
+        public boolean isUp()       { return !this.isDown; }
+        public double  downTime()   { return System.nanoTime() - this.timeOnStart; }
         public double  timeOnStart(){ return this.timeOnStart; }
     }
 
-    public class Mouse
-    {
-        private Vector positionBefore;
-        private Vector postionNow;
-        private double mouseSpeed;
-
-        public Mouse()
-        {
-            this.positionBefore = Vector.zero();
-            this.postionNow = Vector.zero();
-            this.mouseSpeed = 0d;
-        }
-    }
-
-    public static class Wheel
+    public final class Wheel extends Button
     {
         private double mouseWheelBefore;
         private double mouseWheelNow;
-        private double mouseWheelSpeed;
-    }
 
-    private  enum Button
-    {
-        LEFT(), RIGHT(), WHEEL();
-
-        private boolean isDown;
-        private boolean isTyped;
-        private double downTime;
-        private double timeOnStart;
-
-        Button()
+        public Wheel()
         {
-            this.isDown = false;
-            this.isTyped = false;
-            this.downTime = 0d;
-            this.timeOnStart = 0d;
+            this.mouseWheelBefore = 0d;
+            this.mouseWheelNow = 0d;
         }
+
+        public double direction() { return this.speed() > 0d ? 1d : -1d; }
+        public double speed() { return this.mouseWheelNow - this.mouseWheelBefore; }
     }
+
+    /*
+    @Override
+    public void keyTyped(KeyEvent e) { }
+
+    @Override
+    public void mouseClicked(MouseEvent e) { }
+
+    @Override
+    public void mouseDragged(MouseEvent e) { }
+
+    @Override
+    public void mouseEntered(MouseEvent e) { }
+
+    @Override
+    public void mouseExited(MouseEvent e) { }
+    */
 }

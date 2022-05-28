@@ -3,7 +3,7 @@ package engine;
 public class Engine 
 {
     /**
-     * TODO@El-Tigere
+     * TODO@NextLegacy
      */
     public static void RenderMandelBrotSet()
     {

@@ -6,6 +6,7 @@ import engine.window.Window;
 public class Engine
 {
     private Window window;
+    public Scene activeScene;
     
     public Engine(int width, int height, String[] renderLayers)
     {
@@ -15,13 +16,20 @@ public class Engine
             window.addLayer(name);
     }
     
-    public Scene activeScene;
-
+    public void start()
+    {
+        //start game loop
+    }
+    
     public void loadScene(Scene scene)
     {
-        this.activeScene = null;
-        this.activeScene.dispose();
-        this.activeScene = scene;
-        this.activeScene.start();
+        if(activeScene != null)
+        {
+            activeScene.destroy();
+            activeScene = null;
+        }
+        activeScene = scene;
+        activeScene.init();
+        activeScene.sceneStart();
     }
 }

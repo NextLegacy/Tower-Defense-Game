@@ -11,7 +11,7 @@ public abstract class GameObject
     public Vector position;
     public Vector rotation;
     
-    public BufferedImage sprite;
+    public BufferedImage sprite; // TODO: das aendern
     public String renderLayer;
     
     protected Scene scene; // controlled by the Scene class

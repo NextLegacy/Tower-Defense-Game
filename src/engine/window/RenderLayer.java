@@ -1,7 +1,10 @@
 package engine.window;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+
+import engine.utils.Fonts;
 
 public class RenderLayer 
 {
@@ -11,6 +14,7 @@ public class RenderLayer
     private int height;
 
     private BufferedImage image;
+    private Graphics2D graphics;
 
     public RenderLayer(String name, int width, int height)
     {
@@ -24,6 +28,7 @@ public class RenderLayer
         this.height = height;
 
         this.image = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
+        this.graphics = image.createGraphics();
     }
 
     public String name() { return this.name; }
@@ -33,6 +38,12 @@ public class RenderLayer
 
     public Graphics2D graphics()
     {
-        return this.image.createGraphics();
+        return this.graphics;
+    }
+
+    public void resetGraphics()
+    {
+        this.graphics.setColor(Color.BLACK);
+        this.graphics().setFont(Fonts.DEFAULT_FONT);
     }
 }

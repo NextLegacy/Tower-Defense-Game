@@ -1,56 +1,65 @@
 package engine.scene;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 
+import engine.Engine;
 import engine.scene.Collisions.LayerCollision;
 import engine.window.RenderLayer;
 
 public class Scene extends Activateable
 {
-    public final static Scene EMPTY_SCENE = new Scene(0, new LayerCollision[] { });
     private ArrayList<GameObject> gameObjects;
     
     public final Collisions collisions;
     
-    private static final int FRAME_DELAY = 50;
-    
+    private Engine engine;
+
     public Scene(int collisionLayerCount, LayerCollision[] layerCollisions)
     {
         deactivate();
         
-        gameObjects = new ArrayList<GameObject>();
+        gameObjects = new ArrayList<>();
         
         // setup collisions
         collisions = new Collisions(collisionLayerCount, layerCollisions);
     }
     
-    public void init() {}
+    public void init() { }
     
-    public void addObject(GameObject o)
+    public void addObject(GameObject gameObject)
     {
-        gameObjects.add(o);
-        o.setScene(this);
+        gameObjects.add(gameObject);
+        gameObject.setScene(this.engine, this);
         
         if(isActive()) 
-            o.start();
+            gameObject.start();
     }
     
-    public void removeObject(GameObject o)
+    public void removeObject(GameObject gameObject)
     {
-        gameObjects.remove(o);
-        o.setScene(null);
+        gameObjects.remove(gameObject);
+        gameObject.setScene(this.engine, null);
     }
     
     public void start()
     {
         activate();
+
+        for(GameObject gameObject : gameObjects)
+        {
+            if (gameObject.isActive())
+                gameObject.start();
+        }
     }
     
     public void update(double deltaTime)
     {
         for(GameObject gameObject : gameObjects)
         {
-            gameObject.update();
+            if (gameObject.isActive())
+                gameObject.update(deltaTime);
         }
         
         // collisions
@@ -61,30 +70,15 @@ public class Scene extends Activateable
     {
         for(GameObject gameObject : gameObjects)
         {
-            gameObject.update();
+            if (gameObject.isActive())
+                gameObject.render(layer, deltaTime);
+
+            layer.graphics().setColor(Color.BLACK);
         }
         
         collisions.collisionsUpdate();
     }
     
-    @Override
-    public void onActivate() 
-    {
-        for(GameObject gameObject : gameObjects)
-        {
-            gameObject.start();
-        }
-    }
-
-    @Override
-    public void onDeactivate() 
-    {
-        for(GameObject gameObject : gameObjects)
-        {
-            //gameObject.end(); //TODO: macht das sinn?
-        }    
-    }
-
     public void destroy()
     {
         deactivate();

@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 
 import engine.scene.Activateable;
 import engine.scene.Scene;
+import engine.window.InputListener;
 import engine.window.Window;
 
 public class Engine extends Activateable
@@ -22,30 +23,20 @@ public class Engine extends Activateable
         this.gameLoop = new GameLoop(tps, fps);
         this.gameLoopThread = new Thread(this.gameLoop);
 
-        this.activeScene = Scene.EMPTY_SCENE;
+        this.activeScene = null;
 
         for(String name : renderLayers)
             window.addLayer(name);
     }
 
-    public void start()
+    public void setActiveScene(Scene scene)
     {
-        if (this.gameLoopThread.isAlive())
-            throw new IllegalStateException("Engine did started already!");
-
-        this.activate();
-
-        this.gameLoopThread.start();
+        activeScene = scene;
     }
 
-    public void end()
+    public void start()
     {
-        if (!this.gameLoopThread.isAlive())
-            throw new IllegalStateException("Engine did not started yet!");
-        
-        this.deactivate();
-
-        //this.gameLoopThread.interrupt(); //Game Loop Thread
+        this.activeScene.start();
     }
 
     public void update(double deltaTime)
@@ -68,14 +59,43 @@ public class Engine extends Activateable
             this.activeScene.render(renderLayer, deltaTime);
         });
     }
-
-    public void loadScene(Scene scene)
+    
+    public Scene getActiveScene()
     {
-        activeScene.destroy();
+        return activeScene;
+    }
 
-        activeScene = scene;
-        activeScene.init();
-        activeScene.start();
+    public Window getWindow()
+    {
+        return window;
+    }
+
+    public InputListener getInputListener() { return window.getInputListener(); }
+
+    @Override
+    public void onActivate()
+    {
+        if (this.gameLoopThread.isAlive())
+            throw new IllegalStateException("Engine did started already!");
+
+        this.activate();
+
+        this.gameLoopThread.start();
+    }
+
+    @Override
+    public void onDeactivate()
+    {
+        if (!this.gameLoopThread.isAlive())
+            throw new IllegalStateException("Engine did not started yet!");
+
+        this.deactivate();
+    }
+
+    @Override
+    public boolean isActive() 
+    {
+        return super.isActive() && this.window.isEnabled();
     }
 
     private final class GameLoop implements Runnable
@@ -103,13 +123,16 @@ public class Engine extends Activateable
             double time = System.nanoTime();
 
             int ticks = 0;
-            int frames = 0;
+            int frames = 0;            
+
+            Scene currentScene = activeScene;
 
             while(isActive())
             {
                 final double now = System.nanoTime();
 
                 final double elapsedTime = now - last;
+
                 time += elapsedTime;
 
                 deltaT += elapsedTime / TICK_INTERVAL;
@@ -119,10 +142,24 @@ public class Engine extends Activateable
 
                 if(deltaT >= 1)
                 {
+                    if (currentScene != activeScene)
+                    {
+                        if (currentScene != null)
+                            currentScene.destroy();
+
+                        currentScene = activeScene;
+
+                        currentScene.init();
+                        currentScene.start();
+                    }
+
                     update(elapsedTime);
                     ticks++;
                     deltaT--;
                 }
+
+                if (!isActive()) // After updates, engine might be deactivated, no need to continue
+                    break;
 
                 if(deltaF >= 1)
                 {

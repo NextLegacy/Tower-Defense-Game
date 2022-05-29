@@ -6,6 +6,9 @@ public abstract class Activateable
 
     public void setActive(boolean state) 
     { 
+        if (isActive == state)
+            return;
+            
         isActive = state;
 
         if (isActive)

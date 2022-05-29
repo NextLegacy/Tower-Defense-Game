@@ -11,16 +11,21 @@ import engine.utils.Lambda.Action1;
 
 public class Window extends Frame
 {
-    private ArrayList<RenderLayer> layers;
     private BufferStrategy strategy;
+
+    private final ArrayList<RenderLayer> layers;
     
-    public Window(final int WIDTH, final int HEIGHT)
+    private final InputListener inputListener;
+
+    public Window(final int width, final int height)
     {
         layers = new ArrayList<>();
 
-        this.addWindowListener(new WindowListener());
+        this.inputListener = InputListener.createInputListener(this);
 
-        this.setSize(WIDTH, HEIGHT);
+        this.addWindowListener(new WindowListener()); // EXIT_ON_CLOSE
+
+        this.setSize(width, height);
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     } 
@@ -34,10 +39,15 @@ public class Window extends Frame
 
     public RenderLayer getLayer(String name)
     {
-        return layers.stream()
+        return layers.stream()  //LINQ (:
             .filter((layer) -> name.equals(layer.name()))
             .findAny()
             .orElse(null);
+    }
+
+    public InputListener getInputListener()
+    {
+        return inputListener;
     }
 
     public Window render(Action1<RenderLayer> renderProcess)

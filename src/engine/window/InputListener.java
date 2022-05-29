@@ -15,11 +15,11 @@ public class InputListener extends InputAdapter
     private final HashMap<Integer, Key> KEY_MAP;
 
     private final Mouse MOUSE;
+    private final Wheel WHEEL;
 
     private final Button LEFT;
     private final Button RIGHT;
-    private final Wheel WHEEL;
-
+    
     public InputListener()
     {
         this.LEFT  = new Button();
@@ -42,24 +42,27 @@ public class InputListener extends InputAdapter
 
     public Wheel wheel()  { return WHEEL; }
 
-    private void initializeKeyDownMap()
+    public void initializeKeyDownMap()
     {
         Field[] fields = KeyEvent.class.getDeclaredFields();
     
         for (Field field : fields) 
         {
-            if (Modifier.isStatic(field.getModifiers())) 
+            if (Modifier.isPrivate(field.getModifiers()) || !Modifier.isStatic(field.getModifiers())) 
+                continue;
+
+            try 
             {
-                try 
-                {
-                    int event = (Integer) field.get(null);
-                    this.KEY_MAP.put(event, new Key(event));
-                } 
-                catch (IllegalArgumentException | IllegalAccessException e) 
-                {
-                    e.printStackTrace();
-                }
+                Object fieldValue = field.get(null);
+                if (!(fieldValue instanceof Integer)) continue;
+                
+                int event = (Integer) field.get(null);
+                this.KEY_MAP.put(event, new Key(event));
             } 
+            catch (IllegalArgumentException | IllegalAccessException e) 
+            {
+                e.printStackTrace();
+            }
         }   
     }
 
@@ -177,6 +180,15 @@ public class InputListener extends InputAdapter
         public Vector position() { return this.POSITION_BEFORE; }
         public Vector speed()    { return this.POSITION_NOW.sub(this.POSITION_BEFORE); }
 
+        public boolean isInRange(Vector from, Vector to)
+        {
+            return this.position().isInRange(from, to);
+        }
+
+        public boolean isInBounds(Vector position, Vector size)
+        {
+            return this.position().isInBounds(position, size);
+        }
     }
 
     public class Button
@@ -191,8 +203,8 @@ public class InputListener extends InputAdapter
         }
 
         public boolean isDown()     { return this.isDown; }
-        public boolean isUp()       { return !this.isDown; }
-        public double  downTime()   { return System.nanoTime() - this.timeOnStart; }
+        public boolean isUp()       { return !this.isDown(); }
+        public double  downTime()   { return System.nanoTime() - this.timeOnStart(); }
         public double  timeOnStart(){ return this.timeOnStart; }
     }
 
@@ -211,20 +223,15 @@ public class InputListener extends InputAdapter
         public double speed() { return this.mouseWheelNow - this.mouseWheelBefore; }
     }
 
-    /*
-    @Override
-    public void keyTyped(KeyEvent e) { }
+    public static InputListener createInputListener(Window window)
+    {
+        InputListener inputListener = new InputListener();
+        
+        window.addKeyListener(inputListener);
+        window.addMouseListener(inputListener);
+        window.addMouseMotionListener(inputListener);
+        window.addMouseWheelListener(inputListener);
 
-    @Override
-    public void mouseClicked(MouseEvent e) { }
-
-    @Override
-    public void mouseDragged(MouseEvent e) { }
-
-    @Override
-    public void mouseEntered(MouseEvent e) { }
-
-    @Override
-    public void mouseExited(MouseEvent e) { }
-    */
+        return inputListener;
+    }
 }

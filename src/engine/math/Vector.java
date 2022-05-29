@@ -82,6 +82,20 @@ public class Vector
         return this.lerpX(from.x, to.x, t)
                    .lerpY(from.y, to.y, t);
     }
+    
+    public boolean isInRangeX(double min, double max) { return this.x >= min && this.x <= max; }
+    public boolean isInRangeY(double min, double max) { return this.y >= min && this.y <= max; }
+    public boolean isInRange(Vector from, Vector to)
+    {
+        return this.isInRangeX(from.x, to.x) && 
+               this.isInRangeY(from.y, to.y);
+    }
+
+    public boolean isInBounds(Vector position, Vector size)
+    {
+        return this.isInRangeX(position.x - size.x / 2, position.x + size.x / 2) &&
+               this.isInRangeY(position.y - size.y / 2, position.y + size.y / 2);
+    }
 
     public Vector inverse()
     { 

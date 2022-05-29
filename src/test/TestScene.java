@@ -23,4 +23,9 @@ public class TestScene extends Scene
         addObject(go2);
     }
     
+    @Override
+    public void update(double deltaTime) {
+        super.update(deltaTime);
+    }
+    
 }

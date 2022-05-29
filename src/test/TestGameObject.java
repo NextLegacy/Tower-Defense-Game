@@ -18,7 +18,7 @@ public class TestGameObject extends CollisionGameObject
     @Override
     public void update(double deltaTime)
     {
-        position.x += 5;
+        position.x += 0.000001 * deltaTime;
         if(position.x > 700) destroy();
     }
     

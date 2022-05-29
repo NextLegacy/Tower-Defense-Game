@@ -15,7 +15,7 @@ public class Main
         Scene scene = new TestScene();
         
         engine.setActiveScene(scene);
-        engine.start();
+        engine.activate();
     }
     
 }

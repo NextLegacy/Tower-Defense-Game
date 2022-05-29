@@ -13,7 +13,7 @@ import test.TestGameObject2;
 
 public class Scene extends Activateable
 {
-    private ArrayList<GameObject> gameObjects;
+    protected ArrayList<GameObject> gameObjects;
     
     public final Collisions collisions;
     

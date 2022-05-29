@@ -128,7 +128,7 @@ public class Engine extends Activateable
             int ticks = 0;
             int frames = 0;            
 
-            Scene currentScene = activeScene;
+            Scene currentScene = null;
 
             while(isActive())
             {

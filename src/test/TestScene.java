@@ -1,6 +1,7 @@
 package test;
 
 import engine.math.Vector;
+import engine.scene.Collisions;
 import engine.scene.GameObject;
 import engine.scene.Scene;
 import engine.scene.Collisions.LayerCollision;
@@ -8,8 +9,8 @@ import engine.scene.Collisions.LayerCollision;
 public class TestScene extends Scene
 {
 
-    public TestScene(int collisionLayerCount, LayerCollision[] layerCollisions) {
-        super(collisionLayerCount, layerCollisions);
+    public TestScene() {
+        super(2, new LayerCollision[] {new Collisions.LayerCollision(0, 1, true)});
     }
     
     @Override

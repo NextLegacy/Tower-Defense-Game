@@ -14,17 +14,15 @@ public abstract class GameObject extends Activateable
     public Vector position;
     public Vector size;
     public double rotation;
-
+    
     protected BufferedImage sprite;
-
-    //private Vector rotation;
     
     protected Scene scene;
     
     protected Engine engine;
     protected Window window;
     protected InputListener input;
-
+    
     public GameObject()
     {
         position = Vector.zero();
@@ -52,20 +50,20 @@ public abstract class GameObject extends Activateable
     public void update(double deltaTime) { }
     
     public void onDestroy() { }
-
+    
     public void render(RenderLayer layer, double deltaTime) { }
-
+    
     public void renderSprite(RenderLayer layer, BufferedImage sprite)
     {
         if (sprite == null) 
             return;
-
+        
         Graphics2D g2dSprite = sprite.createGraphics();
         
         g2dSprite.rotate(this.rotation);
-            
-        layer.graphics().drawImage(sprite, (int) (position.x - sprite.getWidth() / 2), (int) (position.y - sprite.getHeight() / 2), null); // TODO@El_Tigere: ist halfSize bei den collisions sinvoll? wenn ja sollte man das auch hier machen
-
+        
+        layer.graphics().drawImage(sprite, (int) (position.x - sprite.getWidth() / 2), (int) (position.y - sprite.getHeight() / 2), null);
+        
         g2dSprite.rotate(-this.rotation);
     }
 }

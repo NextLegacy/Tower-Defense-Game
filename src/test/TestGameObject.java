@@ -8,7 +8,7 @@ public class TestGameObject extends CollisionGameObject
     
     public TestGameObject() {
         super(0);
-        setSize(new Vector(20, 20));
+        size = new Vector(20, 20);
         
         sprite = Images.getImage("box_20x20");
         renderLayer = "Test";

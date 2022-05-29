@@ -7,8 +7,7 @@ import engine.math.Vector;
 public abstract class CollisionGameObject extends GameObject
 {
     
-    public Vector size; // dont set size or halfSize manually; use setters
-    public Vector halfSize;
+    public Vector size;
     public boolean colliding; // updated after update method so don't use there
     
     protected Collisions collisions;
@@ -18,15 +17,10 @@ public abstract class CollisionGameObject extends GameObject
     public CollisionGameObject(int collisionLayer)
     {
         super();
-        setSize(new Vector(0, 0));
+        size = new Vector(0, 0);
         this.collisionLayer = collisionLayer;
         colliding = false;
     }
-    
-    //public Vector getSize() { return size; }
-    public void setSize(Vector v) { size = v; halfSize = v.div(2); }
-    //public Vector getHalfSize() { return halfSize; }
-    public void setHalfSize(Vector v) { halfSize = v; halfSize = v.mul(2); }
     
     @Override
     public void setScene(Scene scene) {

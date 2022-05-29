@@ -15,9 +15,6 @@ public class Main
     
     public static void main(String[] args)
     {
-        /*Window window = new Window(WIDTH, HEIGHT);
-        for(String name : renderLayers) window.addLayer(name);*/
-        
         Engine engine = new Engine(WIDTH, HEIGHT, renderLayers);
         
         Scene scene = new Scene(2, new LayerCollision[] {new Collisions.LayerCollision(0, 1, true)});

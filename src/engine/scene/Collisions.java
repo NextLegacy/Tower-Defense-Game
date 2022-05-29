@@ -75,10 +75,10 @@ public class Collisions
     
     public static boolean boxCollision(CollisionGameObject a, CollisionGameObject b)
     {
-        return b.position.x + b.halfSize.x > a.position.x - a.halfSize.x
-            && b.position.x - b.halfSize.x < a.position.x + a.halfSize.x
-            && b.position.y + b.halfSize.y > a.position.y - a.halfSize.y
-            && b.position.y - b.halfSize.y < a.position.y + a.halfSize.y;
+        return b.position.x + b.size.x / 2 > a.position.x - a.size.x / 2
+            && b.position.x - b.size.x / 2 < a.position.x + a.size.x / 2
+            && b.position.y + b.size.y / 2 > a.position.y - a.size.y / 2
+            && b.position.y - b.size.y / 2 < a.position.y + a.size.y / 2;
     }
     
     public static class LayerCollision // der Name ist schlecht

@@ -20,7 +20,7 @@ public class Engine extends Activateable
     public Engine(int width, int height, int tps, int fps, String[] renderLayers)
     {
         this.window = new Window(width, height);
-        this.gameLoop = new GameLoop(tps, fps);
+        this.gameLoop = new GameLoop(this, tps, fps);
         this.gameLoopThread = new Thread(this.gameLoop);
 
         this.activeScene = null;
@@ -102,9 +102,12 @@ public class Engine extends Activateable
     {
         private final int FPS;
         private final int TPS;
-
-        public GameLoop(final int TPS, final int FPS)
+        
+        private final Engine engine;
+        
+        public GameLoop(final Engine engine, final int TPS, final int FPS)
         {
+            this.engine = engine;
             this.TPS = TPS;
             this.FPS = FPS;
         }
@@ -148,7 +151,8 @@ public class Engine extends Activateable
                             currentScene.destroy();
 
                         currentScene = activeScene;
-
+                        
+                        currentScene.setEngine(engine);
                         currentScene.init();
                         currentScene.start();
                     }

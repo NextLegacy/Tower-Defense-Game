@@ -2,6 +2,7 @@ package engine.scene;
 
 import java.util.ArrayList;
 
+import engine.Engine;
 import engine.math.Vector;
 
 public abstract class CollisionGameObject extends GameObject
@@ -23,8 +24,8 @@ public abstract class CollisionGameObject extends GameObject
     }
     
     @Override
-    public void setScene(Scene scene) {
-        this.scene = scene;
+    public void setScene(final Engine engine, Scene scene) {
+        super.setScene(engine, scene);
         if(scene != null)
         {
             collisions = scene.collisions;

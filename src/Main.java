@@ -15,18 +15,14 @@ public class Main
     
     public static void main(String[] args)
     {
-        Engine engine = new Engine(WIDTH, HEIGHT, renderLayers);
+        Engine engine = new Engine(WIDTH, HEIGHT, 60, 60, renderLayers);
         
         Scene scene = new Scene(2, new LayerCollision[] {new Collisions.LayerCollision(0, 1, true)});
         
-        GameObject go1 = new TestGameObject();
-        GameObject go2 = new TestGameObject2();
-        go1.position = new Vector(100, 100);
-        go2.position = new Vector(350, 150);
-        scene.addObject(go1);
-        scene.addObject(go2);
         
-        engine.loadScene(scene);
+        
+        engine.setActiveScene(scene);
+        engine.start();
     }
     
 }

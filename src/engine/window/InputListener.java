@@ -202,6 +202,20 @@ public class InputListener extends InputAdapter
             this.timeOnStart = 0d;
         }
 
+        public boolean isClickedInArea(Vector position, Vector size, double maxHoldTime) 
+        {
+            return isDown() && 
+                   downTime() < maxHoldTime && 
+                   mouse().isInRange(position, size);
+        }
+
+        public boolean isClickedInBounds(Vector position, Vector size, double maxHoldTime) 
+        {
+            return isDown() && 
+                   downTime() < maxHoldTime && 
+                   mouse().isInBounds(position, size);
+        }
+
         public boolean isDown()     { return this.isDown; }
         public boolean isUp()       { return !this.isDown(); }
         public double  downTime()   { return System.nanoTime() - this.timeOnStart(); }

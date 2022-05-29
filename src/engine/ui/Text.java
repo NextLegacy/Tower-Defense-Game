@@ -24,7 +24,7 @@ public class Text
         this.centered = false;
     }
 
-    public void render(Graphics2D g2d)
+    public void renderText(Graphics2D g2d)
     {
         g2d.setColor(color);
         g2d.setFont(font);

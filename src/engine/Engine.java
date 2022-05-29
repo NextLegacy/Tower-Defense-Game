@@ -148,6 +148,8 @@ public class Engine extends Activateable
                 
                 last = now;
             }
+            
+            getWindow().dispose();
         }
     }
 }

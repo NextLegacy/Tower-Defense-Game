@@ -1,12 +1,7 @@
 package engine.window;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
 import java.awt.Frame;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
@@ -71,11 +66,7 @@ public class Window extends Frame
 
                 //RENDER START
 
-                graphics.setColor(Color.WHITE);
-
                 graphics.fillRect(0, 0, this.getWidth(), this.getHeight());
-
-                graphics.setColor(Color.BLACK);
 
                 for (RenderLayer renderLayer : this.layers)
                 {   

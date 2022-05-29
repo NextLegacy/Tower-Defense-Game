@@ -14,7 +14,7 @@ public final class TowerDefenseGame
     {
         Engine engine = new Engine(1280, 720, 60, 60, new String[] { "main" });
         engine.setActiveScene(new Scene(1, new Collisions.LayerCollision[] { new Collisions.LayerCollision(0, 1, true) }));
-        engine.start();
+        engine.activate();
     }
 
     //Singelton

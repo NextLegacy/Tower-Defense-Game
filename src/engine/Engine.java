@@ -1,5 +1,6 @@
 package engine;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
@@ -29,73 +30,43 @@ public class Engine extends Activateable
             window.addLayer(name);
     }
 
-    public void setActiveScene(Scene scene)
-    {
-        activeScene = scene;
-    }
-
-    public void start()
-    {
-        this.activeScene.start();
-    }
-
-    public void update(double deltaTime)
-    {
-        this.activeScene.update(deltaTime);
-    }
-
-    public void render(double deltaTime)
-    {
-        this.window.render((renderLayer) -> 
-        {
-            Graphics2D g2d = renderLayer.graphics();
-
-            g2d.setColor(new Color(0, 0, 0, 0));
-
-            g2d.fillRect(0, 0, renderLayer.width(), renderLayer.height());
-
-            g2d.setColor(Color.black);
-
-            this.activeScene.render(renderLayer, deltaTime);
-        });
-    }
+    public void setActiveScene(Scene scene) { activeScene = scene; }
     
-    public Scene getActiveScene()
-    {
-        return activeScene;
-    }
+    public Scene getActiveScene() { return activeScene; }
 
-    public Window getWindow()
-    {
-        return window;
-    }
+    public Window getWindow() { return window;}
 
     public InputListener getInputListener() { return window.getInputListener(); }
 
     @Override
     public void onActivate()
     {
-        if (this.gameLoopThread.isAlive())
-            throw new IllegalStateException("Engine did started already!");
-
-        this.activate();
-
         this.gameLoopThread.start();
     }
 
     @Override
-    public void onDeactivate()
+    public void onDeactivate() 
     {
-        if (!this.gameLoopThread.isAlive())
-            throw new IllegalStateException("Engine did not started yet!");
-
-        this.deactivate();
+        this.window.dispose();    
     }
 
-    @Override
-    public boolean isActive() 
+    private void start()
     {
-        return super.isActive() && this.window.isEnabled();
+        this.activeScene.start();
+    }
+
+    private void update(double deltaTime)
+    {
+        this.activeScene.update(deltaTime);
+    }
+
+    private void render(double deltaTime)
+    {
+        this.window.render((renderLayer) -> 
+        {
+            renderLayer.clear();
+            this.activeScene.render(renderLayer, deltaTime);
+        });
     }
 
     private final class GameLoop implements Runnable
@@ -154,24 +125,25 @@ public class Engine extends Activateable
                         
                         currentScene.setEngine(engine);
                         currentScene.init();
-                        currentScene.start();
+                        
+                        start();
                     }
 
-                    update(elapsedTime);
+                    update(elapsedTime / 1_000_000_000.0d);
                     ticks++;
                     deltaT--;
                 }
 
-                if (!isActive()) // After updates, engine might be deactivated, no need to continue
+                if (!isActive() || !getInputListener().isActive()) // After updates, engine might be deactivated, no need to continue
                     break;
 
                 if(deltaF >= 1)
                 {
-                    render(elapsedTime);
+                    render(elapsedTime / 1_000_000_000.0d);
                     frames++;
                     deltaF--;
                 }
-
+                
                 if(time >= 1_000_000_000)
                 {
                     //System.out.println("FPS: " + frames + " TPS: " + ticks); //Logging zeug wenn man es Braucht

@@ -1,7 +1,10 @@
 package engine.window;
 
+import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
@@ -23,7 +26,7 @@ public class Window extends Frame
 
         this.inputListener = InputListener.createInputListener(this);
 
-        this.addWindowListener(new WindowListener()); // EXIT_ON_CLOSE
+        this.setResizable(false);
 
         this.setSize(width, height);
         this.setLocationRelativeTo(null);
@@ -64,15 +67,21 @@ public class Window extends Frame
         {
             do 
             {
-                Graphics graphics = strategy.getDrawGraphics();
+                Graphics2D graphics = (Graphics2D) strategy.getDrawGraphics();
 
                 //RENDER START
 
-                for (RenderLayer layer : this.layers)
-                {
-                    renderProcess.invoke(layer);
+                graphics.setColor(Color.WHITE);
+
+                graphics.fillRect(0, 0, this.getWidth(), this.getHeight());
+
+                graphics.setColor(Color.BLACK);
+
+                for (RenderLayer renderLayer : this.layers)
+                {   
+                    renderProcess.invoke(renderLayer);
                     
-                    graphics.drawImage(layer.image(), 0, 0, null);
+                    graphics.drawImage(renderLayer.image(), 0, 0, null);
                 }
 
                 //RENDER END
@@ -86,14 +95,5 @@ public class Window extends Frame
         } while (strategy.contentsLost());
 
         return this;
-    }
-    
-    private class WindowListener extends WindowAdapter
-    {
-        @Override
-        public void windowClosing(WindowEvent e) 
-        {
-            dispose();
-        }
     }
 }

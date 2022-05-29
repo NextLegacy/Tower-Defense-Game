@@ -1,8 +1,11 @@
 package engine.window;
 
+import java.awt.Frame;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
+import java.awt.event.WindowEvent;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -13,6 +16,11 @@ import engine.math.Vector;
 public class InputListener extends InputAdapter
 {
     private final HashMap<Integer, Key> KEY_MAP;
+
+    private boolean isWindowFocused;
+    private boolean isWindowActive;
+
+    private int windowState;
 
     private final Mouse MOUSE;
     private final Wheel WHEEL;
@@ -30,6 +38,11 @@ public class InputListener extends InputAdapter
 
         this.KEY_MAP = new HashMap<>();
 
+        this.isWindowFocused = false;
+        this.isWindowActive = false;
+
+        this.windowState = Frame.NORMAL;
+
         this.initializeKeyDownMap();
     }
 
@@ -41,6 +54,11 @@ public class InputListener extends InputAdapter
     public Button right() { return RIGHT; }
 
     public Wheel wheel()  { return WHEEL; }
+
+    public int windowState() { return windowState; }
+
+    public boolean isActive() { return this.isWindowActive; }
+    public boolean isFocused() { return isWindowFocused; }
 
     public void initializeKeyDownMap()
     {
@@ -145,6 +163,36 @@ public class InputListener extends InputAdapter
         MOUSE.POSITION_NOW.set(e.getX(), e.getY());
     }
 
+    @Override
+    public void windowActivated(WindowEvent e) 
+    {
+        this.isWindowActive = true;
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) 
+    {
+        this.isWindowActive = false;
+    }
+
+    @Override
+    public void windowGainedFocus(WindowEvent e) 
+    {
+        this.isWindowFocused = true;
+    }
+
+    @Override
+    public void windowLostFocus(WindowEvent e) 
+    {
+        this.isWindowFocused = false;
+    }
+
+    @Override
+    public void windowStateChanged(WindowEvent e) 
+    {
+        this.windowState = e.getNewState();
+    }
+
     public class Key
     {
         private final int keyEvent;
@@ -202,23 +250,33 @@ public class InputListener extends InputAdapter
             this.timeOnStart = 0d;
         }
 
-        public boolean isClickedInArea(Vector position, Vector size, double maxHoldTime) 
+        public boolean isHoldInArea(Vector from, Vector to) 
         {
             return isDown() && 
-                   downTime() < maxHoldTime && 
-                   mouse().isInRange(position, size);
+                   mouse().isInRange(from, to);
+        }
+
+        public boolean isHoldInBounds(Vector position, Vector size) 
+        {
+            return isDown() && 
+                   mouse().isInBounds(position, size);
+        }
+
+        public boolean isClickedInArea(Vector from, Vector to, double maxHoldTime) 
+        {
+            return isHoldInArea(from, to) &&
+                   downTime() < maxHoldTime;
         }
 
         public boolean isClickedInBounds(Vector position, Vector size, double maxHoldTime) 
         {
-            return isDown() && 
-                   downTime() < maxHoldTime && 
-                   mouse().isInBounds(position, size);
+            return isHoldInBounds(position, size) &&
+                   downTime() < maxHoldTime;
         }
 
         public boolean isDown()     { return this.isDown; }
         public boolean isUp()       { return !this.isDown(); }
-        public double  downTime()   { return System.nanoTime() - this.timeOnStart(); }
+        public double  downTime()   { return (System.nanoTime() - this.timeOnStart()) / 1_000_000_000; }
         public double  timeOnStart(){ return this.timeOnStart; }
     }
 
@@ -245,6 +303,9 @@ public class InputListener extends InputAdapter
         window.addMouseListener(inputListener);
         window.addMouseMotionListener(inputListener);
         window.addMouseWheelListener(inputListener);
+        window.addWindowListener(inputListener);
+        window.addWindowStateListener(inputListener);
+        window.addWindowFocusListener(inputListener);
 
         return inputListener;
     }

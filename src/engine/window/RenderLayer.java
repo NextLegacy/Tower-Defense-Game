@@ -1,5 +1,6 @@
 package engine.window;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -29,6 +30,17 @@ public class RenderLayer
 
         this.image = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
         this.graphics = image.createGraphics();
+    }
+
+    public void clear()
+    {
+        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.CLEAR));
+        graphics.setColor(new Color(0, 0, 0, 0));
+
+        graphics.fillRect(0, 0, width, height);
+
+        graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+        graphics.setColor(Color.black);
     }
 
     public String name() { return this.name; }

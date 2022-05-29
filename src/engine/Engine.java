@@ -1,9 +1,5 @@
 package engine;
 
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Graphics2D;
-
 import engine.scene.Activateable;
 import engine.scene.Scene;
 import engine.window.InputListener;
@@ -146,7 +142,7 @@ public class Engine extends Activateable
                 
                 if(time >= 1_000_000_000)
                 {
-                    //System.out.println("FPS: " + frames + " TPS: " + ticks); //Logging zeug wenn man es Braucht
+                    System.out.println("FPS: " + frames + " TPS: " + ticks); //Logging zeug wenn man es Braucht
                     time = ticks = frames = 0;
                 }
                 

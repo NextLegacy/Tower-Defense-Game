@@ -117,6 +117,11 @@ public class Vector
         return this.div(this.magnitude());
     }
 
+    public double ownAngle()
+    {
+        return y >= 0 ? Math.acos(x) : -Math.acos(x);
+    }
+    
     public double angle(Vector vec) 
     {
         return Math.acos(this.dot(vec) / this.magnitude());

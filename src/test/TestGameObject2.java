@@ -17,7 +17,7 @@ public class TestGameObject2 extends CollisionGameObject
         super(1);
         size = new Vector(200, 200);
         
-        sprite = Images.getImage("box_50x50_23346", 500, 500);
+        sprite = Images.getImage("box_200x200", 500, 500);
     }
     
     @Override

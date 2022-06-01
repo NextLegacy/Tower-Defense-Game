@@ -2,7 +2,6 @@ package engine.window;
 
 import java.awt.Frame;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.WindowEvent;
@@ -98,8 +97,8 @@ public class InputListener extends InputAdapter
     {
         Key key = KEY_MAP.get(e.getKeyCode());
         
-        key.isDown = true;
-        key.timeOnStart = System.nanoTime();
+        key.isDown = false;
+        key.timeOnStart = 0;
     }
 
     @Override
@@ -210,7 +209,7 @@ public class InputListener extends InputAdapter
 
         public boolean isDown()     { return this.isDown; }
         public boolean isUp()       { return !this.isDown; }
-        public double  downTime()   { return System.nanoTime() - this.timeOnStart; }
+        public double  downTime()   { return isDown ? System.nanoTime() - this.timeOnStart : 0; }
         public double  timeOnStart(){ return this.timeOnStart; }
     }
 

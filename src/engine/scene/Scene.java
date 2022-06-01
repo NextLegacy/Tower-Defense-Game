@@ -1,15 +1,11 @@
 package engine.scene;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.util.ArrayList;
 
 import engine.Engine;
-import engine.math.Vector;
 import engine.scene.Collisions.LayerCollision;
 import engine.window.RenderLayer;
-import test.TestGameObject;
-import test.TestGameObject2;
 
 public class Scene extends Activateable
 {

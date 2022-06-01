@@ -43,7 +43,7 @@ public class Engine extends Activateable
     @Override
     public void onDeactivate() 
     {
-        this.window.dispose();    
+        //this.window.dispose();
     }
 
     private void start()

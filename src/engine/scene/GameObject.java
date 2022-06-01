@@ -15,8 +15,6 @@ public abstract class GameObject extends Activateable
     public Vector size;
     public double rotation;
     
-    protected BufferedImage sprite;
-    
     protected Scene scene;
     
     protected Engine engine;

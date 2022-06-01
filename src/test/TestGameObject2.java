@@ -1,4 +1,7 @@
 package test;
+
+import java.awt.image.BufferedImage;
+
 import engine.math.Vector;
 import engine.scene.CollisionGameObject;
 import engine.utils.Images;
@@ -6,6 +9,8 @@ import engine.window.RenderLayer;
 
 public class TestGameObject2 extends CollisionGameObject
 {
+    
+    private BufferedImage sprite;
     
     public TestGameObject2()
     {

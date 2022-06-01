@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
+import engine.math.Vector;
 import engine.utils.Fonts;
 
 public class RenderLayer 
@@ -47,6 +48,21 @@ public class RenderLayer
     public int width() { return this.width; }
     public int height() { return this.height; }
     public BufferedImage image() { return this.image; }
+
+    public void renderSprite(RenderLayer layer, BufferedImage sprite, Vector position, double rotation)
+    {
+        if (sprite == null) 
+            return;
+
+        layer.graphics().translate(position.x, position.y);
+        layer.graphics().rotate(rotation);
+        layer.graphics().translate(-sprite.getWidth()/2, -sprite.getHeight()/2);
+
+        layer.graphics().drawImage(sprite, 0, 0, null);
+        layer.graphics().translate(+sprite.getWidth()/2, +sprite.getHeight()/2);
+        layer.graphics().rotate(-rotation);
+        layer.graphics().translate(-position.x, -position.y);
+    }
 
     public Graphics2D graphics()
     {

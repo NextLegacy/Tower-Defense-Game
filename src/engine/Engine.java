@@ -131,16 +131,16 @@ public class Engine extends Activateable
                 }
 
                 if (!isActive() || !getInputListener().isActive()) // After updates, engine might be deactivated, no need to continue
-                    break;
+                break;
 
-                if(deltaF >= 1)
+                if (deltaF >= 1)
                 {
                     render(elapsedTime / 1_000_000_000.0d);
                     frames++;
                     deltaF--;
                 }
                 
-                if(time >= 1_000_000_000)
+                if(time >= 1_000_000_000.0d)
                 {
                     System.out.println("FPS: " + frames + " TPS: " + ticks); //Logging zeug wenn man es Braucht
                     time = ticks = frames = 0;

@@ -10,7 +10,7 @@ public class Main
     
     public static void main(String[] args)
     {
-        Engine engine = new Engine(WIDTH, HEIGHT, 120, 120, renderLayers);
+        Engine engine = new Engine(WIDTH, HEIGHT, 120, 60, renderLayers);
         
         Scene scene = new TestScene();
         

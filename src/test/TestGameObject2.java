@@ -17,13 +17,20 @@ public class TestGameObject2 extends CollisionGameObject
         super(1);
         size = new Vector(200, 200);
         
-        sprite = Images.getImage("box_50x50");
+        sprite = Images.getImage("box_50x50_23346", 500, 500);
     }
     
     @Override
+    public void update(double deltaTime) 
+    {
+        this.rotation += deltaTime*10;
+    }
+
+    @Override
     public void render(RenderLayer layer, double deltaTime)
     {
-        if(layer.name() == "Test") renderSprite(layer, sprite);
+        if(layer.name() == "Test") 
+            layer.renderSprite(layer, sprite, position, rotation);
     }
     
 }

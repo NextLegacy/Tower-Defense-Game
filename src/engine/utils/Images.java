@@ -1,5 +1,6 @@
 package engine.utils;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
@@ -33,8 +34,17 @@ public class Images
 
     public static BufferedImage getImage(String name, int width, int height)
     {
-        // TODO: implement
-        return null;
+        Image image = getImage(name).getScaledInstance(width, height, BufferedImage.SCALE_SMOOTH);
+
+        return imageToBufferedImage(image);
     }
     
+    private static BufferedImage imageToBufferedImage(Image image)
+    {
+        BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+        
+        bufferedImage.getGraphics().drawImage(image, 0, 0, null);
+        
+        return bufferedImage;
+    }
 }

@@ -24,6 +24,7 @@ public class TestGameObject extends CollisionGameObject
     @Override
     public void update(double deltaTime)
     {
+        rotation += deltaTime *10;
         if(position.x <= 700)
             position.x += 150 * deltaTime;
         
@@ -47,7 +48,8 @@ public class TestGameObject extends CollisionGameObject
     @Override
     public void render(RenderLayer layer, double deltaTime)
     {
-        if(layer.name() == "Test") renderSprite(layer, sprite);
+        if(layer.name() == "Test") 
+            layer.renderSprite(layer, sprite, position, rotation);
     }
     
 }

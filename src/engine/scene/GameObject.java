@@ -1,8 +1,5 @@
 package engine.scene;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
-
 import engine.Engine;
 import engine.math.Vector;
 import engine.window.InputListener;
@@ -12,7 +9,6 @@ import engine.window.Window;
 public abstract class GameObject extends Activateable
 {
     public Vector position;
-    public Vector size;
     public double rotation;
     
     protected Scene scene;
@@ -25,7 +21,6 @@ public abstract class GameObject extends Activateable
     {
         position = Vector.zero();
         rotation = 0.0d;
-        size = Vector.zero();
     }
     
     public void setScene(final Engine engine, Scene scene)
@@ -48,20 +43,6 @@ public abstract class GameObject extends Activateable
     public void update(double deltaTime) { }
     
     public void onDestroy() { }
-    
+
     public void render(RenderLayer layer, double deltaTime) { }
-    
-    public void renderSprite(RenderLayer layer, BufferedImage sprite)
-    {
-        if (sprite == null) 
-            return;
-        
-        Graphics2D g2dSprite = sprite.createGraphics();
-        
-        g2dSprite.rotate(this.rotation);
-        
-        layer.graphics().drawImage(sprite, (int) (position.x - sprite.getWidth() / 2), (int) (position.y - sprite.getHeight() / 2), null);
-        
-        g2dSprite.rotate(-this.rotation);
-    }
 }

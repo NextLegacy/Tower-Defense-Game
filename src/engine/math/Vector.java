@@ -121,7 +121,7 @@ public class Vector
     {
         return Math.acos(this.dot(vec) / this.magnitude());
     }
-
+    
     public double dot(Vector vec) 
     {
         return this.x * vec.x +
@@ -151,4 +151,9 @@ public class Vector
 
     public static Vector down   () { return Vector.up()   .inverse(); }
     public static Vector left   () { return Vector.right().inverse(); }
+    
+    public static Vector fromAngle(double rotation)
+    {
+        return new Vector(Math.cos(rotation), Math.sin(rotation));
+    }
 }

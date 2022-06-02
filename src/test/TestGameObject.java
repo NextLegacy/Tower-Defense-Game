@@ -51,7 +51,7 @@ public class TestGameObject extends CollisionGameObject
     public void render(RenderLayer layer, double deltaTime)
     {
         if(layer.name() == "Test") 
-            layer.renderSprite(this.position, sprite);
+            layer.renderSprite(sprite);
     }
     
 }

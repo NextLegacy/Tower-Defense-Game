@@ -1,8 +1,9 @@
 package game.scenes;
 
-import engine.scene.GameObject;
 import engine.scene.Scene;
 import engine.scene.Collisions.LayerCollision;
+import game.gameObjects.DebugGameObject;
+import game.gameObjects.towers.towerSelection.TowerSelection;
 
 public class GameScene extends Scene
 {
@@ -14,6 +15,7 @@ public class GameScene extends Scene
     @Override
     public void init() 
     {
-        
+        addObject(new TowerSelection());
+        addObject(new DebugGameObject());
     }
 }

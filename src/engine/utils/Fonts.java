@@ -8,14 +8,19 @@ import java.io.IOException;
 
 public class Fonts 
 {
-    public static Font DEFAULT_FONT = new Font("Arial", Font.PLAIN, 12);
+    public static Font DEFAULT_FONT = Fonts.get("arial", 12);
+
+    public static Font get(String name, int size)
+    {
+        return new Font(name, Font.PLAIN, size);
+    }
 
     public static void RegisterFont(String fontName)
     {
         Font font = null;
         try 
         {
-            font = Font.createFont(Font.TRUETYPE_FONT, new File("Fonts\\custom_font.ttf")).deriveFont(12f);
+            font = Font.createFont(Font.TRUETYPE_FONT, new File("rsc/fonts/" + fontName + ".ttf"));
         } catch (FontFormatException | IOException e) 
         {
             e.printStackTrace();

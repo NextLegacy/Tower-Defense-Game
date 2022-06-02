@@ -38,7 +38,7 @@ public class RenderLayer
         this.graphics = image.createGraphics();
 
         this.graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-        this.graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+        this.graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         this.defaultTransform = this.graphics.getTransform();
     }
@@ -71,8 +71,13 @@ public class RenderLayer
         this.graphics.setTransform(this.defaultTransform);
     }
 
-    public void renderSprite(Vector position, Sprite sprite)
+    public void renderSprite(Sprite sprite)
     {
-        this.graphics().drawImage(sprite.image(), sprite.transform(position), null);
+        this.graphics().drawImage(sprite.image(), sprite.transform(), null);
+    }
+
+    public void fillRect(Vector position, Vector size)
+    {
+        this.graphics().fillRect((int)position.x, (int)position.y, (int)size.x, (int)size.y);
     }
 }

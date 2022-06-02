@@ -1,6 +1,6 @@
-package game;
+import game.TowerDefenseGame;
 
-public class Game 
+public class App 
 {
     public static void main(String[] args)
     {

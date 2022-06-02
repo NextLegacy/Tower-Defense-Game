@@ -6,6 +6,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
+import engine.math.Vector;
 import engine.utils.Lambda.Action1;
 
 public class Window extends Frame
@@ -23,6 +24,11 @@ public class Window extends Frame
         this.inputListener = InputListener.createInputListener(this);
 
         this.setResizable(false);
+        //this.setUndecorated(true);
+        
+        this.setIgnoreRepaint(true);
+        this.setFocusable(true);
+        this.requestFocus();
 
         this.setSize(width, height);
         this.setLocationRelativeTo(null);
@@ -35,6 +41,17 @@ public class Window extends Frame
 
         this.layers.add(layer);
     }
+
+    public Vector v_size(double r_width, double r_height) { return new Vector(width(r_width), height(r_height)); }
+
+    public Vector v_size() { return new Vector(this.getWidth(), this.getHeight()); }
+
+    public double width(double ratio) { return width() * ratio; }
+    public double height(double ratio) { return height() * ratio; }
+
+    public double width() { return this.getWidth(); }
+    public double height() { return this.getHeight(); }
+
 
     public RenderLayer getLayer(String name)
     {
@@ -70,7 +87,7 @@ public class Window extends Frame
                 graphics.fillRect(0, 0, this.getWidth(), this.getHeight());
 
                 graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
-                graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+                graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
                 
                 for (RenderLayer renderLayer : this.layers)
                 {   

@@ -7,7 +7,6 @@ import engine.scene.Collisions.LayerCollision;
 
 public class TestScene extends Scene
 {
-
     public TestScene() {
         super(2, new LayerCollision[] {new Collisions.LayerCollision(0, 1, true)});
     }
@@ -33,10 +32,4 @@ public class TestScene extends Scene
             }
         }
     }
-    
-    @Override
-    public void update(double deltaTime) {
-        super.update(deltaTime);
-    }
-    
 }

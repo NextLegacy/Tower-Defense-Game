@@ -14,6 +14,9 @@ public class Engine extends Activateable
 
     private Scene activeScene;
 
+    private double currentFPS;
+    private double currentTPS;
+
     public Engine(int width, int height, int tps, int fps, String[] renderLayers)
     {
         this.window = new Window(width, height);
@@ -33,6 +36,9 @@ public class Engine extends Activateable
     public Window getWindow() { return window;}
 
     public InputListener getInputListener() { return window.getInputListener(); }
+
+    public double currentFPS() { return currentFPS; }
+    public double currentTPS() { return currentTPS; }
 
     @Override
     public void onActivate()
@@ -137,7 +143,9 @@ public class Engine extends Activateable
                 
                 if(time >= 1)
                 {
-                    System.out.println("FPS: " + frames + " TPS: " + ticks); //Logging zeug wenn man es Braucht
+                    currentTPS = ticks;
+                    currentFPS = frames;
+
                     time = ticks = frames = 0;
                 }
                 

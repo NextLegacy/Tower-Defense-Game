@@ -1,20 +1,24 @@
 package game;
 
 import engine.Engine;
-import engine.scene.Scene;
-import engine.scene.Collisions;
+import game.scenes.GameScene;
 
 public final class TowerDefenseGame
 {
     private static TowerDefenseGame towerDefenseGame;
     
     private TowerDefenseGame() { }
-
     public void start()
     {
-        Engine engine = new Engine(1280, 720, 120, 60, new String[] { "main" });
+        var layers = new String[] 
+        {
+            "game",
+            "ui",
+        };
+
+        Engine engine = new Engine(1280, 720, 120, 60, layers);
         
-        engine.setActiveScene(new Scene(1, new Collisions.LayerCollision[] { new Collisions.LayerCollision(0, 1, true) }));
+        engine.setActiveScene(new GameScene());
         engine.activate();
     }
 

@@ -1,12 +1,9 @@
 package engine.scene;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.util.ArrayList;
 
 import engine.Engine;
 import engine.scene.Collisions.LayerCollision;
-import engine.utils.Fonts;
 import engine.window.RenderLayer;
 
 public class Scene extends Activateable

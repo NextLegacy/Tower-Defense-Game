@@ -1,7 +1,5 @@
 package test;
 
-import java.awt.image.BufferedImage;
-
 import engine.math.Vector;
 import engine.scene.CollisionGameObject;
 import engine.utils.Sprite;
@@ -16,21 +14,21 @@ public class TestGameObject2 extends CollisionGameObject
         super(1);
         size = new Vector(200, 200);
         
-        this.sprite = new Sprite("box_200x200_");
+        this.sprite = new Sprite("stein");
         this.sprite.size = this.size;
     }
     
     @Override
     public void update(double deltaTime) 
     {
-        sprite.rotation += deltaTime*10;
+        sprite.rotation += deltaTime*2;
     }
 
     @Override
     public void render(RenderLayer layer, double deltaTime)
     {
         if(layer.name() == "Test") 
-            layer.renderSprite(sprite);
+            layer.renderSprite(this.position, sprite);
     }
     
 }

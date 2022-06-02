@@ -9,7 +9,6 @@ public class Sprite
 {
     private BufferedImage image;
     
-    public Vector position;
     public double rotation;
     public Vector size;
 
@@ -26,29 +25,27 @@ public class Sprite
         
         transform = new AffineTransform();
 
-        position = new Vector(0, 0);
         rotation = 0;
         size = new Vector(image.getWidth(), image.getHeight());
 
-        ratio = new Vector(1, 1);
+        ratio = Vector.zero();
     }
 
     public void setImage(String name)
     {
         image = Images.getImage(name);
-        size = new Vector(image.getWidth(), image.getHeight());
     }
 
     public BufferedImage image() { return image; }
 
-    public AffineTransform transform()
+    public AffineTransform transform(Vector position)
     {
-        updateTransform();
+        updateTransform(position);
 
         return transform;
     }
 
-    private void updateTransform()
+    private void updateTransform(Vector position)
     {
         if (rotation == lastRotation && size.equals(lastSize))
             return;

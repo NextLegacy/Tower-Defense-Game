@@ -2,8 +2,8 @@ package engine.window;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
@@ -37,6 +37,9 @@ public class RenderLayer
         this.image = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
         this.graphics = image.createGraphics();
 
+        this.graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+        this.graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+
         this.defaultTransform = this.graphics.getTransform();
     }
 
@@ -68,9 +71,8 @@ public class RenderLayer
         this.graphics.setTransform(this.defaultTransform);
     }
 
-    public void renderSprite(Sprite sprite)
+    public void renderSprite(Vector position, Sprite sprite)
     {
-        this.graphics().drawImage(sprite.image(), sprite.transform(), null);
-        //this.graphics().drawImage(sprite.image(), (int)sprite.position.x,(int) sprite.position.y, null);
+        this.graphics().drawImage(sprite.image(), sprite.transform(position), null);
     }
 }

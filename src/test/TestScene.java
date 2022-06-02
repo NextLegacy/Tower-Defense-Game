@@ -2,7 +2,6 @@ package test;
 
 import engine.math.Vector;
 import engine.scene.Collisions;
-import engine.scene.GameObject;
 import engine.scene.Scene;
 import engine.scene.Collisions.LayerCollision;
 
@@ -18,18 +17,18 @@ public class TestScene extends Scene
         //GameObject go1 = new TestGameObject();
         TestGameObject2 go2 = new TestGameObject2();
         //go1.position = new Vector(100, 100);
-        go2.sprite.position = new Vector(350, 150);
+        go2.position = new Vector(350, 150);
         go2.position = new Vector(350, 150);
         //addObject(go1);
         addObject(go2);
         
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < 100; i++)
         {
-            for(int j = 0; j < 20; j++)
+            for(int j = 0; j < 100; j++)
             {
                 TestGameObject g = new TestGameObject();
-                g.sprite.position = new Vector(20 * j, 20 * i + 100);
-                g.position = new Vector(20 * j, 20 * i + 100);
+                g.position = new Vector(5 * j, 5 * i + 100);
+                g.position = new Vector(5 * j, 5 * i + 100);
                 addObject(g);
             }
         }

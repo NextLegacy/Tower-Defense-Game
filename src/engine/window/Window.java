@@ -2,6 +2,7 @@ package engine.window;
 
 import java.awt.Frame;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 import java.util.ArrayList;
 
@@ -68,6 +69,9 @@ public class Window extends Frame
 
                 graphics.fillRect(0, 0, this.getWidth(), this.getHeight());
 
+                graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
+                graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
+                
                 for (RenderLayer renderLayer : this.layers)
                 {   
                     renderProcess.invoke(renderLayer);

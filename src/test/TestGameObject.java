@@ -16,7 +16,7 @@ public class TestGameObject extends CollisionGameObject
         super(0);
         size = new Vector(20, 20);
         
-        sprite = new Sprite("box_20x20_");
+        sprite = new Sprite("stein");
         sprite.size = new Vector(20, 20);
     }
     
@@ -27,8 +27,8 @@ public class TestGameObject extends CollisionGameObject
 
         sprite.rotation += deltaTime * 5;
 
-        if(sprite.position.x <= 700)
-            sprite.position.x += 150 * deltaTime;
+        if(position.x <= 700)
+            position.x += 150 * deltaTime;
         
         if(input.left().isClickedInBounds(position, size, 1_000_000_000) || input.key(KeyEvent.VK_X).isDown() || input.key(KeyEvent.VK_C).downTime() > 2_000_000_000)
             engine.deactivate();
@@ -44,14 +44,14 @@ public class TestGameObject extends CollisionGameObject
     @Override
     public void onCollisionExit()
     {
-        sprite.setImage("box_20x20_");
+        sprite.setImage("stein");
     }
     
     @Override
     public void render(RenderLayer layer, double deltaTime)
     {
         if(layer.name() == "Test") 
-            layer.renderSprite(sprite);
+            layer.renderSprite(this.position, sprite);
     }
     
 }

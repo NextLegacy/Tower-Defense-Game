@@ -4,7 +4,7 @@ public abstract class Activateable
 {
     private boolean isActive;
 
-    public void setActive(boolean state) 
+    public final void setActive(boolean state) 
     { 
         if (isActive == state)
             return;
@@ -17,11 +17,11 @@ public abstract class Activateable
             onDeactivate();
     }
 
-    public void activate()   { this.setActive(true); }
-    public void deactivate() { this.setActive(false); }    
+    public final void activate()   { this.setActive(true); }
+    public final void deactivate() { this.setActive(false); }    
 
     public void onActivate() { }
     public void onDeactivate() { }
 
-    public boolean isActive() { return isActive; }
+    public final boolean isActive() { return isActive; }
 }

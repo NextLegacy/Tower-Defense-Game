@@ -1,14 +1,13 @@
 package engine.scene;
 
 import engine.Engine;
-import engine.math.Vector;
 import engine.window.InputListener;
 import engine.window.RenderLayer;
 import engine.window.Window;
 
 public abstract class GameObject extends Activateable
 {
-    public Vector position;
+    //public Vector position;
 
     protected Scene scene;
     
@@ -18,18 +17,20 @@ public abstract class GameObject extends Activateable
     
     public GameObject()
     {
-        position = Vector.zero();
+        //position = Vector.zero();
     }
     
-    public void setScene(final Engine engine, Scene scene)
+    public final void setScene(final Engine engine, Scene scene)
     {
         this.scene = scene;
         this.engine = engine;
         this.window = engine.getWindow();
         this.input = engine.getInputListener();
+
+        this.onSceneChange();
     }
     
-    public void destroy()
+    public final void destroy()
     {
         deactivate();
         onDestroy();
@@ -40,7 +41,9 @@ public abstract class GameObject extends Activateable
     
     public void update(double deltaTime) { }
     
+    public void render(RenderLayer layer, double deltaTime) { }
+
     public void onDestroy() { }
 
-    public void render(RenderLayer layer, double deltaTime) { }
+    public void onSceneChange() { }
 }

@@ -40,12 +40,6 @@ public class Engine extends Activateable
         this.gameLoopThread.start();
     }
 
-    @Override
-    public void onDeactivate() 
-    {
-        //this.window.dispose();
-    }
-
     private void start()
     {
         this.activeScene.start();

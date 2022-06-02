@@ -9,8 +9,7 @@ import engine.window.Window;
 public abstract class GameObject extends Activateable
 {
     public Vector position;
-    public double rotation;
-    
+
     protected Scene scene;
     
     protected Engine engine;
@@ -20,7 +19,6 @@ public abstract class GameObject extends Activateable
     public GameObject()
     {
         position = Vector.zero();
-        rotation = 0.0d;
     }
     
     public void setScene(final Engine engine, Scene scene)

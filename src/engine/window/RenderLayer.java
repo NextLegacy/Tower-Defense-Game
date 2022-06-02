@@ -2,11 +2,14 @@ package engine.window;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import engine.math.Vector;
 import engine.utils.Fonts;
+import engine.utils.Sprite;
 
 public class RenderLayer 
 {
@@ -17,6 +20,8 @@ public class RenderLayer
 
     private BufferedImage image;
     private Graphics2D graphics;
+
+    private AffineTransform defaultTransform;
 
     public RenderLayer(String name, int width, int height)
     {
@@ -31,6 +36,8 @@ public class RenderLayer
 
         this.image = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
         this.graphics = image.createGraphics();
+
+        this.defaultTransform = this.graphics.getTransform();
     }
 
     public void clear()
@@ -49,21 +56,6 @@ public class RenderLayer
     public int height() { return this.height; }
     public BufferedImage image() { return this.image; }
 
-    public void renderSprite(RenderLayer layer, BufferedImage sprite, Vector position, double rotation)
-    {
-        if (sprite == null) 
-            return;
-
-        layer.graphics().translate(position.x, position.y);
-        layer.graphics().rotate(rotation);
-        layer.graphics().translate(-sprite.getWidth()/2, -sprite.getHeight()/2);
-
-        layer.graphics().drawImage(sprite, 0, 0, null);
-        layer.graphics().translate(+sprite.getWidth()/2, +sprite.getHeight()/2);
-        layer.graphics().rotate(-rotation);
-        layer.graphics().translate(-position.x, -position.y);
-    }
-
     public Graphics2D graphics()
     {
         return this.graphics;
@@ -72,6 +64,13 @@ public class RenderLayer
     public void resetGraphics()
     {
         this.graphics.setColor(Color.BLACK);
-        this.graphics().setFont(Fonts.DEFAULT_FONT);
+        this.graphics.setFont(Fonts.DEFAULT_FONT);
+        this.graphics.setTransform(this.defaultTransform);
+    }
+
+    public void renderSprite(Sprite sprite)
+    {
+        this.graphics().drawImage(sprite.image(), sprite.transform(), null);
+        //this.graphics().drawImage(sprite.image(), (int)sprite.position.x,(int) sprite.position.y, null);
     }
 }

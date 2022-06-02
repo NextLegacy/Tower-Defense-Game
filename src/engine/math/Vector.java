@@ -133,6 +133,25 @@ public class Vector
                this.y * vec.y;
     }
 
+    public boolean equals(Object obj)
+    {
+        if (obj == null) 
+            return false;
+
+        if (this == obj)
+            return true;
+
+        if(!(obj instanceof Vector))
+            return false;
+
+        Vector v = (Vector) obj;
+
+        if (this.x == v.x && this.y == v.y)
+            return true;
+        
+        return false;
+    }
+
     public String toCompactString()
     {
         return String.format("x:%s y:%s", this.x, this.y);

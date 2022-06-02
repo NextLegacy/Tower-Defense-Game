@@ -4,33 +4,33 @@ import java.awt.image.BufferedImage;
 
 import engine.math.Vector;
 import engine.scene.CollisionGameObject;
-import engine.utils.Images;
+import engine.utils.Sprite;
 import engine.window.RenderLayer;
 
 public class TestGameObject2 extends CollisionGameObject
 {
-    
-    private BufferedImage sprite;
+    public Sprite sprite;
     
     public TestGameObject2()
     {
         super(1);
         size = new Vector(200, 200);
         
-        sprite = Images.getImage("box_200x200", 500, 500);
+        this.sprite = new Sprite("box_200x200_");
+        this.sprite.size = this.size;
     }
     
     @Override
     public void update(double deltaTime) 
     {
-        this.rotation += deltaTime*10;
+        sprite.rotation += deltaTime*10;
     }
 
     @Override
     public void render(RenderLayer layer, double deltaTime)
     {
         if(layer.name() == "Test") 
-            layer.renderSprite(layer, sprite, position, rotation);
+            layer.renderSprite(sprite);
     }
     
 }

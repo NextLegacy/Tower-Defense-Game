@@ -102,8 +102,9 @@ public class Engine extends Activateable
                 final double now = System.nanoTime();
 
                 final double elapsedTime = now - last;
+                final double elapsedTimeS = elapsedTime / 1_000_000_000.0d;
 
-                time += elapsedTime;
+                time += elapsedTimeS;
 
                 deltaT += elapsedTime / TICK_INTERVAL;
                 deltaF += elapsedTime / FRAME_INTERVAL;
@@ -124,8 +125,8 @@ public class Engine extends Activateable
                         
                         start();
                     }
-
-                    update(elapsedTime / 1_000_000_000.0d);
+                    
+                    update(elapsedTimeS);
                     ticks++;
                     deltaT--;
                 }
@@ -135,12 +136,12 @@ public class Engine extends Activateable
 
                 if (deltaF >= 1)
                 {
-                    render(elapsedTime / 1_000_000_000.0d);
+                    render(elapsedTimeS);
                     frames++;
                     deltaF--;
                 }
                 
-                if(time >= 1_000_000_000.0d)
+                if(time >= 1)
                 {
                     System.out.println("FPS: " + frames + " TPS: " + ticks); //Logging zeug wenn man es Braucht
                     time = ticks = frames = 0;

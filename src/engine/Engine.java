@@ -33,7 +33,7 @@ public class Engine extends Activateable
     
     public Scene getActiveScene() { return activeScene; }
 
-    public Window getWindow() { return window;}
+    public Window getWindow() { return window; }
 
     public InputListener getInputListener() { return window.getInputListener(); }
 
@@ -88,30 +88,31 @@ public class Engine extends Activateable
             double deltaT = 0.0d;
             double deltaF = 0.0d;
 
-            double last = System.nanoTime();
+            long last = System.nanoTime();
 
-            double time = System.nanoTime();
+            double time = 0.0d;
 
-            int ticks = 0;
-            int frames = 0;            
+            int ticks = TPS;
+            int frames = FPS;            
+
+            currentTPS = ticks;
+            currentFPS = frames;
 
             Scene currentScene = null;
 
             while(isActive())
             {
-                final double now = System.nanoTime();
+                final long now = System.nanoTime();
 
                 final double elapsedTime = now - last;
                 final double elapsedTimeS = elapsedTime / 1_000_000_000.0d;
 
                 time += elapsedTimeS;
 
-                deltaT += elapsedTime / TICK_INTERVAL;
-                deltaF += elapsedTime / FRAME_INTERVAL;
+                deltaT += elapsedTime;
+                deltaF += elapsedTime;
 
-                last = now;
-
-                if(deltaT >= 1)
+                while (deltaT >= TICK_INTERVAL)
                 {
                     if (currentScene != activeScene)
                     {
@@ -126,19 +127,20 @@ public class Engine extends Activateable
                         start();
                     }
                     
-                    update(elapsedTimeS);
+                    update(1.0d / TPS);
                     ticks++;
-                    deltaT--;
+                    deltaT-= TICK_INTERVAL;
                 }
 
-                if (!isActive() || !getInputListener().isActive()) // After updates, engine might be deactivated, no need to continue
-                break;
+                // After updates, engine might be deactivated, no need to continue
+                if (!isActive() || !getInputListener().isActive())
+                    break;
 
-                if (deltaF >= 1)
+                if (deltaF >= FRAME_INTERVAL)
                 {
-                    render(elapsedTimeS);
+                    render(1.0d / FPS);
                     frames++;
-                    deltaF--;
+                    deltaF -= FRAME_INTERVAL;
                 }
                 
                 if(time >= 1)
@@ -148,8 +150,6 @@ public class Engine extends Activateable
 
                     time = ticks = frames = 0;
                 }
-                
-                last = now;
             }
             
             getWindow().dispose();

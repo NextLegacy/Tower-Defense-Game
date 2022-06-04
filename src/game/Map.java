@@ -23,14 +23,14 @@ public class Map
         //import(mapName);
         
         // for testing only
-        path = new Path(new Vector[] {
-            new Vector(50, 50),
+        path = new Path(
+            new Vector(690, 420),
             new Vector(300, 50),
             new Vector(300, 500),
             new Vector(100, 500),
             new Vector(100, 200),
             new Vector(500, 200)
-        });
+        );
     }
     
     // the background and the obstacles are GameObjects and must be added to the Scene

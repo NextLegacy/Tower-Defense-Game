@@ -15,6 +15,19 @@ public class GameSceneNicht extends Scene
         super(4, new LayerCollision[] {new LayerCollision(1, 0, false), new LayerCollision(1, 1, false), new LayerCollision(3, 2, true)}); // collision layers: [map (obstacles), towers, enemies, projectiles]
         this.mapName = mapName;
     }
+
+    double time = 0;
+    @Override
+    public void update(double deltaTime)
+    {
+        time += deltaTime;
+        if (time >= 0.1)
+        {
+            addObject(new Enemy());
+            time = 0;
+        }
+        super.update(deltaTime);
+    }
     
     @Override
     public void init() {
@@ -25,5 +38,7 @@ public class GameSceneNicht extends Scene
         // load map
         map = new Map(mapName);
         map.addGameObjects(this);
+
+        addObject(new Enemy());
     }
 }

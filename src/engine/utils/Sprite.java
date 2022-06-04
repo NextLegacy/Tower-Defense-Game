@@ -72,11 +72,9 @@ public class Sprite
              .setY(size.y / image.getHeight());
 
         transform.setToTranslation(position.x, position.y);
-        if (rotation != lastRotation) 
-        { 
-            transform.rotate(rotation, size.x / 2, size.y / 2);
-            lastRotation = rotation;
-        }
+
+        transform.rotate(rotation, size.x / 2, size.y / 2);
+        
         transform.scale(ratio.x, ratio.y);
     }
 }

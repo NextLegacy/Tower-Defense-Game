@@ -44,7 +44,7 @@ public class Scene extends Activateable
         gameObject.setScene(this.engine, null);
     }
     
-    public final void start()
+    public void start()
     {
         activate();
 
@@ -61,7 +61,7 @@ public class Scene extends Activateable
         }
     }
     
-    public final void update(double deltaTime)
+    public void update(double deltaTime)
     {
         /*for(GameObject gameObject : gameObjects)
         {
@@ -79,7 +79,7 @@ public class Scene extends Activateable
         collisions.collisionsUpdate();
     }
 
-    public final void render(RenderLayer layer, double deltaTime)
+    public void render(RenderLayer layer, double deltaTime)
     {
         for(GameObject gameObject : gameObjects)
         {

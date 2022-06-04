@@ -3,6 +3,7 @@ package engine.window;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
@@ -77,33 +78,18 @@ public class RenderLayer
         this.graphics().drawImage(sprite.image(), sprite.transform(), null);
     }
 
-    public void drawString(String text, Vector position, Color color, Font font)
-    {
-        Font oldFont = this.graphics().getFont();
-        Color oldColor = this.graphics().getColor();
+    public void drawString(String text, Vector position)
+    {  
+        FontMetrics metrics = graphics.getFontMetrics(graphics.getFont());
 
-        this.graphics().setColor(color);
-        this.graphics().setFont(font);
-        this.graphics().drawString(text, (int)position.x, (int)position.y);
+        position = position.add(metrics.stringWidth(text) / 2, metrics.getHeight());
 
-        this.graphics().setFont(oldFont);
-        this.graphics().setColor(oldColor);
+        graphics.drawString(text, (int)position.x, (int)position.y);
     }
 
-    public void line(Vector from, Vector to)
+    public void drawLine(Vector from, Vector to)
     {
-        this.graphics().drawLine((int)from.x, (int)from.y, (int)to.x, (int)to.y);
-    }
-
-    public void line(Vector from, Vector to, Color color)
-    {
-        Color oldColor = this.graphics().getColor();
-
-        this.graphics().setColor(color);
-        
-        line(from, to);
-
-        this.graphics().setColor(oldColor);
+        graphics.drawLine((int)from.x, (int)from.y, (int)to.x, (int)to.y);
     }
 
     public void fillRect(Vector position, Vector size)

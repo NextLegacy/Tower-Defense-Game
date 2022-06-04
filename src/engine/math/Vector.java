@@ -43,6 +43,11 @@ public class Vector
     public Vector add(double n) { return new Vector(this.x + n, this.y + n); }
     public Vector sub(double n) { return new Vector(this.x - n, this.y - n); }
 
+    public Vector mul(double x, double y) { return new Vector(this.x * x, this.y * y); }
+    public Vector div(double x, double y) { return new Vector(this.x / x, this.y / y); }
+    public Vector add(double x, double y) { return new Vector(this.x + x, this.y + y); }
+    public Vector sub(double x, double y) { return new Vector(this.x - x, this.y - y); }
+
     public Vector clampX(double min, double max) { this.x = this.x < min ? min : this.x > max ? max : this.x; return this; }
     public Vector clampY(double min, double max) { this.y = this.y < min ? min : this.y > max ? max : this.y; return this; }
     public Vector clamp(Vector min, Vector max)

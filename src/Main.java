@@ -20,7 +20,8 @@ public class Main
         engine.setActiveScene(scene);
         engine.activate();
         
-        scene.addObject(new Enemy());
+        // Geht nicht, weil die Scene noch nicht initialisiert ist | verschoben nack -> GameSceneNicht.init() <-
+        //scene.addObject(new Enemy());
     }
     
 }

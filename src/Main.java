@@ -1,8 +1,6 @@
 import engine.Engine;
 import engine.scene.Scene;
-import game.Enemy;
-import game.GameSceneNicht;
-import test.TestScene;
+import game.scenes.GameSceneNicht;
 
 public class Main
 {

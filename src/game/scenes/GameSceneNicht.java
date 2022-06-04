@@ -1,9 +1,9 @@
-package game;
+package game.scenes;
 
-import engine.math.Vector;
 import engine.scene.Scene;
 import engine.scene.Collisions.LayerCollision;
 import game.gameObjects.DebugGameObject;
+import game.gameObjects.enemies.Enemy;
 
 public class GameSceneNicht extends Scene
 {
@@ -21,7 +21,7 @@ public class GameSceneNicht extends Scene
     public void update(double deltaTime)
     {
         time += deltaTime;
-        if (time >= 0.1)
+        if (time >= 1)
         {
             addObject(new Enemy());
             time = 0;

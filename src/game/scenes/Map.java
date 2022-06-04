@@ -1,9 +1,6 @@
-package game;
-
-import java.util.ArrayList;
+package game.scenes;
 
 import engine.math.Vector;
-import engine.scene.GameObject;
 
 public class Map
 {
@@ -37,6 +34,6 @@ public class Map
     public void addGameObjects(GameSceneNicht scene)
     {
         //add background and obstacles
-        scene.addObject(path);
+        scene.addObject(path); // debug
     }
 }

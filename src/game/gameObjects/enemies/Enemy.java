@@ -1,13 +1,11 @@
-package game;
+package game.gameObjects.enemies;
 
-import com.sun.jdi.InvalidTypeException;
-
-import engine.Engine;
 import engine.math.Vector;
 import engine.scene.CollisionGameObject;
-import engine.scene.Scene;
 import engine.utils.Sprite;
 import engine.window.RenderLayer;
+import game.scenes.GameSceneNicht;
+import game.scenes.Path;
 
 public class Enemy extends CollisionGameObject
 {

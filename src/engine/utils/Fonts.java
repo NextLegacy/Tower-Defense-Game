@@ -8,14 +8,14 @@ import java.io.IOException;
 
 public class Fonts 
 {
-    public static Font DEFAULT_FONT = Fonts.get("arial", 12);
+    public static final Font DEFAULT_FONT = Fonts.get("arial", 12, Font.PLAIN);
 
-    public static Font get(String name, int size)
+    public static Font get(String name, int size, int style)
     {
-        return new Font(name, Font.PLAIN, size);
+        return new Font(name, style, size);
     }
 
-    public static void RegisterFont(String fontName)
+    public static void registerFont(String fontName)
     {
         Font font = null;
         try 

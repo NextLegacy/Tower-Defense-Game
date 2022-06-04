@@ -2,6 +2,7 @@ package engine.window;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
@@ -74,6 +75,35 @@ public class RenderLayer
     public void renderSprite(Sprite sprite)
     {
         this.graphics().drawImage(sprite.image(), sprite.transform(), null);
+    }
+
+    public void drawString(String text, Vector position, Color color, Font font)
+    {
+        Font oldFont = this.graphics().getFont();
+        Color oldColor = this.graphics().getColor();
+
+        this.graphics().setColor(color);
+        this.graphics().setFont(font);
+        this.graphics().drawString(text, (int)position.x, (int)position.y);
+
+        this.graphics().setFont(oldFont);
+        this.graphics().setColor(oldColor);
+    }
+
+    public void line(Vector from, Vector to)
+    {
+        this.graphics().drawLine((int)from.x, (int)from.y, (int)to.x, (int)to.y);
+    }
+
+    public void line(Vector from, Vector to, Color color)
+    {
+        Color oldColor = this.graphics().getColor();
+
+        this.graphics().setColor(color);
+        
+        line(from, to);
+
+        this.graphics().setColor(oldColor);
     }
 
     public void fillRect(Vector position, Vector size)

@@ -1,6 +1,7 @@
 package game.gameObjects;
 
 import java.awt.Color;
+import java.awt.Font;
 
 import engine.scene.GameObject;
 import engine.utils.Fonts;
@@ -12,7 +13,7 @@ public class DebugGameObject extends GameObject
     public void render(RenderLayer layer, double deltaTime) 
     {
         layer.graphics().setColor(Color.green);
-        layer.graphics().setFont(Fonts.get("Cascadia code", 13));
+        layer.graphics().setFont(Fonts.get("Cascadia code", 13, Font.PLAIN));
         layer.graphics().drawString(
             String.format("[TPS: %s] [FPS: %s]", engine.currentTPS(), engine.currentFPS()), 
             (int)window.width(0.008),

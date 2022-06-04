@@ -10,9 +10,9 @@ public class Scene extends Activateable
 {
     protected ArrayList<GameObject> gameObjects;
     
-    public final Collisions collisions;
+    protected final Collisions collisions;
     
-    private Engine engine;
+    protected Engine engine;
 
     public Scene(int collisionLayerCount, LayerCollision[] layerCollisions)
     {
@@ -48,19 +48,31 @@ public class Scene extends Activateable
     {
         activate();
 
-        for(GameObject gameObject : gameObjects)
+        /*for(GameObject gameObject : gameObjects)
         {
-            if (gameObject.isActive())
+            if(gameObject.isActive())
                 gameObject.start();
+        }*/ // TODO: fix ConcurrentModificationException
+        
+        for(int i = 0; i < gameObjects.size(); i++)
+        {
+            if(gameObjects.get(i).isActive())
+                gameObjects.get(i).start();
         }
     }
     
     public final void update(double deltaTime)
     {
-        for(GameObject gameObject : gameObjects)
+        /*for(GameObject gameObject : gameObjects)
         {
-            if (gameObject.isActive())
+            if(gameObject.isActive())
                 gameObject.update(deltaTime);
+        }*/ // TODO: fix ConcurrentModificationException
+        
+        for(int i = 0; i < gameObjects.size(); i++)
+        {
+            if(gameObjects.get(i).isActive())
+                gameObjects.get(i).update(deltaTime);
         }
         
         // collisions

@@ -85,6 +85,9 @@ public class Engine extends Activateable
             final double TICK_INTERVAL = 1_000_000_000.0d / this.TPS;
             final double FRAME_INTERVAL = 1_000_000_000.0d / this.FPS;
 
+            final double TICK_INTERVAL_S = 1.0d / this.TPS;
+            final double FRAME_INTERVAL_S = 1.0d / this.FPS;
+
             double deltaT = 0.0d;
             double deltaF = 0.0d;
 
@@ -112,6 +115,8 @@ public class Engine extends Activateable
                 deltaT += elapsedTime;
                 deltaF += elapsedTime;
 
+                last = now;
+
                 while (deltaT >= TICK_INTERVAL)
                 {
                     if (currentScene != activeScene)
@@ -127,7 +132,7 @@ public class Engine extends Activateable
                         start();
                     }
                     
-                    update(1.0d / TPS);
+                    update(TICK_INTERVAL_S);
                     ticks++;
                     deltaT-= TICK_INTERVAL;
                 }
@@ -138,7 +143,7 @@ public class Engine extends Activateable
 
                 if (deltaF >= FRAME_INTERVAL)
                 {
-                    render(1.0d / FPS);
+                    render(FRAME_INTERVAL_S);
                     frames++;
                     deltaF -= FRAME_INTERVAL;
                 }

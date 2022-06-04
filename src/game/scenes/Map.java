@@ -1,13 +1,19 @@
 package game.scenes;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import engine.math.Vector;
+import engine.utils.ResourceManager;
 import engine.utils.Sprite;
+import game.gameObjects.ObstacleObject;
 
 public class Map
 {
     public String name;
     public Sprite background;
-    //public ArrayList<Obstacle> obstacles;
+    public ArrayList<ObstacleObject> obstacles;
     public Path path;
     
     public Map(String name)
@@ -18,24 +24,68 @@ public class Map
     
     private void importMap()
     {
-        //import(mapName);
-        
-        // for testing only
-        background = new Sprite("backgrounds/test_bg");
-        path = new Path(
-            new Vector(690, 420),
-            new Vector(300, 50),
-            new Vector(300, 500),
-            new Vector(100, 500),
-            new Vector(100, 200),
-            new Vector(500, 200)
-        );
+        BufferedReader reader;
+        try
+        {
+            ArrayList<Vector> pathPoints = new ArrayList<Vector>();
+            obstacles = new ArrayList<ObstacleObject>();
+            
+            String line;
+            reader = ResourceManager.getReader("maps", name);
+            while((line = reader.readLine()) != null)
+            {
+                try
+                {
+                    String[] parts = line.split(" ");
+                    switch(parts[0])
+                    {
+                        case "b":
+                            background = new Sprite(parts[1]);
+                            break;
+                        
+                        case "p":
+                            pathPoints.add(new Vector(Double.parseDouble(parts[1]), Double.parseDouble(parts[2])));
+                            break;
+                        
+                        case "o":
+                            Vector pointA = new Vector(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]));
+                            Vector pointB = new Vector(Double.parseDouble(parts[3]), Double.parseDouble(parts[4]));
+                            obstacles.add(ObstacleObject.fromPoints(pointA, pointB));
+                            break;
+                        
+                        default:
+                            throw new Exception("Invalid map file format!");
+                    }
+                }
+                catch(Exception e)
+                {
+                    reader.close(); // this is important
+                    e.printStackTrace();
+                }
+            }
+            reader.close();
+            
+            Vector[] pathPointsArray = new Vector[pathPoints.size()];
+            for(int i = 0; i < pathPoints.size(); i++)
+            {
+                pathPointsArray[i] = pathPoints.get(i);
+            }
+            path = new Path(pathPointsArray);
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
     }
     
-    // the background and the obstacles are GameObjects and must be added to the Scene
+    // the obstacles are GameObjects and must be added to the Scene
     public void addGameObjects(GameSceneNicht scene)
     {
-        //add background and obstacles
+        for(ObstacleObject g : obstacles)
+        {
+            scene.addObject(g);
+        }
+        
         scene.addObject(path); // debug
     }
 }

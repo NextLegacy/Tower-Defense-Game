@@ -13,7 +13,7 @@ public class Main
         Engine engine = new Engine(WIDTH, HEIGHT, 120, 60, renderLayers);
         
         //Scene scene = new TestScene();
-        Scene scene = new GameSceneNicht("");
+        Scene scene = new GameSceneNicht("test_map");
         
         engine.setActiveScene(scene);
         engine.activate();

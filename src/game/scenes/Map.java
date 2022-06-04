@@ -1,17 +1,18 @@
 package game.scenes;
 
 import engine.math.Vector;
+import engine.utils.Sprite;
 
 public class Map
 {
-    public String mapName;
-    //public BackgroundObject background;
+    public String name;
+    public Sprite background;
     //public ArrayList<Obstacle> obstacles;
     public Path path;
     
-    public Map(String mapName)
+    public Map(String name)
     {
-        this.mapName = mapName;
+        this.name = name;
         importMap();
     }
     
@@ -20,6 +21,7 @@ public class Map
         //import(mapName);
         
         // for testing only
+        background = new Sprite("backgrounds/test_bg");
         path = new Path(
             new Vector(690, 420),
             new Vector(300, 50),

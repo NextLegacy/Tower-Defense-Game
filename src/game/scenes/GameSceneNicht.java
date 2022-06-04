@@ -2,6 +2,7 @@ package game.scenes;
 
 import engine.scene.Scene;
 import engine.scene.Collisions.LayerCollision;
+import engine.window.RenderLayer;
 import game.gameObjects.DebugGameObject;
 import game.gameObjects.enemies.Enemy;
 
@@ -16,6 +17,19 @@ public class GameSceneNicht extends Scene
         this.mapName = mapName;
     }
 
+    @Override
+    public void init() {
+        // add menus and stuff
+        addObject(new DebugGameObject());
+        // TODO: implement
+        
+        // load map
+        map = new Map(mapName);
+        map.addGameObjects(this);
+
+        addObject(new Enemy());
+    }
+    
     double time = 0;
     @Override
     public void update(double deltaTime)
@@ -30,15 +44,9 @@ public class GameSceneNicht extends Scene
     }
     
     @Override
-    public void init() {
-        // add menus and stuff
-        addObject(new DebugGameObject());
-        // TODO: implement
-        
-        // load map
-        map = new Map(mapName);
-        map.addGameObjects(this);
-
-        addObject(new Enemy());
+    public void render(RenderLayer layer, double deltaTime) {
+        if(layer.name() == "background")
+            layer.renderSprite(map.background);
+        super.render(layer, deltaTime);
     }
 }

@@ -6,7 +6,7 @@ public class Main
 {
     
     private static final int WIDTH = 1280, HEIGHT = 720;
-    private static final String[] renderLayers = new String[] {"Background", "Test", "Test2"};
+    private static final String[] renderLayers = new String[] {"background", "test", "test2"};
     
     public static void main(String[] args)
     {

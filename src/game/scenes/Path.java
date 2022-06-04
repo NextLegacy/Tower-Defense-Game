@@ -32,7 +32,7 @@ public class Path extends GameObject // debug
     @Override
     public void render(RenderLayer layer, double deltaTime) 
     {
-        if(layer.name() == "Test")
+        if(layer.name() == "test")
         {
             for (var i = 0; i < points.length; i++)
             {

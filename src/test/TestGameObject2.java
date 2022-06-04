@@ -27,7 +27,7 @@ public class TestGameObject2 extends CollisionGameObject
     @Override
     public void render(RenderLayer layer, double deltaTime)
     {
-        if(layer.name() == "Test") 
+        if(layer.name() == "test") 
             layer.renderSprite(sprite);
     }
     

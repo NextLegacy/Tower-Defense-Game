@@ -90,8 +90,6 @@ public class Scene extends Activateable
 
             layer.resetGraphics();
         }
-        
-        collisions.collisionsUpdate();
     }
     
     public final void destroy()

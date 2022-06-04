@@ -65,7 +65,7 @@ public class Enemy extends CollisionGameObject
     @Override
     public void render(RenderLayer layer, double deltaTime) {
         sprite.position = position.sub(sprite.size.div(2));
-        if(layer.name() == "Test2")
+        if(layer.name() == "test2")
             layer.renderSprite(sprite);
     }
 }

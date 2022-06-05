@@ -28,6 +28,8 @@ public class TowerSelection extends GameObject
     @Override
     public void render(RenderLayer layer, double deltaTime) 
     {
+        if (layer.isNot("background")) return;
+
         layer.graphics().setFont(Fonts.get("arial", 50, Font.PLAIN));
 
         layer.graphics().setColor(new Color(0x4aa1fa));

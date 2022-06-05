@@ -17,9 +17,9 @@ public class DebugGameObject extends GameObject
         layer.graphics().setColor(Color.red);
         layer.graphics().setFont(Fonts.get("Cascadia Code", 13, Font.PLAIN));
 
-        layer.drawString(
+        layer.drawStringCentered(
             String.format("[TPS: %s] [FPS: %s]", engine.currentTPS(), engine.currentFPS()), 
-            window.v_size(0.08, 0.0125)    
+            window.v_size(0.925, 0.985)    
         );
     }
 }

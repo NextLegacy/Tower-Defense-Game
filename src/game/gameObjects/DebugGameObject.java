@@ -3,6 +3,7 @@ package game.gameObjects;
 import java.awt.Color;
 import java.awt.Font;
 
+import engine.math.Vector;
 import engine.scene.GameObject;
 import engine.utils.Fonts;
 import engine.window.RenderLayer;
@@ -12,12 +13,14 @@ public class DebugGameObject extends GameObject
     @Override
     public void render(RenderLayer layer, double deltaTime) 
     {
-        layer.graphics().setColor(Color.green);
-        layer.graphics().setFont(Fonts.get("Cascadia code", 13, Font.PLAIN));
-        layer.graphics().drawString(
+        layer.graphics().setColor(Color.red);
+        layer.graphics().setFont(Fonts.get("Cascadia Code", 13, Font.PLAIN));
+
+        layer.drawString("iufzureguerhgrehgerhwguiwrehg", window.v_size(0.1, 1));
+
+        layer.drawString(
             String.format("[TPS: %s] [FPS: %s]", engine.currentTPS(), engine.currentFPS()), 
-            (int)window.width(0.008),
-            (int)window.height(0.065) 
+            window.v_size(0.08, 0.0125)    
         );
     }
 }

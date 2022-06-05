@@ -1,5 +1,6 @@
 package engine.window;
 
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -30,7 +31,11 @@ public class Window extends Frame
         this.setFocusable(true);
         this.requestFocus();
 
-        this.setSize(width, height);
+        this.setLayout(null);
+        this.setUndecorated(true);
+        this.setSize(width, height + this.getInsets().top);
+        this.setPreferredSize(new Dimension(width, height + this.getInsets().top));
+        this.pack();
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     } 
@@ -47,7 +52,7 @@ public class Window extends Frame
     public Vector v_size() { return new Vector(this.getWidth(), this.getHeight()); }
 
     public double width(double ratio) { return width() * ratio; }
-    public double height(double ratio) { return height() * ratio; }
+    public double height(double ratio) { return height() * ratio /*+ this.getInsets().top*/; }
 
     public double width() { return this.getWidth(); }
     public double height() { return this.getHeight(); }

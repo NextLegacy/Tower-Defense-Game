@@ -1,5 +1,9 @@
 package engine;
 
+import java.awt.Frame;
+
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
+
 import engine.scene.Activateable;
 import engine.scene.Scene;
 import engine.window.InputListener;
@@ -88,16 +92,16 @@ public class Engine extends Activateable
             final double TICK_INTERVAL_S = 1.0d / this.TPS;
             final double FRAME_INTERVAL_S = 1.0d / this.FPS;
 
-            double deltaT = 0.0d;
+            double deltaT = 1.0d;
             double deltaF = 0.0d;
 
             long last = System.nanoTime();
 
-            double time = 0.0d;
+            double time = 0;
 
-            int ticks = TPS;
-            int frames = FPS;            
-
+            double ticks = TPS;
+            double frames = FPS;          
+            
             currentTPS = ticks;
             currentFPS = frames;
 
@@ -112,12 +116,12 @@ public class Engine extends Activateable
 
                 time += elapsedTimeS;
 
-                deltaT += elapsedTime;
-                deltaF += elapsedTime;
+                deltaT += elapsedTime / TICK_INTERVAL;
+                deltaF += elapsedTime / FRAME_INTERVAL;
 
                 last = now;
 
-                while (deltaT >= TICK_INTERVAL)
+                while (deltaT >= 1)
                 {
                     if (currentScene != activeScene)
                     {
@@ -134,25 +138,24 @@ public class Engine extends Activateable
                     
                     update(TICK_INTERVAL_S);
                     ticks++;
-                    deltaT-= TICK_INTERVAL;
+                    deltaT--;
                 }
 
                 // After updates, engine might be deactivated, no need to continue
                 if (!isActive() || !getInputListener().isActive())
                     break;
 
-                if (deltaF >= FRAME_INTERVAL)
+                if (deltaF >= 1)
                 {
                     render(FRAME_INTERVAL_S);
                     frames++;
-                    deltaF -= FRAME_INTERVAL;
+                    deltaF--;
                 }
                 
                 if(time >= 1)
                 {
                     currentTPS = ticks;
                     currentFPS = frames;
-
                     time = ticks = frames = 0;
                 }
             }

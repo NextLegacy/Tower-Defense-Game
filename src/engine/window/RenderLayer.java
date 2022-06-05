@@ -79,11 +79,12 @@ public class RenderLayer
 
     public void drawString(String text, Vector position)
     {  
-        FontMetrics metrics = graphics.getFontMetrics(graphics.getFont());
+        FontMetrics metrics = graphics.getFontMetrics();
+        
+        int x = (int)position.x - metrics.stringWidth(text) / 2;
+        int y = (int)position.y + metrics.getAscent() / 2;
 
-        position = position.add(metrics.stringWidth(text) / 2, metrics.getHeight());
-
-        graphics.drawString(text, (int)position.x, (int)position.y);
+        graphics.drawString(text, x, y);
     }
 
     public void drawLine(Vector from, Vector to)

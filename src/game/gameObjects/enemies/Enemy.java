@@ -21,10 +21,12 @@ public class Enemy extends CollisionGameObject
     protected Path path;
     protected int pathIndex;
     protected Vector nextPoint;
+    protected double lastPointDistance;
     
     protected static final Color HEALTH_COLOR_A = new Color(23, 196, 23);
     protected static final Color HEALTH_COLOR_B = new Color(196, 23, 23);
-    protected static final int HEALTHBAR_WIDTH = 20;
+    protected static final Color HEALTH_COLOR_C = new Color(0, 0, 0);
+    protected static final int HEALTHBAR_WIDTH = 50;
     protected static final int HEALTHBAR_HEIGHT = 5;
     protected static final int HEALTHBAR_DISTANCE = 5;
     
@@ -35,13 +37,18 @@ public class Enemy extends CollisionGameObject
         // TODO: this belongs in the subclasses
         sprite = new Sprite("enemies/test_enemy");
         speed = 200;
-        maxHealth = 20;
-        health = 20;
+        maxHealth = 30;
+        health = 30;
     }
     
-    public void damage(int ammount)
+    /*public boolean isFurtherThan(Enemy b)
     {
-        health -= ammount;
+        
+    }*/
+    
+    public void damage(int amount)
+    {
+        health -= amount;
         if(health <= 0)
         {
             onKill();
@@ -69,6 +76,7 @@ public class Enemy extends CollisionGameObject
         if(position.distance(nextPoint) <= speed * deltaTime)
         {
             position = nextPoint.clone();
+            lastPointDistance = 0;
             pathIndex++;
             if(pathIndex >= path.points.length)
             {
@@ -77,14 +85,15 @@ public class Enemy extends CollisionGameObject
                 return;
             }
             nextPoint = path.points[pathIndex];
+            sprite.rotation = nextPoint.sub(position).normalized().angle();
             // TODO: maybe handle overshooting a point by moving past it to the next one in the same tick
             damage(5); // debug
         }
         else
         {
             Vector move = nextPoint.sub(position).normalized().mul(speed * deltaTime);
-            sprite.rotation = move.normalized().angle();
             position = position.add(move);
+            lastPointDistance += move.magnitude();
         }
     }
     
@@ -99,11 +108,17 @@ public class Enemy extends CollisionGameObject
         if(layer.name() == "test2")
         {
             layer.renderSprite(sprite);
-            double healthbarProgress = (double) health / (double) maxHealth * HEALTHBAR_HEIGHT;
+            
+            // draw health bar
+            int healthbarProgress = (int) ((double) health / (double) maxHealth * HEALTHBAR_WIDTH);
+            int x = (int) (position.x - HEALTHBAR_WIDTH / 2);
+            int y = (int) (position.y - sprite.size.y / 2 - HEALTHBAR_HEIGHT - HEALTHBAR_DISTANCE);
             layer.graphics().setColor(HEALTH_COLOR_A);
-            layer.graphics().fillRect((int) (position.x - HEALTHBAR_WIDTH / 2), (int) (position.y - sprite.size.y / 2 - HEALTHBAR_HEIGHT - HEALTHBAR_DISTANCE), (int) healthbarProgress, HEALTHBAR_HEIGHT);
+            layer.graphics().fillRect(x, y, healthbarProgress, HEALTHBAR_HEIGHT);
             layer.graphics().setColor(HEALTH_COLOR_B);
-            //layer.graphics().fillRect((int) (position.x - HEALTHBAR_WIDTH / 2 + healthbarProgress), (int) (position.y - sprite.size.y / 2 - HEALTHBAR_HEIGHT - HEALTHBAR_DISTANCE), (int) (HEALTHBAR_WIDTH - healthbarProgress), HEALTHBAR_HEIGHT);
+            layer.graphics().fillRect(x + healthbarProgress, y, HEALTHBAR_WIDTH - healthbarProgress, HEALTHBAR_HEIGHT);
+            layer.graphics().setColor(HEALTH_COLOR_C);
+            layer.graphics().drawRect(x - 1, y - 1, HEALTHBAR_WIDTH + 1, HEALTHBAR_HEIGHT + 1);
         }
     }
 }

@@ -6,7 +6,7 @@ import engine.math.Vector;
 import engine.scene.CollisionGameObject;
 import engine.utils.Sprite;
 import engine.window.RenderLayer;
-import game.scenes.GameSceneNicht;
+import game.scenes.GameScene;
 import game.scenes.Path;
 
 public class Enemy extends CollisionGameObject
@@ -53,7 +53,7 @@ public class Enemy extends CollisionGameObject
     
     @Override
     public void onSceneChange() {
-        if(scene instanceof GameSceneNicht) path = ((GameSceneNicht)scene).map.path;
+        if(scene instanceof GameScene) path = ((GameScene)scene).map.path;
     }
     
     @Override

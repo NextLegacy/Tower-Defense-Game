@@ -5,7 +5,7 @@ import engine.scene.Collisions.LayerCollision;
 import engine.window.RenderLayer;
 import game.gameObjects.DebugGameObject;
 import game.gameObjects.enemies.Enemy;
-import game.gameObjects.towers.towerSelection.TowerSelection;
+import game.gameObjects.tower.TowerMenu;
 
 public class GameScene extends Scene
 {
@@ -28,7 +28,7 @@ public class GameScene extends Scene
         map = new Map(mapName);
         map.addGameObjects(this);
 
-        addObject(new TowerSelection());
+        addObject(new TowerMenu());
         addObject(new Enemy());
     }
     

@@ -146,8 +146,6 @@ public class Engine extends Activateable
                 if (!isActive() || !getInputListener().isActive())
                     break;
 
-                System.out.println(String.format("[TPS: %s] [FPS: %s]", currentTPS, currentFPS));
-
                 if (deltaF >= 1)
                 {
                     render(FRAME_INTERVAL_S);

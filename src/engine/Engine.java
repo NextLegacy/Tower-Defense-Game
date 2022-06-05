@@ -121,6 +121,11 @@ public class Engine extends Activateable
 
                 last = now;
 
+                //if (getInputListener().windowState() != Frame.ICONIFIED)
+                //{
+                //    getWindow().requestFocus();
+                //}
+
                 while (deltaT >= 1)
                 {
                     if (currentScene != activeScene)

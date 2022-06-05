@@ -1,5 +1,7 @@
 package game.gameObjects.enemies;
 
+import java.awt.Color;
+
 import engine.math.Vector;
 import engine.scene.CollisionGameObject;
 import engine.utils.Sprite;
@@ -11,11 +13,20 @@ public class Enemy extends CollisionGameObject
 {
     public double speed;
     
+    protected int maxHealth;
+    protected int health;
+    
     protected Sprite sprite;
     
     protected Path path;
     protected int pathIndex;
     protected Vector nextPoint;
+    
+    protected static final Color HEALTH_COLOR_A = new Color(23, 196, 23);
+    protected static final Color HEALTH_COLOR_B = new Color(196, 23, 23);
+    protected static final int HEALTHBAR_WIDTH = 20;
+    protected static final int HEALTHBAR_HEIGHT = 5;
+    protected static final int HEALTHBAR_DISTANCE = 5;
     
     public Enemy()
     {
@@ -24,7 +35,21 @@ public class Enemy extends CollisionGameObject
         // TODO: this belongs in the subclasses
         sprite = new Sprite("enemies/test_enemy");
         speed = 200;
+        maxHealth = 20;
+        health = 20;
     }
+    
+    public void damage(int ammount)
+    {
+        health -= ammount;
+        if(health <= 0)
+        {
+            onKill();
+            destroy();
+        }
+    }
+    
+    protected void onKill() { }
     
     @Override
     public void onSceneChange() {
@@ -47,12 +72,13 @@ public class Enemy extends CollisionGameObject
             pathIndex++;
             if(pathIndex >= path.points.length)
             {
+                onPathEnd();
                 destroy();
                 return;
-                // TODO: decrease health
             }
             nextPoint = path.points[pathIndex];
             // TODO: maybe handle overshooting a point by moving past it to the next one in the same tick
+            damage(5); // debug
         }
         else
         {
@@ -62,10 +88,22 @@ public class Enemy extends CollisionGameObject
         }
     }
     
+    protected void onPathEnd()
+    {
+        // TODO: decrease scene health or add scene damage method
+    }
+    
     @Override
     public void render(RenderLayer layer, double deltaTime) {
         sprite.position = position.sub(sprite.size.div(2));
         if(layer.name() == "test2")
+        {
             layer.renderSprite(sprite);
+            double healthbarProgress = (double) health / (double) maxHealth * HEALTHBAR_HEIGHT;
+            layer.graphics().setColor(HEALTH_COLOR_A);
+            layer.graphics().fillRect((int) (position.x - HEALTHBAR_WIDTH / 2), (int) (position.y - sprite.size.y / 2 - HEALTHBAR_HEIGHT - HEALTHBAR_DISTANCE), (int) healthbarProgress, HEALTHBAR_HEIGHT);
+            layer.graphics().setColor(HEALTH_COLOR_B);
+            //layer.graphics().fillRect((int) (position.x - HEALTHBAR_WIDTH / 2 + healthbarProgress), (int) (position.y - sprite.size.y / 2 - HEALTHBAR_HEIGHT - HEALTHBAR_DISTANCE), (int) (HEALTHBAR_WIDTH - healthbarProgress), HEALTHBAR_HEIGHT);
+        }
     }
 }

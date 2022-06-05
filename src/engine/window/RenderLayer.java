@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 
 import engine.math.Vector;
 import engine.utils.Fonts;
+import engine.utils.Images;
 import engine.utils.Sprite;
 
 public class RenderLayer 
@@ -35,8 +36,8 @@ public class RenderLayer
         this.width = width;
         this.height = height;
 
-        this.image = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
-        this.graphics = image.createGraphics();
+        this.image = Images.toCompatibleImage(new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR));
+        this.graphics = (Graphics2D) image.getGraphics();
 
         this.graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
         this.graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -89,7 +90,7 @@ public class RenderLayer
     {  
         FontMetrics metrics = graphics.getFontMetrics();
         
-        drawString(text, new Vector(position.x - metrics.stringWidth(text) / 2, position.y + metrics.getHeight() / 2));
+        drawString(text, new Vector(position.x - metrics.stringWidth(text) / 2, position.y + metrics.getAscent() / 4));
     }
 
     public void drawString(String text, Vector position)
@@ -105,5 +106,10 @@ public class RenderLayer
     public void fillRect(Vector position, Vector size)
     {
         this.graphics().fillRect((int)position.x, (int)position.y, (int)size.x, (int)size.y);
+    }
+
+    public void fillRectCentered(Vector position, Vector size)
+    {
+        this.graphics().fillRect((int)(position.x - size.x / 2), (int)(position.y - size.y / 2), (int)size.x, (int)size.y);
     }
 }

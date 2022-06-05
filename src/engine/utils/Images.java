@@ -1,6 +1,10 @@
 package engine.utils;
 
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.HashMap;
@@ -22,7 +26,7 @@ public class Images
         
         try
         {
-            BufferedImage image = ImageIO.read(ResourceManager.getFile(IMAGE_TYPE, name + IMAGE_EXTENSION));
+            BufferedImage image = toCompatibleImage(ImageIO.read(ResourceManager.getFile(IMAGE_TYPE, name + IMAGE_EXTENSION)));
             imageMap.put(name, image);
             return image;
         }
@@ -36,7 +40,7 @@ public class Images
     {
         Image image = getImage(name).getScaledInstance(width, height, BufferedImage.SCALE_SMOOTH);
 
-        return imageToBufferedImage(image);
+        return toCompatibleImage(imageToBufferedImage(image));
     }
     
     private static BufferedImage imageToBufferedImage(Image image)
@@ -46,5 +50,28 @@ public class Images
         bufferedImage.getGraphics().drawImage(image, 0, 0, null);
         
         return bufferedImage;
+    }
+
+    //https://stackoverflow.com/q/29067108/12821391
+    public static BufferedImage toCompatibleImage(BufferedImage image) 
+    {
+        GraphicsConfiguration gfx_config = GraphicsEnvironment
+                .getLocalGraphicsEnvironment().getDefaultScreenDevice()
+                .getDefaultConfiguration();
+    
+        if (image.getColorModel().equals(gfx_config.getColorModel())) {
+    
+            return image;
+        }
+    
+        BufferedImage new_image = gfx_config.createCompatibleImage(
+                image.getWidth(), image.getHeight(), Transparency.TRANSLUCENT);
+    
+        Graphics2D g2d = (Graphics2D) new_image.getGraphics();
+    
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+    
+        return new_image;
     }
 }

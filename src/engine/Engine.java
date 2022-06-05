@@ -1,9 +1,5 @@
 package engine;
 
-import java.awt.Frame;
-
-import javax.swing.plaf.basic.BasicInternalFrameTitlePane.SystemMenuBar;
-
 import engine.scene.Activateable;
 import engine.scene.Scene;
 import engine.window.InputListener;
@@ -149,6 +145,8 @@ public class Engine extends Activateable
                 // After updates, engine might be deactivated, no need to continue
                 if (!isActive() || !getInputListener().isActive())
                     break;
+
+                System.out.println(String.format("[TPS: %s] [FPS: %s]", currentTPS, currentFPS));
 
                 if (deltaF >= 1)
                 {

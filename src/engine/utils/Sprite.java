@@ -35,6 +35,7 @@ public class Sprite
         lastSize = Vector.zero();
 
         transform = new AffineTransform();
+        centeredTransform = new AffineTransform();
     }
 
     public Sprite(BufferedImage image)
@@ -78,7 +79,7 @@ public class Sprite
     {
         updateTransform(centeredTransform, position.sub(size.div(2)));
 
-        return transform;
+        return centeredTransform;
     }
 
     private void updateTransform(AffineTransform transform, Vector position)

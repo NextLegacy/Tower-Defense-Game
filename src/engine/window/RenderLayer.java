@@ -80,14 +80,21 @@ public class RenderLayer
         this.graphics().drawImage(sprite.image(), sprite.transform(), null);
     }
 
-    public void drawString(String text, Vector position)
+    public void renderSpriteCentered(Sprite sprite)
+    {
+        this.graphics().drawImage(sprite.image(), sprite.centeredTransform(), null);
+    }
+
+    public void drawStringCentered(String text, Vector position)
     {  
         FontMetrics metrics = graphics.getFontMetrics();
+        
+        drawString(text, new Vector(position.x - metrics.stringWidth(text) / 2, position.y + metrics.getHeight() / 2));
+    }
 
-        int x = (int)position.x - metrics.stringWidth(text) / 2;
-        int y = (int)position.y + metrics.getAscent() / 2;
-
-        graphics.drawString(text, x, y);
+    public void drawString(String text, Vector position)
+    {  
+        graphics.drawString(text, (int) position.x, (int) position.y);
     }
 
     public void drawLine(Vector from, Vector to)

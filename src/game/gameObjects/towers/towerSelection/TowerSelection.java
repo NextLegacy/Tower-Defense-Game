@@ -37,6 +37,5 @@ public class TowerSelection extends GameObject
         layer.graphics().setColor(Color.black);
 
         layer.drawString("Towers", new Vector(100, 100));
-        //layer.graphics().drawString("Towers", (int)window.width(0.83), (int)window.height(0.11));
     }
 }

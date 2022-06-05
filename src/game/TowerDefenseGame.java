@@ -18,7 +18,7 @@ public final class TowerDefenseGame
 
         Engine engine = new Engine(1280, 720, 120, 60, layers);
         
-        engine.setActiveScene(new GameScene());
+        engine.setActiveScene(new GameScene("test_map"));
         engine.activate();
     }
 

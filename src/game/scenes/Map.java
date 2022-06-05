@@ -79,7 +79,7 @@ public class Map
     }
     
     // the obstacles are GameObjects and must be added to the Scene
-    public void addGameObjects(GameSceneNicht scene)
+    public void addGameObjects(GameScene scene)
     {
         for(ObstacleObject g : obstacles)
         {

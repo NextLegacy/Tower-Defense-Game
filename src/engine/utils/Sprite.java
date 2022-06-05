@@ -12,7 +12,7 @@ public class Sprite
     public Vector position;
     public double rotation;
     public Vector size;
-
+    
     private Vector ratio;
     
     private Vector lastPosition;
@@ -20,6 +20,7 @@ public class Sprite
     private Vector lastSize;
 
     private AffineTransform transform;
+    private AffineTransform centeredTransform;
 
     public Sprite()
     {
@@ -36,6 +37,15 @@ public class Sprite
         transform = new AffineTransform();
     }
 
+    public Sprite(BufferedImage image)
+    {
+        this();
+
+        setImage(image);
+
+        size = new Vector(image.getWidth(), image.getHeight());
+    }
+
     public Sprite(String name)
     {
         this();
@@ -50,16 +60,28 @@ public class Sprite
         image = Images.getImage(name);
     }
 
+    public void setImage(BufferedImage image)
+    {
+        this.image = image;
+    }
+
     public BufferedImage image() { return image; }
 
     public AffineTransform transform()
     {
-        updateTransform();
+        updateTransform(transform, position);
 
         return transform;
     }
 
-    private void updateTransform()
+    public AffineTransform centeredTransform()
+    {
+        updateTransform(centeredTransform, position.sub(size.div(2)));
+
+        return transform;
+    }
+
+    private void updateTransform(AffineTransform transform, Vector position)
     {
         if (position == lastPosition && rotation == lastRotation && size.equals(lastSize))
             return;
@@ -70,7 +92,7 @@ public class Sprite
 
         ratio.setX(size.x / image.getWidth())
              .setY(size.y / image.getHeight());
-
+        
         transform.setToTranslation(position.x, position.y);
 
         transform.rotate(rotation, size.x / 2, size.y / 2);

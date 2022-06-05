@@ -55,6 +55,9 @@ public class RenderLayer
         graphics.setColor(Color.black);
     }
 
+    public boolean is(String name) { return this.name == name; }
+    public boolean isNot(String name) { return this.name != name; }
+
     public String name() { return this.name; }
     public int width() { return this.width; }
     public int height() { return this.height; }
@@ -80,7 +83,7 @@ public class RenderLayer
     public void drawString(String text, Vector position)
     {  
         FontMetrics metrics = graphics.getFontMetrics();
-        
+
         int x = (int)position.x - metrics.stringWidth(text) / 2;
         int y = (int)position.y + metrics.getAscent() / 2;
 

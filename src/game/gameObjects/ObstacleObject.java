@@ -37,7 +37,7 @@ public class ObstacleObject extends CollisionGameObject
     {
         if(layer.name() == "test")
         {
-            sprite.position = position.sub(size.div(2));
+            sprite.position = position;//.sub(size.div(2));
             sprite.size = size.clone();
             layer.renderSprite(sprite);
         }

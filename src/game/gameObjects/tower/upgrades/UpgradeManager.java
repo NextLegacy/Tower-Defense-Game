@@ -2,14 +2,15 @@ package game.gameObjects.tower.upgrades;
 
 public class UpgradeManager
 {
-    public final UpgradePath PATH_ONE;
-    public final UpgradePath PATH_TWO;
-    public final UpgradePath PATH_THREE;
+    public final UpgradePath[] UPGRADE_PATHS;
     
-    public UpgradeManager(UpgradePath upgradePathOne, UpgradePath upgradePathTwo, UpgradePath upgradePathThree)
+    public UpgradeManager(UpgradePath... upgradePaths)
     {
-        PATH_ONE = upgradePathOne;
-        PATH_TWO = upgradePathTwo;
-        PATH_THREE = upgradePathThree;
+        if (upgradePaths.length > 3)
+        {
+            throw new IllegalArgumentException("UpgradeManager needs less than 4 upgrade paths");
+        }
+
+        this.UPGRADE_PATHS = upgradePaths;
     }
 }

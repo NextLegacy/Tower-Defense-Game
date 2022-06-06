@@ -39,16 +39,10 @@ public class TowerPlaceablePreview<T extends Tower> extends CollisionGameObject
     @Override
     public void update(double deltaTime) 
     {
-        position.lerp(
-            sprite.position, 
-            input.mouse().position().clamp(
-                towerPlaceable.towerSprite.size.div(2), 
-                GameScene.GAME_AREA_SIZE.sub(towerPlaceable.towerSprite.size.div(2))
-            ),
-            deltaTime * 15 
+        position = input.mouse().position().clamp(
+            towerPlaceable.towerSprite.size.div(2), 
+            GameScene.GAME_AREA_SIZE.sub(towerPlaceable.towerSprite.size.div(2))
         );
-
-        sprite.position = position;
 
         if (input.left().isDown() && canBePlaced)
         {
@@ -75,10 +69,12 @@ public class TowerPlaceablePreview<T extends Tower> extends CollisionGameObject
             layer.renderSpriteCentered(sprite);
 
         if (canBePlaced)
-            layer.graphics().setColor(Color.green);
+            layer.setColor(0);
         else
-            layer.graphics().setColor(Color.red);
+            layer.setColor(0xff0000af);
         
+        sprite.position = position;
+
         layer.fillRectCentered(sprite.position, sprite.size);
     }
 

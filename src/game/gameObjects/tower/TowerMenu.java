@@ -7,6 +7,7 @@ import engine.math.Vector;
 import engine.scene.GameObject;
 import engine.window.RenderLayer;
 import game.gameObjects.tower.towers.TestTower;
+import game.gameObjects.tower.upgrades.UpgradePath;
 import game.scenes.GameScene;
 
 public class TowerMenu extends GameObject
@@ -158,6 +159,15 @@ public class TowerMenu extends GameObject
         if (selectedTower == null)
             return;
         
+        int colum = 0;
+        for (UpgradePath upgradePath : selectedTower.upgradeManager.UPGRADE_PATHS)
+        {
+            renderUpgradePath(layer, upgradePath, ++colum);
+        }
+    }
+
+    public void renderUpgradePath(RenderLayer layer, UpgradePath path, int colum)
+    {
         
     }
 }

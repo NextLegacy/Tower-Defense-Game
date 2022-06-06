@@ -78,6 +78,4 @@ public abstract class Tower extends CollisionGameObject
     {
         sprite.rotation = target.sub(position).angle();
     }
-
-    public UpgradeManager upgradeManager() { return upgradeManager; }
 }

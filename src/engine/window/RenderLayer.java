@@ -76,6 +76,21 @@ public class RenderLayer
         this.graphics.setTransform(this.defaultTransform);
     }
 
+    public void setColor(Color color)
+    {
+        this.graphics.setColor(color);
+    }
+
+    public void setColor(int rgba)
+    {
+        int r = (rgba >> 24) & 0xFF;
+        int g = (rgba >> 16) & 0xFF;
+        int b = (rgba >> 8) & 0xFF;
+        int a = rgba & 0xFF;
+        
+        this.graphics.setColor(new Color(r, g, b, a));
+    }
+
     public void renderSprite(Sprite sprite)
     {
         this.graphics().drawImage(sprite.image(), sprite.transform(), null);
@@ -101,6 +116,16 @@ public class RenderLayer
     public void drawLine(Vector from, Vector to)
     {
         graphics.drawLine((int)from.x, (int)from.y, (int)to.x, (int)to.y);
+    }
+
+    public void drawRect(Vector position, Vector size)
+    {
+        this.graphics().drawRect((int)position.x, (int)position.y, (int)size.x, (int)size.y);
+    }
+
+    public void drawRectCentered(Vector position, Vector size)
+    {
+        this.graphics().drawRect((int)(position.x - size.x / 2), (int)(position.y - size.y / 2), (int)size.x, (int)size.y);
     }
 
     public void fillRect(Vector position, Vector size)

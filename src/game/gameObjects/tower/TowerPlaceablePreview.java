@@ -33,7 +33,7 @@ public class TowerPlaceablePreview<T extends Tower> extends CollisionGameObject
         size = sprite.size;
 
         collisions.setLayerCollisionActive(0, true);
-        //collisions.setLayerCollisionActive(1, true);
+        collisions.setLayerCollisionActive(1, true);
     }
 
     @Override
@@ -50,9 +50,9 @@ public class TowerPlaceablePreview<T extends Tower> extends CollisionGameObject
 
         sprite.position = position;
 
-        if (input.left().isDown())
+        if (input.left().isDown() && canBePlaced)
         {
-            System.out.println("Tower placed");
+            System.out.println(canBePlaced);
 
             gameScene.money -= towerPlaceable.cost;
 
@@ -62,10 +62,12 @@ public class TowerPlaceablePreview<T extends Tower> extends CollisionGameObject
             gameScene.addObject(tower);
 
             collisions.setLayerCollisionActive(0, false);
-            //collisions.setLayerCollisionActive(1, false);
+            collisions.setLayerCollisionActive(1, false);
 
             destroy();
         }
+
+        canBePlaced = true;
     }
 
     @Override
@@ -85,11 +87,6 @@ public class TowerPlaceablePreview<T extends Tower> extends CollisionGameObject
     @Override
     public void onCollision(ArrayList<CollisionGameObject> collisionObjects) 
     {
-        System.out.println(collisionObjects.get(0));
-
-        if (collisionObjects.size() > 0)
-            canBePlaced = false;
-        else
-            canBePlaced = true;
+        canBePlaced = false;
     }
 }

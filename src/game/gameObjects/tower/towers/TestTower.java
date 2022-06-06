@@ -1,5 +1,12 @@
 package game.gameObjects.tower.towers;
 
+import java.util.ArrayList;
+
+import engine.scene.CollisionGameObject;
+import engine.scene.GameObject;
+import engine.utils.Sprite;
+import game.gameObjects.enemies.Enemy;
+import game.gameObjects.projectile.projectiles.OneWayProjectile;
 import game.gameObjects.tower.Tower;
 import game.gameObjects.tower.upgrades.Upgrade;
 import game.gameObjects.tower.upgrades.UpgradeManager;
@@ -11,13 +18,24 @@ public class TestTower extends Tower
     public TestTower()
     {
         super();
+        this.range = 1000;
         this.fireRate = 1;
     }
     
     @Override
     protected void fire() 
     {
-        
+        ArrayList<CollisionGameObject> gameObjects = collisions.objectsInCircle(2, (int)position.x, (int)position.y, (int)range);
+
+        for (GameObject gameObject : gameObjects)
+        {
+            if (gameObject instanceof Enemy)
+            {
+                Enemy enemy = (Enemy)gameObject;
+
+                gameScene().addObject(new OneWayProjectile(new Sprite(""), position, enemy.position));
+            }
+        }
     }
 
     @Override

@@ -138,9 +138,11 @@ public class Engine extends Activateable
                     }
                     
                     update(TICK_INTERVAL_S);
+                    window.getInputListener().reset();
                     ticks++;
                     deltaT--;
                 }
+
 
                 // After updates, engine might be deactivated, no need to continue
                 if (!isActive() || !getInputListener().isActive())

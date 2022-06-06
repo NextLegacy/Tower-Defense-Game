@@ -30,7 +30,7 @@ public class TestGameObject extends CollisionGameObject
         if(position.x <= 700)
             position.x += 150 * deltaTime;
         
-        if(input.left().isClickedInBounds(position, size, 1_000_000_000) || input.key(KeyEvent.VK_X).isDown() || input.key(KeyEvent.VK_C).downTime() > 2_000_000_000)
+        if(input.left().isClickedInBounds(position, size) || input.key(KeyEvent.VK_X).isDown() || input.key(KeyEvent.VK_C).downTime() > 2_000_000_000)
             engine.deactivate();
             
     }

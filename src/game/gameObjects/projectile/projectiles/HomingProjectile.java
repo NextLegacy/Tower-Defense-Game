@@ -19,7 +19,7 @@ public class HomingProjectile extends Projectile
     @Override
     public final void update(double deltaTime) 
     {
-        velocity = velocity.add(target.position.sub(position).normalized().mul(deltaTime*2));
+        velocity = target.position.sub(position).normalized().mul(deltaTime*150);
         super.update(deltaTime);
     }
 

@@ -1,5 +1,7 @@
 package game.gameObjects.tower;
 
+import java.awt.Color;
+
 import engine.math.Vector;
 import engine.scene.CollisionGameObject;
 import engine.utils.Sprite;
@@ -18,6 +20,8 @@ public abstract class Tower extends CollisionGameObject
     protected double range;
     protected double fireRate;
 
+    protected GameScene gameScene;
+
     private double time;
 
     public Tower()
@@ -27,6 +31,12 @@ public abstract class Tower extends CollisionGameObject
         this.upgradeManager = createUpgradeManager();
     }
 
+    @Override
+    public void start() 
+    {
+        this.gameScene = (GameScene) scene;
+    }
+    
     protected void fire() { }
     protected abstract UpgradeManager createUpgradeManager();
 
@@ -42,6 +52,12 @@ public abstract class Tower extends CollisionGameObject
             time = 0;
             fire();
         }
+
+        if (input.left().isClickedInBounds(sprite.position.sub(sprite.size.div(2)), sprite.size))
+        {
+            System.out.println(input.left().downTime());
+            gameScene.towerMenu.setSelectedTower(this);
+        }
     }
 
     @Override
@@ -50,9 +66,10 @@ public abstract class Tower extends CollisionGameObject
         if (layer.isNot("debug"))
             return;
 
-        //if (selected)
-        layer.graphics().drawOval((int)(position.x-range), (int)(position.y-range), (int)range*2, (int)range*2);    
-        //layer.graphics().fillArc((int)(position.x/2), (int)(position.y/2), (int)range/2, (int)range/2, 0, 360);
+        layer.graphics().setColor(new Color(20, 20, 20, 50));
+        
+        if(selected)
+            layer.graphics().fillOval((int)(position.x-range), (int)(position.y-range), (int)range*2, (int)range*2);    
 
         layer.renderSpriteCentered(sprite);
     }
@@ -62,6 +79,5 @@ public abstract class Tower extends CollisionGameObject
         sprite.rotation = target.sub(position).angle();
     }
 
-    public GameScene gameScene() { return (GameScene) scene; }
     public UpgradeManager upgradeManager() { return upgradeManager; }
 }

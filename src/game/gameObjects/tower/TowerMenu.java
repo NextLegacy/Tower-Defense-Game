@@ -11,14 +11,14 @@ import game.scenes.GameScene;
 
 public class TowerMenu extends GameObject
 {
-    public Tower selectedTower;
-
     public TowerPlaceablePreview<?> placeableTowerPreview;
-
+    
     public TowerPlaceable<?>[] placeableTowers;
-
+    
     public GameScene gameScene;
-
+    
+    private Tower selectedTower;
+    
     public TowerMenu()
     {
         this.placeableTowers = new TowerPlaceable[]
@@ -61,6 +61,22 @@ public class TowerMenu extends GameObject
         }
     }   
 
+    public void setSelectedTower(Tower tower)
+    {
+        if (this.selectedTower == tower)
+        {
+            this.selectedTower = null;
+            tower.selected = false;
+            return;
+        }
+
+        if (this.selectedTower != null)
+            this.selectedTower.selected = false;
+        
+        tower.selected = true;
+        this.selectedTower = tower;
+    }
+
     @Override
     public void start() 
     {
@@ -77,7 +93,7 @@ public class TowerMenu extends GameObject
                 if (gameScene.money < placeableTower.cost)
                     continue;
 
-                if (input.left().isClickedInBounds(placeableTower.towerInMenuSprite.position, GameScene.PLACEABLE_TOWER_IN_MENU_SIZE, 0.10))
+                if (input.left().isClickedInBounds(placeableTower.towerInMenuSprite.position, GameScene.PLACEABLE_TOWER_IN_MENU_SIZE))
                 {
                     placeableTowerPreview = new TowerPlaceablePreview<>(placeableTower);
 
@@ -138,5 +154,10 @@ public class TowerMenu extends GameObject
     {
         layer.graphics().setColor(new Color(0x8a8a8a));
         layer.fillRect(GameScene.UPGRADE_MENU_BEGIN, GameScene.UPGRADE_MENU_END);
+
+        if (selectedTower == null)
+            return;
+        
+        
     }
 }

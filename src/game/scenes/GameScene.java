@@ -17,7 +17,6 @@ public class GameScene extends Scene
 {
     public static final Font MONEY_FONT = Fonts.get("[FONT NAME]", 25, Font.PLAIN);
 
-
     public static final Vector GAME_AREA_START = new Vector(0, 0);
     public static final Vector GAME_AREA_END = new Vector(1000, 720);
 
@@ -39,6 +38,8 @@ public class GameScene extends Scene
     public Map map;
     public WaveManager waveManager;
 
+    public TowerMenu towerMenu;
+
     public double money = 2345;
     
     public GameScene(String mapName)
@@ -51,7 +52,7 @@ public class GameScene extends Scene
     public void init() {
         // add menus and stuff
         addObject(new DebugGameObject());
-        addObject(new TowerMenu());
+        addObject(towerMenu = new TowerMenu());
         
         // load map
         map = new Map(mapName);

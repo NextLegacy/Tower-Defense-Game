@@ -45,6 +45,13 @@ public class InputListener extends InputAdapter
         this.initializeKeyDownMap();
     }
 
+    public void reset()
+    {
+        this.LEFT.isClicked = false;
+        this.RIGHT.isClicked = false;
+        this.WHEEL.isClicked = false;
+    }
+
     public Key key(int keyEvent) { return this.KEY_MAP.get(keyEvent); }
 
     public Mouse mouse()  { return MOUSE; }
@@ -148,6 +155,26 @@ public class InputListener extends InputAdapter
     }
 
     @Override
+    public void mouseClicked(MouseEvent e) 
+    {
+        if (e.getButton() == MouseEvent.BUTTON1)
+        {
+            LEFT.isClicked = true;
+            return;
+        }
+        else if (e.getButton() == MouseEvent.BUTTON3)
+        {
+            RIGHT.isClicked = true;
+            return;
+        }
+        else if (e.getButton() == MouseEvent.BUTTON2)
+        {
+            WHEEL.isClicked = true;
+            return;
+        }
+    }
+
+    @Override
     public void mouseWheelMoved(MouseWheelEvent e) 
     {
         WHEEL.mouseWheelBefore = WHEEL.mouseWheelNow;
@@ -242,6 +269,7 @@ public class InputListener extends InputAdapter
     {
         protected boolean isDown;
         protected double timeOnStart;
+        protected boolean isClicked;
 
         private Button()
         {
@@ -261,20 +289,19 @@ public class InputListener extends InputAdapter
                    mouse().isInBounds(position, size);
         }
 
-        public boolean isClickedInArea(Vector from, Vector to, double maxHoldTime) 
+        public boolean isClickedInArea(Vector from, Vector to) 
         {
-            return mouse().isInRange(from, to) &&
-                   (isUp() && downTime() <= maxHoldTime);
+            return mouse().isInRange(from, to) && isClicked();
         }
 
-        public boolean isClickedInBounds(Vector position, Vector size, double maxHoldTime) 
+        public boolean isClickedInBounds(Vector position, Vector size) 
         {
-            return mouse().isInBounds(position, size) &&
-                   (isUp() && downTime() <= maxHoldTime);
+            return mouse().isInBounds(position, size) && isClicked();
         }
 
         public boolean isDown()     { return this.isDown; }
         public boolean isUp()       { return !this.isDown(); }
+        public boolean isClicked()  { return this.isClicked; }
         public double  downTime()   { return (System.nanoTime() - this.timeOnStart()) / 1_000_000_000; }
         public double  timeOnStart(){ return this.timeOnStart; }
     }

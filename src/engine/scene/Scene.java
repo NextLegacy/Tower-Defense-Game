@@ -39,8 +39,7 @@ public class Scene extends Activateable
         g.setScene(this.engine, this);
         g.activate();
         
-        if(isActive())
-            g.start();
+        g.start();
         
         newObjects.push(g);
     }
@@ -58,8 +57,8 @@ public class Scene extends Activateable
 
         for(GameObject gameObject : gameObjects)
         {
-            if(gameObject.isActive())
-                gameObject.start();
+            gameObject.activate();
+            gameObject.start();
         } // TODO: fix ConcurrentModificationException
         
         /*for(int i = 0; i < gameObjects.size(); i++)

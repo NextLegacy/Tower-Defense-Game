@@ -16,13 +16,12 @@ import game.gameObjects.tower.upgrades.UpgradePathType;
 
 public class TestTower extends Tower
 {
-    private Enemy target;
-
     public TestTower()
     {
         super();
+        this.sprite = new Sprite("stein");
         this.range = 150;
-        this.fireRate = 0.2;
+        this.fireRate = 0.05;
     }
 
     @Override
@@ -49,7 +48,8 @@ public class TestTower extends Tower
         }
         if (target != null)
         {
-            scene.addObject(new HomingProjectile(new Sprite("").setSize(new Vector(30, 30)), target, position, 5));
+            lookAt(target.position);
+            scene.addObject(new HomingProjectile(new Sprite("stein").setSize(new Vector(30, 30)), target, position, 5));
         } 
     }
 

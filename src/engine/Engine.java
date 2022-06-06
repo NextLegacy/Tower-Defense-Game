@@ -128,7 +128,7 @@ public class Engine extends Activateable
                         
                         currentScene.setEngine(engine);
                         currentScene.init();
-                        
+
                         start();
 
                         break;
@@ -136,6 +136,7 @@ public class Engine extends Activateable
                     
                     update(TICK_INTERVAL_S);
                     window.getInputListener().reset();
+                    
                     ticks++;
                     deltaT--;
                 }

@@ -25,10 +25,10 @@ public class TowerMenu extends GameObject
     {
         this.placeableTowers = new TowerPlaceable[]
         {
-            new TowerPlaceable<TestTower>("testTower", 2345, TestTower::new),
-            new TowerPlaceable<TestTower>("testTower", 3245, TestTower::new),
+            new TowerPlaceable<TestTower>("stein", 2345, TestTower::new),
+            new TowerPlaceable<TestTower>("marker", 3245, TestTower::new),
             new TowerPlaceable<TestTower>("testTower", 13, TestTower::new),
-            new TowerPlaceable<TestTower>("testTower", 234, TestTower::new),
+            new TowerPlaceable<TestTower>("box_20x20", 234, TestTower::new),
             new TowerPlaceable<TestTower>("testTower", 2314, TestTower::new),
             new TowerPlaceable<TestTower>("testTower", 213, TestTower::new),
             new TowerPlaceable<TestTower>("testTower", 234, TestTower::new),

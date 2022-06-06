@@ -19,7 +19,7 @@ public class StartButton extends GameObject
     @Override
     public void update(double deltaTime)
     {
-        if(input.left().isHoldInBounds(sprite.position.sub(sprite.size.div(2)), sprite.size))
+        if(input.left().isClickedInBounds(sprite.position.sub(sprite.size.div(2)), sprite.size))
         {
             ((MainMenuScene) scene).showMaps();
             destroy();

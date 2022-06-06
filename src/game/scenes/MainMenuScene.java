@@ -5,6 +5,7 @@ import engine.scene.Scene;
 import engine.scene.Collisions.LayerCollision;
 import engine.utils.Sprite;
 import engine.window.RenderLayer;
+import game.gameObjects.DebugGameObject;
 import game.menu.MapButton;
 import game.menu.MapMetadata;
 import game.menu.StartButton;
@@ -24,6 +25,7 @@ public class MainMenuScene extends Scene
     public void init()
     {
         addObject(new StartButton(new Vector(640, 360)));
+        addObject(new DebugGameObject());
     }
     
     public void showMaps()

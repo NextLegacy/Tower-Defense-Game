@@ -23,7 +23,7 @@ public class TowerPlaceable<T extends Tower>
 
     public TowerPlaceable(String imageName, double cost, Func0<T> towerFactory)
     {
-        this.towerSprite = new Sprite("/towers/" + imageName + ".png");
+        this.towerSprite = new Sprite(imageName);
         this.towerInMenuSprite = towerSprite.deriveSprite().setSize(GameScene.PLACEABLE_TOWER_IN_MENU_SIZE);
         this.cost = cost;
         this.towerFactory = towerFactory;

@@ -25,7 +25,7 @@ public class MapButton extends GameObject
     @Override
     public void update(double deltaTime)
     {
-        if(input.left().isHoldInBounds(sprite.position, sprite.size))
+        if(input.left().isClickedInBounds(sprite.position, sprite.size))
         {
             engine.setActiveScene(new GameScene(map.name));
         }

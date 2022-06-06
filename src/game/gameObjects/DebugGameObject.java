@@ -19,7 +19,7 @@ public class DebugGameObject extends GameObject
 
         layer.drawStringCentered(
             String.format("[TPS: %s] [FPS: %s]", engine.currentTPS(), engine.currentFPS()), 
-            window.v_size(0.925, 0.985)    
+            window.v_size(0.075, 0.985)    
         );
     }
 }

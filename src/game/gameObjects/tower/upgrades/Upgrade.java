@@ -1,5 +1,6 @@
 package game.gameObjects.tower.upgrades;
 
+import engine.math.Vector;
 import engine.scene.Activateable;
 import engine.utils.Sprite;
 import engine.utils.Lambda.Action1;
@@ -16,6 +17,11 @@ public class Upgrade extends Activateable
 
     private Action1<Upgrade> activate;
     private Action1<Upgrade> deactivate;
+    
+    public Vector ui_position;
+    public int upgradeIndex;
+
+    public boolean isUnlocked;
 
     public Upgrade(
         String name, String imageName, String description, double cost,
@@ -37,6 +43,6 @@ public class Upgrade extends Activateable
 
     public final Sprite sprite() { return sprite; }
 
-    @Override public final void onActivate() { cost = 0; activate.invoke(this); }
+    @Override public final void onActivate() { activate.invoke(this); }
     @Override public final void onDeactivate() { deactivate.invoke(this); }
 }

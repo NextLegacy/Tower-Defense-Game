@@ -13,6 +13,11 @@ public class UpgradePath
 
         this.type = type;
         this.upgrades = upgrades;
+
+        for (int i = 0; i < upgrades.length; i++)
+        {
+            upgrades[i].upgradeIndex = i;
+        }
     }
 
     public UpgradePathType type() { return type; }

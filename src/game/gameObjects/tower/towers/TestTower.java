@@ -103,8 +103,16 @@ public class TestTower extends Tower
                 new Upgrade(
                     "ultravision",
                     "ultravision", 
-                    "most range in game", 
+                    "ultra range", 
                     1000, 
+                    (upgrade) -> range = 1000,
+                    Upgrade.NO_EFFECT
+                ),
+                new Upgrade(
+                    "mega ultravision",
+                    "mega_ultravision", 
+                    "most range in game", 
+                    10000, 
                     (upgrade) -> range = 1000,
                     Upgrade.NO_EFFECT
                 )
@@ -121,7 +129,7 @@ public class TestTower extends Tower
                 new Upgrade(
                     "much more bullets", 
                     "much_bullets", 
-                    "does shoot way more bullets at once", 
+                    "does shoot way\nmore bullets at once", 
                     100, 
                     Upgrade.NO_EFFECT,
                     Upgrade.NO_EFFECT

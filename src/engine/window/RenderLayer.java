@@ -2,6 +2,7 @@ package engine.window;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -76,6 +77,11 @@ public class RenderLayer
         this.graphics.setTransform(this.defaultTransform);
     }
 
+    public FontMetrics getMetrics(Font font)
+    {
+        return this.graphics.getFontMetrics(font);
+    }
+
     public void setColor(Color color)
     {
         this.graphics.setColor(color);
@@ -120,7 +126,18 @@ public class RenderLayer
 
     public void drawRect(Vector position, Vector size)
     {
-        this.graphics().drawRect((int)position.x, (int)position.y, (int)size.x, (int)size.y);
+        this.graphics().drawRect((int)(position.x), (int)(position.y), (int)(size.x), (int)(size.y));
+    }
+
+    public void drawRect(Vector position, Vector size, double thickness)
+    {
+        position = position.sub(thickness);
+        size = size.add(thickness * 2).sub(0, 1);
+
+        for (int i = 0; i < thickness; i++)
+        {
+            this.graphics().drawRect((int)position.x + i, (int)position.y + i, (int)size.x - i * 2, (int)size.y - i * 2);
+        }
     }
 
     public void drawRectCentered(Vector position, Vector size)

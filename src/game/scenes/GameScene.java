@@ -16,6 +16,8 @@ import game.gameObjects.tower.TowerMenu;
 public class GameScene extends Scene
 {
     public static final Font MONEY_FONT = Fonts.get("[FONT NAME]", 25, Font.PLAIN);
+    public static final Font TEXT_FONT = Fonts.get("[FONT NAME]", 25, Font.PLAIN);
+    public static final Font DESCRIPTION_FONT = Fonts.get("[FONT NAME]", 25, Font.ITALIC);
 
     public static final Vector GAME_AREA_START = new Vector(0, 0);
     public static final Vector GAME_AREA_END = new Vector(1000, 720);
@@ -30,9 +32,9 @@ public class GameScene extends Scene
     public static final Vector PLACEABLE_TOWER_AREA_START = new Vector(1000, 0);
     public static final Vector PLACEABLE_TOWER_AREA_SIZE = new Vector(280, 410);
     
-    public static final Vector UPGRADE_SIZE = new Vector(90, 90);
-    public static final Vector UPGRADE_MENU_BEGIN = new Vector(1010, 310);
-    public static final Vector UPGRADE_MENU_END = new Vector(260, 400);
+    public static final Vector UPGRADE_BUTTON_SIZE = new Vector(60, 60);
+    public static final Vector UPGRADE_MENU_START = new Vector(1010, 310);
+    public static final Vector UPGRADE_MENU_SIZE = new Vector(260, 400);
 
     private String mapName;
     public Map map;

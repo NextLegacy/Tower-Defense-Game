@@ -1,6 +1,8 @@
 package game.gameObjects.tower;
 
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.event.KeyEvent;
 
 import engine.math.Vector;
@@ -21,6 +23,8 @@ public class TowerMenu extends GameObject
     
     private Tower selectedTower;
     
+    private Upgrade selectedUpgrade;
+
     public TowerMenu()
     {
         this.placeableTowers = new TowerPlaceable[]
@@ -72,24 +76,6 @@ public class TowerMenu extends GameObject
 
         if (this.selectedTower != null)
             this.selectedTower.selected = true;
-
-        /*
-        if (tower != null && this.selectedTower == tower)
-        {
-            this.selectedTower = null;
-            tower.selected = false;
-            return;
-        }
-
-        if (this.selectedTower != null)
-            this.selectedTower.selected = false;
-
-        if (tower != null)
-        {
-            tower.selected = true;
-            this.selectedTower = tower;   
-        }
-        */
     }
 
     @Override
@@ -121,6 +107,28 @@ public class TowerMenu extends GameObject
             }
         }
 
+        //boolean isAnySelected = false;
+
+        if (selectedTower != null)
+        for (UpgradePath upgradePath : selectedTower.upgradeManager.UPGRADE_PATHS)
+        {
+            for (Upgrade upgrade : upgradePath.upgrades())
+            {
+                if (input.mouse().isInBounds(upgrade.sprite().position, GameScene.UPGRADE_BUTTON_SIZE))
+                {
+                    selectedUpgrade = upgrade;
+
+                    //isAnySelected = true;
+
+                    break;
+                }
+            }
+        }
+
+        //if (!isAnySelected)
+        if (input.mouse().position().isOutOfBounds(GameScene.UPGRADE_MENU_START, GameScene.UPGRADE_MENU_SIZE))
+            selectedUpgrade = null;
+
         if (input.key(KeyEvent.VK_ESCAPE).isDown())
         {
             setSelectedTower(null);
@@ -128,8 +136,6 @@ public class TowerMenu extends GameObject
             if (placeableTowerPreview != null)
                 if (placeableTowerPreview.isActive())
                     placeableTowerPreview.destroy();
-
-            return;
         }
     }
 
@@ -171,8 +177,8 @@ public class TowerMenu extends GameObject
 
     public void renderUpgradeMenu(RenderLayer layer) 
     {
-        layer.graphics().setColor(new Color(0x8a8a8a));
-        layer.fillRect(GameScene.UPGRADE_MENU_BEGIN, GameScene.UPGRADE_MENU_END);
+        //layer.graphics().setColor(new Color(0x8a8a8a));
+        //layer.fillRect(GameScene.UPGRADE_MENU_START, GameScene.UPGRADE_MENU_SIZE);
 
         if (selectedTower == null)
             return;
@@ -182,12 +188,71 @@ public class TowerMenu extends GameObject
         {
             renderUpgradePath(layer, upgradePath, ++colum);
         }
+
+        if (selectedUpgrade != null)
+        {
+            renderUpgradeDescription(layer, selectedUpgrade);
+        } else
+        {
+            layer.graphics().setFont(UPGRADE_TEXT_FONT.deriveFont(40f));
+            layer.drawStringCentered("Upgrades", GameScene.UPGRADE_MENU_START.add(GameScene.UPGRADE_MENU_SIZE.x / 2, 55));
+        }
+    }
+
+    private Font UPGRADE_TEXT_FONT = GameScene.TEXT_FONT.deriveFont(25f);
+    private Font UPGRADE_DESCRIPTION_FONT = GameScene.DESCRIPTION_FONT.deriveFont(17f);
+    private Font UPGRADE_MONEY_FONT = GameScene.MONEY_FONT.deriveFont(20f);
+
+    public void renderUpgradeDescription(RenderLayer layer, Upgrade upgrade)
+    {
+        layer.graphics().setFont(UPGRADE_TEXT_FONT);
+        
+        FontMetrics textMetrics = layer.getMetrics(UPGRADE_TEXT_FONT);
+        FontMetrics descriptionMetrics = layer.getMetrics(UPGRADE_DESCRIPTION_FONT);
+
+        layer.drawStringCentered(upgrade.name(), GameScene.UPGRADE_MENU_START.add(GameScene.UPGRADE_MENU_SIZE.x / 2, 20));
+
+        layer.graphics().setFont(UPGRADE_DESCRIPTION_FONT);
+
+        int i = 0;
+        for (String line : upgrade.description().split("\n"))
+        {
+            layer.drawStringCentered(line, GameScene.UPGRADE_MENU_START.add(GameScene.UPGRADE_MENU_SIZE.x / 2, textMetrics.getHeight() + 15 + (descriptionMetrics.getHeight()/1.5) * i));
+            i++;
+        }
+
+        layer.graphics().setFont(UPGRADE_MONEY_FONT);
+
+        layer.drawStringCentered((int)upgrade.cost()+"$", GameScene.UPGRADE_MENU_START.add(GameScene.UPGRADE_MENU_SIZE.x / 2, textMetrics.getHeight() + 25 + (descriptionMetrics.getHeight()/1.5) * i));
     }
 
     public void renderUpgradePath(RenderLayer layer, UpgradePath path, int colum)
     {
         for (Upgrade upgrade : path.upgrades())
         {
+            if (upgrade.isActive())
+            {
+                layer.setColor(0x0000ffff);
+            }
+            if (upgrade.isUnlocked)
+            {
+                layer.setColor(0x00ff00ff);
+            }
+            else if (path.canBeActivated(upgrade.upgradeIndex) && upgrade.cost() < gameScene.money)
+            {
+                layer.setColor(0xffff00ff);
+            }
+            else if (upgrade.cost() > gameScene.money)
+            {
+                layer.setColor(0xff0000ff);
+            }
+            else
+            {
+                layer.setColor(0x101010ff);
+            }
+
+            layer.renderSprite(upgrade.sprite());
+            layer.drawRect(upgrade.sprite().position, upgrade.sprite().size, 5);
         }
     }
 }

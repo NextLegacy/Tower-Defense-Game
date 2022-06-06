@@ -16,7 +16,7 @@ public class Map
     public String name;
     public Sprite background;
     public ArrayList<GameObject> obstacles;
-    public Path path;
+    public Path path; // multiple paths could be implementet by using a private ArrayList<Path> and a getter, that alternates between the paths
     
     public Map(String name)
     {

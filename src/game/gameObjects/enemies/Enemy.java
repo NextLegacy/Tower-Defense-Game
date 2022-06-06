@@ -7,6 +7,7 @@ import engine.math.Vector;
 import engine.scene.CollisionGameObject;
 import engine.utils.Sprite;
 import engine.window.RenderLayer;
+import game.WaveManager;
 import game.scenes.GameScene;
 import game.scenes.Path;
 
@@ -24,6 +25,8 @@ public class Enemy extends CollisionGameObject
     protected Vector nextPoint;
     protected double lastPointDistance;
     
+    protected WaveManager waveManager;
+    
     protected static final Color HEALTH_COLOR_A = new Color(23, 196, 23);
     protected static final Color HEALTH_COLOR_B = new Color(196, 23, 23);
     protected static final Color HEALTH_COLOR_C = new Color(0, 0, 0);
@@ -31,13 +34,13 @@ public class Enemy extends CollisionGameObject
     protected static final int HEALTHBAR_HEIGHT = 5;
     protected static final int HEALTHBAR_DISTANCE = 5;
     
-    public Enemy()
+    public Enemy(int s)
     {
         super(1);
         
         // TODO: this belongs in the subclasses
         sprite = new Sprite("enemies/test_enemy");
-        speed = 200;
+        speed = s;
         maxHealth = 30;
         health = 30;
     }
@@ -51,6 +54,7 @@ public class Enemy extends CollisionGameObject
     
     public void damage(int amount)
     {
+        // TODO: increase money here
         health -= amount;
         if(health <= 0)
         {
@@ -71,9 +75,18 @@ public class Enemy extends CollisionGameObject
     }
     
     @Override
+    public void onDestroy() {
+        waveManager.removeEnemy(this);
+    }
+    
+    @Override
     public void onSceneChange() {
         super.onSceneChange();
-        if(scene instanceof GameScene) path = ((GameScene)scene).map.path;
+        if(scene instanceof GameScene)
+        {
+            path = ((GameScene)scene).map.path;
+            waveManager = ((GameScene)scene).waveManager;
+        }
     }
     
     @Override

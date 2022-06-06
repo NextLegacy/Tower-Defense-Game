@@ -72,16 +72,6 @@ public class Collisions
         }
     }
     
-    public ArrayList<CollisionGameObject> objectsInCircle(int collisionLayer, int x, int y, int radius)
-    {
-        ArrayList<CollisionGameObject> ret = new ArrayList<CollisionGameObject>();
-        for(CollisionGameObject obj : layers.get(collisionLayer))
-        {
-            if(inCircle(obj, x, y, radius)) ret.add(obj);
-        }
-        return ret;
-    }
-    
     public static boolean collision(CollisionGameObject a, CollisionGameObject b)
     {
         if(a == b) return false;
@@ -125,6 +115,16 @@ public class Collisions
     {
         return a.position.x < x + width / 2 && a.position.x > x - width / 2
             && a.position.y < y + height / 2 && a.position.y > y - height / 2;
+    }
+    
+    public ArrayList<CollisionGameObject> objectsInCircle(int collisionLayer, int x, int y, int radius)
+    {
+        ArrayList<CollisionGameObject> ret = new ArrayList<CollisionGameObject>();
+        for(CollisionGameObject obj : layers.get(collisionLayer))
+        {
+            if(inCircle(obj, x, y, radius)) ret.add(obj);
+        }
+        return ret;
     }
     
     public static boolean inCircle(CollisionGameObject a, int x, int y, int radius)

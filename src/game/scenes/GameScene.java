@@ -2,14 +2,15 @@ package game.scenes;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.KeyEvent;
 
 import engine.math.Vector;
 import engine.scene.Scene;
 import engine.scene.Collisions.LayerCollision;
 import engine.utils.Fonts;
 import engine.window.RenderLayer;
+import game.WaveManager;
 import game.gameObjects.DebugGameObject;
-import game.gameObjects.enemies.Enemy;
 import game.gameObjects.tower.TowerMenu;
 
 public class GameScene extends Scene
@@ -36,6 +37,7 @@ public class GameScene extends Scene
 
     private String mapName;
     public Map map;
+    public WaveManager waveManager;
 
     public double money = 2345;
     
@@ -55,21 +57,19 @@ public class GameScene extends Scene
         map = new Map(mapName);
         map.addGameObjects(this);
         
-        //addObject(new TestMouseCollider()); // debug
+        waveManager = new WaveManager(this);
         
-        addObject(new Enemy()); // debug
+        //addObject(new TestMouseCollider()); // debug
     }
     
-    double time = 0;
     @Override
-    public void update(double deltaTime)
-    {
-        time += deltaTime;
-        if (time >= 1)
+    public void update(double deltaTime) {
+        if(engine.getInputListener().key(KeyEvent.VK_S).isDown())
         {
-            addObject(new Enemy());
-            time = 0;
+            waveManager.startNextWave();
         }
+        
+        waveManager.update(deltaTime);
         super.update(deltaTime);
     }
     
@@ -77,7 +77,7 @@ public class GameScene extends Scene
     public void render(RenderLayer layer, double deltaTime) {
         if(layer.name() == "background")
             layer.renderSprite(map.background);
-
+        
         if (layer.is("debug"))
         {
             layer.graphics().setFont(MONEY_FONT);

@@ -19,10 +19,10 @@ public class HomingProjectile extends Projectile
     @Override
     public final void update(double deltaTime) 
     {
-        if (target.isNotActive())
-            destroy();
+        //if (target.isNotActive())
+        //    destroy();
         
-        velocity = target.position.sub(position).normalized().mul(deltaTime*150);
+        velocity = velocity.add(target.position.sub(position).normalized().mul(deltaTime*5));
         super.update(deltaTime);
     }
 

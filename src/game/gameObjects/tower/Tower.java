@@ -29,6 +29,8 @@ public abstract class Tower extends CollisionGameObject
         super(1);
         this.sprite = new Sprite("");
         this.upgradeManager = createUpgradeManager();
+
+        this.upgradeManager.setupSprites();
     }
 
     @Override
@@ -38,10 +40,11 @@ public abstract class Tower extends CollisionGameObject
     }
     
     protected void fire() { }
+
     protected abstract UpgradeManager createUpgradeManager();
 
     @Override
-    public final void update(double deltaTime)
+    public void update(double deltaTime)
     {
         sprite.position = position;
 
@@ -55,7 +58,6 @@ public abstract class Tower extends CollisionGameObject
 
         if (input.left().isClickedInBounds(sprite.position.sub(sprite.size.div(2)), sprite.size))
         {
-            System.out.println(input.left().downTime());
             gameScene.towerMenu.setSelectedTower(this);
         }
     }

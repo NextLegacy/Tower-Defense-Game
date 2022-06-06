@@ -35,6 +35,9 @@ public class TestTower extends Tower
 
         for (GameObject gameObject : gameObjects)
         {
+            if (gameObject.isNotActive())
+                continue;
+                
             if (gameObject instanceof Enemy)
             {
                 Enemy enemy = (Enemy)gameObject;

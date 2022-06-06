@@ -13,4 +13,9 @@ public class UpgradeManager
 
         this.UPGRADE_PATHS = upgradePaths;
     }
+
+    public void setupSprites()
+    {
+        
+    }
 }

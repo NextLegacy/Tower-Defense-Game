@@ -103,6 +103,8 @@ public class Engine extends Activateable
 
             Scene currentScene = null;
 
+            boolean sceneChanged = false;
+
             while(isActive())
             {
                 final long now = System.nanoTime();
@@ -135,6 +137,8 @@ public class Engine extends Activateable
                         currentScene.init();
                         
                         start();
+
+                        sceneChanged = true;
                     }
                     
                     update(TICK_INTERVAL_S);
@@ -143,6 +147,11 @@ public class Engine extends Activateable
                     deltaT--;
                 }
 
+                if (sceneChanged)
+                {
+                    sceneChanged = false;
+                    continue;
+                }
 
                 // After updates, engine might be deactivated, no need to continue
                 if (!isActive() || !getInputListener().isActive())

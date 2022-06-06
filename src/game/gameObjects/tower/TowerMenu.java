@@ -7,6 +7,7 @@ import engine.math.Vector;
 import engine.scene.GameObject;
 import engine.window.RenderLayer;
 import game.gameObjects.tower.towers.TestTower;
+import game.gameObjects.tower.upgrades.Upgrade;
 import game.gameObjects.tower.upgrades.UpgradePath;
 import game.scenes.GameScene;
 
@@ -64,7 +65,16 @@ public class TowerMenu extends GameObject
 
     public void setSelectedTower(Tower tower)
     {
-        if (this.selectedTower == tower)
+        if (this.selectedTower != null)
+            this.selectedTower.selected = false;
+        
+        this.selectedTower = tower;
+
+        if (this.selectedTower != null)
+            this.selectedTower.selected = true;
+
+        /*
+        if (tower != null && this.selectedTower == tower)
         {
             this.selectedTower = null;
             tower.selected = false;
@@ -73,9 +83,13 @@ public class TowerMenu extends GameObject
 
         if (this.selectedTower != null)
             this.selectedTower.selected = false;
-        
-        tower.selected = true;
-        this.selectedTower = tower;
+
+        if (tower != null)
+        {
+            tower.selected = true;
+            this.selectedTower = tower;   
+        }
+        */
     }
 
     @Override
@@ -100,18 +114,22 @@ public class TowerMenu extends GameObject
 
                     scene.addObject(placeableTowerPreview);
                     
+                    setSelectedTower(null);
+
                     break;
                 }
             }
         }
-        else
-        {
-            if (input.key(KeyEvent.VK_ESCAPE).isDown())
-            {
-                placeableTowerPreview.destroy();
 
-                return;
-            }
+        if (input.key(KeyEvent.VK_ESCAPE).isDown())
+        {
+            setSelectedTower(null);
+
+            if (placeableTowerPreview != null)
+                if (placeableTowerPreview.isActive())
+                    placeableTowerPreview.destroy();
+
+            return;
         }
     }
 
@@ -168,6 +186,8 @@ public class TowerMenu extends GameObject
 
     public void renderUpgradePath(RenderLayer layer, UpgradePath path, int colum)
     {
-        
+        for (Upgrade upgrade : path.upgrades())
+        {
+        }
     }
 }

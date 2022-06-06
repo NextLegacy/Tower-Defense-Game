@@ -22,14 +22,15 @@ public class GameScene extends Scene
     public void init() {
         // add menus and stuff
         addObject(new DebugGameObject());
-        // TODO: implement
+        addObject(new TowerMenu());
         
         // load map
         map = new Map(mapName);
         map.addGameObjects(this);
-
-        addObject(new TowerMenu());
-        addObject(new Enemy());
+        
+        //addObject(new TestMouseCollider()); // debug
+        
+        addObject(new Enemy()); // debug
     }
     
     double time = 0;

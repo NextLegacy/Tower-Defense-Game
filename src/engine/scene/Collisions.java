@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Collisions
 {
-    
     private final ArrayList<ArrayList<CollisionGameObject>> layers;
     private final LayerCollision[] layerCollisions;
     
@@ -44,7 +43,7 @@ public class Collisions
                     ArrayList<CollisionGameObject> collisionObjects = new ArrayList<CollisionGameObject>();
                     for(CollisionGameObject objB : layerB)
                     {
-                        if(objA != objB && boxCollision(objA, objB))
+                        if(objA != objB && collision(objA, objB))
                         {
                             collisionObjects.add(objB);
                         }
@@ -73,6 +72,47 @@ public class Collisions
         }
     }
     
+    public ArrayList<CollisionGameObject> objectsInCircle(int collisionLayer, int x, int y, int radius)
+    {
+        ArrayList<CollisionGameObject> ret = new ArrayList<CollisionGameObject>();
+        for(CollisionGameObject obj : layers.get(collisionLayer))
+        {
+            if(inCircle(obj, x, y, radius)) ret.add(obj);
+        }
+        return ret;
+    }
+    
+    public static boolean collision(CollisionGameObject a, CollisionGameObject b)
+    {
+        if(a == b) return false;
+        
+        if(!(a instanceof DiagonalCollisionGameObject) && !(b instanceof DiagonalCollisionGameObject))
+            return boxCollision(a, b);
+        else if((a instanceof DiagonalCollisionGameObject) && !(b instanceof DiagonalCollisionGameObject))
+            return diagonalBoxCollision((DiagonalCollisionGameObject) a, b);
+        else if(!(a instanceof DiagonalCollisionGameObject) && (b instanceof DiagonalCollisionGameObject))
+            return diagonalBoxCollision((DiagonalCollisionGameObject) b, a);
+        else
+            return false; // TODO: collisions of two diagonal objects (not important for now)
+    }
+    
+    public static boolean diagonalBoxCollision(DiagonalCollisionGameObject a, CollisionGameObject b)
+    {
+        if(a.horizontal)
+        {
+            return boxCollision(a, b)
+                && a.startPos.x - Math.abs(a.slope * b.size.y / 2) + a.slope * (b.position.y - a.startPos.y) - b.position.x - b.size.x / 2 <= 0
+                && b.position.x - b.size.x / 2  - Math.abs(a.slope * b.size.y / 2) + a.slope * (a.startPos.y - b.position.y) - a.height - a.startPos.x <= 0;
+        }
+        else
+        {
+            return boxCollision(a, b)
+                && a.startPos.y - Math.abs(a.slope * b.size.x / 2) + a.slope * (b.position.x - a.startPos.x) - b.position.y - b.size.y / 2 <= 0
+                && b.position.y - b.size.y / 2  - Math.abs(a.slope * b.size.x / 2) + a.slope * (a.startPos.x - b.position.x) - a.height - a.startPos.y <= 0;
+        }
+        
+    }
+    
     public static boolean boxCollision(CollisionGameObject a, CollisionGameObject b)
     {
         return b.position.x + b.size.x / 2 > a.position.x - a.size.x / 2
@@ -81,9 +121,24 @@ public class Collisions
             && b.position.y - b.size.y / 2 < a.position.y + a.size.y / 2;
     }
     
+    public static boolean inCenteredBox(CollisionGameObject a, int x, int y, int width, int height)
+    {
+        return a.position.x < x + width / 2 && a.position.x > x - width / 2
+            && a.position.y < y + height / 2 && a.position.y > y - height / 2;
+    }
+    
+    public static boolean inCircle(CollisionGameObject a, int x, int y, int radius)
+    {
+        return Math.sqrt((a.position.x - x) * (a.position.x - x) + (a.position.y - y) * (a.position.y - y)) < radius;
+    }
+    
+    public void setLayerCollisionActive(int layerCollision, boolean active)
+    {
+        layerCollisions[layerCollision].active = active;
+    }
+    
     public static class LayerCollision // der Name ist schlecht
     {
-        
         public final int a;
         public final int b;
         public boolean active;
@@ -95,7 +150,5 @@ public class Collisions
             active = startActive;
             
         }
-        
     }
-    
 }

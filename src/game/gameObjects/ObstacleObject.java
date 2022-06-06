@@ -1,21 +1,18 @@
 package game.gameObjects;
 
+import java.awt.Color;
+
 import engine.math.Vector;
 import engine.scene.CollisionGameObject;
-import engine.utils.Sprite;
 import engine.window.RenderLayer;
 
 public class ObstacleObject extends CollisionGameObject
 {
-    private Sprite sprite; // debug
-    
     public ObstacleObject(Vector position, Vector size)
     {
         super(0);
         this.position = position;
         this.size = size;
-        
-        sprite = new Sprite("box_20x20"); // debug
     }
     
     /**
@@ -35,11 +32,10 @@ public class ObstacleObject extends CollisionGameObject
     @Override
     public void render(RenderLayer layer, double deltaTime)
     {
-        if(layer.name() == "test")
+        if(layer.is("test"))
         {
-            sprite.position = position;//.sub(size.div(2));
-            sprite.size = size.clone();
-            layer.renderSprite(sprite);
+            layer.graphics().setColor(new Color(0, 0, 255));
+            layer.graphics().drawRect((int) (position.x - size.x / 2), (int) (position.y - size.y / 2), (int) size.x, (int) size.y);
         }
     }
 }

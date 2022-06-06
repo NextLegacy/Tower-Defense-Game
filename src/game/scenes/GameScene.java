@@ -12,6 +12,7 @@ import engine.window.RenderLayer;
 import game.WaveManager;
 import game.gameObjects.DebugGameObject;
 import game.gameObjects.tower.TowerMenu;
+import game.menu.CloseButton;
 
 public class GameScene extends Scene
 {
@@ -53,6 +54,7 @@ public class GameScene extends Scene
         // add menus and stuff
         addObject(new DebugGameObject());
         addObject(towerMenu = new TowerMenu());
+        addObject(new CloseButton());
         
         // load map
         map = new Map(mapName);

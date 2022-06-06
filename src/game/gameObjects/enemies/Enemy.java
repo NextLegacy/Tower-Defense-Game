@@ -54,10 +54,10 @@ public class Enemy extends CollisionGameObject
     
     public void damage(int amount)
     {
-        // TODO: increase money here
         health -= amount;
         if(health <= 0)
         {
+            ((GameScene) scene).money += maxHealth;
             destroy();
             onKill();
         }

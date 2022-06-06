@@ -1,5 +1,8 @@
 package game.gameObjects.tower;
 
+import java.awt.Color;
+import java.util.ArrayList;
+
 import engine.scene.CollisionGameObject;
 import engine.utils.Sprite;
 import engine.window.RenderLayer;
@@ -12,7 +15,7 @@ public class TowerPlaceablePreview<T extends Tower> extends CollisionGameObject
 
     private GameScene gameScene;
 
-    //Implement can be placed here
+    public boolean canBePlaced;
 
     public TowerPlaceablePreview(TowerPlaceable<T> towerPlaceable)
     {
@@ -26,6 +29,11 @@ public class TowerPlaceablePreview<T extends Tower> extends CollisionGameObject
     public void start() 
     {
         gameScene = (GameScene) scene;
+
+        size = sprite.size;
+
+        collisions.setLayerCollisionActive(0, true);
+        //collisions.setLayerCollisionActive(1, true);
     }
 
     @Override
@@ -33,7 +41,10 @@ public class TowerPlaceablePreview<T extends Tower> extends CollisionGameObject
     {
         position.lerp(
             sprite.position, 
-            input.mouse().position().clamp(towerPlaceable.towerSprite.size.div(2), GameScene.GAME_AREA_SIZE.sub(towerPlaceable.towerSprite.size.div(2))), //TODO: add Spritesize of Tower to clamp
+            input.mouse().position().clamp(
+                towerPlaceable.towerSprite.size.div(2), 
+                GameScene.GAME_AREA_SIZE.sub(towerPlaceable.towerSprite.size.div(2))
+            ),
             deltaTime * 15 
         );
 
@@ -50,6 +61,9 @@ public class TowerPlaceablePreview<T extends Tower> extends CollisionGameObject
             
             gameScene.addObject(tower);
 
+            collisions.setLayerCollisionActive(0, false);
+            //collisions.setLayerCollisionActive(1, false);
+
             destroy();
         }
     }
@@ -59,5 +73,23 @@ public class TowerPlaceablePreview<T extends Tower> extends CollisionGameObject
     {
         if (layer.is("debug"))
             layer.renderSpriteCentered(sprite);
+
+        if (canBePlaced)
+            layer.graphics().setColor(Color.green);
+        else
+            layer.graphics().setColor(Color.red);
+        
+        layer.fillRectCentered(sprite.position, sprite.size);
+    }
+
+    @Override
+    public void onCollision(ArrayList<CollisionGameObject> collisionObjects) 
+    {
+        System.out.println(collisionObjects.get(0));
+
+        if (collisionObjects.size() > 0)
+            canBePlaced = false;
+        else
+            canBePlaced = true;
     }
 }

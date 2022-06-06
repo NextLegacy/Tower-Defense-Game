@@ -79,11 +79,9 @@ public class TowerMenu extends GameObject
 
                 if (input.left().isClickedInBounds(placeableTower.towerInMenuSprite.position, GameScene.PLACEABLE_TOWER_IN_MENU_SIZE, 0.10))
                 {
-                    System.out.println("Tower selected");
-
                     placeableTowerPreview = new TowerPlaceablePreview<>(placeableTower);
 
-                    gameScene.addObject(placeableTowerPreview);
+                    scene.addObject(placeableTowerPreview);
                     
                     break;
                 }

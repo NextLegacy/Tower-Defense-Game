@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import engine.math.Vector;
 import engine.scene.CollisionGameObject;
 import engine.utils.Sprite;
+import engine.utils.Lambda.Func;
+import engine.utils.Lambda.Func0;
 import engine.window.RenderLayer;
 import game.gameObjects.enemies.Enemy;
 import game.scenes.GameScene;
@@ -20,10 +22,12 @@ public abstract class Projectile extends CollisionGameObject
     public Projectile(Sprite sprite, Vector position)
     {
         super(3);
-        this.sprite = sprite;
+
         this.position = position;
 
-        this.size = sprite.size;
+        this.sprite = sprite;
+
+        size = sprite.size;
 
         velocity = new Vector(0, 0);
     }
@@ -32,6 +36,9 @@ public abstract class Projectile extends CollisionGameObject
     public void update(double deltaTime)
     {
         position = position.add(velocity);
+
+        if (position.isOutOfBounds(GameScene.GAME_AREA_START.add(sprite.size.div(2)), GameScene.GAME_AREA_END.sub(sprite.size.div(2))))
+            destroy();
     }
 
     @Override
@@ -52,13 +59,16 @@ public abstract class Projectile extends CollisionGameObject
     public void onCollision(ArrayList<CollisionGameObject> collisionObjects) 
     {
         for (CollisionGameObject collisionObject : collisionObjects)
-        {
+        {   
+            if (isNotActive())
+                break;
+                
             if (collisionObject instanceof Enemy)
             {
-                onHitEnemy((Enemy)collisionObject);
-                
-                if (isNotActive())
-                    break;
+                Enemy enemy = (Enemy) collisionObject;
+
+                if (enemy.isActive())
+                    onHitEnemy((Enemy)collisionObject);
             }
         }    
     }

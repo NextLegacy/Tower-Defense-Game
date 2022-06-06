@@ -6,8 +6,9 @@ import engine.math.Vector;
 import engine.scene.CollisionGameObject;
 import engine.scene.GameObject;
 import engine.utils.Sprite;
+import engine.window.RenderLayer;
 import game.gameObjects.enemies.Enemy;
-import game.gameObjects.projectile.projectiles.OneWayProjectile;
+import game.gameObjects.projectile.projectiles.HomingProjectile;
 import game.gameObjects.tower.Tower;
 import game.gameObjects.tower.upgrades.Upgrade;
 import game.gameObjects.tower.upgrades.UpgradeManager;
@@ -16,17 +17,21 @@ import game.gameObjects.tower.upgrades.UpgradePathType;
 
 public class TestTower extends Tower
 {
+    private Enemy target;
+
     public TestTower()
     {
         super();
         this.range = 150;
-        this.fireRate = 0.01;
+        this.fireRate = 0.2;
     }
-    
+
     @Override
     protected void fire() 
     {
         ArrayList<CollisionGameObject> gameObjects = collisions.objectsInCircle(2, (int)position.x, (int)position.y, (int)range);
+
+        Enemy target = null;
 
         for (GameObject gameObject : gameObjects)
         {
@@ -34,9 +39,16 @@ public class TestTower extends Tower
             {
                 Enemy enemy = (Enemy)gameObject;
 
-                scene.addObject(new OneWayProjectile(new Sprite("").setSize(new Vector(10, 10)), position, enemy.position.sub(position).normalized()));
+                if (target == null)
+                    target = enemy;
+                else if (enemy.isFurtherThan(target))
+                    target = enemy;
             }
         }
+        if (target != null)
+        {
+            scene.addObject(new HomingProjectile(new Sprite("").setSize(new Vector(30, 30)), position, target));
+        } 
     }
 
     @Override

@@ -1,5 +1,6 @@
 package game.gameObjects.tower;
 
+import engine.math.Vector;
 import engine.scene.CollisionGameObject;
 import engine.utils.Sprite;
 import engine.window.RenderLayer;
@@ -13,8 +14,6 @@ public abstract class Tower extends CollisionGameObject
     public boolean selected = false;
 
     protected Sprite sprite;
-
-    protected boolean rotateTowardsEnemy = false;
 
     protected double range;
     protected double fireRate;
@@ -56,6 +55,11 @@ public abstract class Tower extends CollisionGameObject
         //layer.graphics().fillArc((int)(position.x/2), (int)(position.y/2), (int)range/2, (int)range/2, 0, 360);
 
         layer.renderSpriteCentered(sprite);
+    }
+
+    public void lookAt(Vector target)
+    {
+        sprite.rotation = target.sub(position).angle();
     }
 
     public GameScene gameScene() { return (GameScene) scene; }

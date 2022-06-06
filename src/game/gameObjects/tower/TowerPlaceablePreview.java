@@ -57,7 +57,7 @@ public class TowerPlaceablePreview<T extends Tower> extends CollisionGameObject
             Tower tower = towerPlaceable.createTower();
             tower.position = position;
             
-            gameScene.addObject(tower);
+            scene.addObject(tower);
 
             collisions.setLayerCollisionActive(0, false);
             collisions.setLayerCollisionActive(1, false);

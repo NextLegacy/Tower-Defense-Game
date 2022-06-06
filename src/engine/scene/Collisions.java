@@ -2,6 +2,8 @@ package engine.scene;
 
 import java.util.ArrayList;
 
+import engine.math.Vector;
+
 public class Collisions
 {
     private final ArrayList<ArrayList<CollisionGameObject>> layers;
@@ -100,7 +102,6 @@ public class Collisions
                 && a.startPos.y - Math.abs(a.slope * b.size.x / 2) + a.slope * (b.position.x - a.startPos.x) - b.position.y - b.size.y / 2 <= 0
                 && b.position.y - b.size.y / 2  - Math.abs(a.slope * b.size.x / 2) + a.slope * (a.startPos.x - b.position.x) - a.height - a.startPos.y <= 0;
         }
-        
     }
     
     public static boolean boxCollision(CollisionGameObject a, CollisionGameObject b)
@@ -117,7 +118,12 @@ public class Collisions
             && a.position.y < y + height / 2 && a.position.y > y - height / 2;
     }
     
-    public ArrayList<CollisionGameObject> objectsInCircle(int collisionLayer, int x, int y, int radius)
+    public ArrayList<CollisionGameObject> objectsInCircle(int collisionLayer, Vector center, double radius)
+    {
+        return objectsInCircle(collisionLayer, center.x, center.y, radius);
+    }
+    
+    public ArrayList<CollisionGameObject> objectsInCircle(int collisionLayer, double x, double y, double radius)
     {
         ArrayList<CollisionGameObject> ret = new ArrayList<CollisionGameObject>();
         for(CollisionGameObject obj : layers.get(collisionLayer))
@@ -127,7 +133,7 @@ public class Collisions
         return ret;
     }
     
-    public static boolean inCircle(CollisionGameObject a, int x, int y, int radius)
+    public static boolean inCircle(CollisionGameObject a, double x, double y, double radius)
     {
         return Math.sqrt((a.position.x - x) * (a.position.x - x) + (a.position.y - y) * (a.position.y - y)) < radius;
     }

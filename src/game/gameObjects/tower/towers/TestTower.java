@@ -6,7 +6,6 @@ import engine.math.Vector;
 import engine.scene.CollisionGameObject;
 import engine.scene.GameObject;
 import engine.utils.Sprite;
-import engine.window.RenderLayer;
 import game.gameObjects.enemies.Enemy;
 import game.gameObjects.projectile.projectiles.HomingProjectile;
 import game.gameObjects.tower.Tower;

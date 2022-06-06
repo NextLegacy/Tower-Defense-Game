@@ -32,6 +32,12 @@ public abstract class CollisionGameObject extends GameObject
         collisions.addObject(this, collisionLayer);
     }
     
+    @Override
+    public void onDestroy() {
+        collisions.removeObject(this, collisionLayer);
+        //collisions = null;
+    }
+    
     public void onCollision(ArrayList<CollisionGameObject> collisionObjects) { }
     
     public void onCollisionEnter() { } // onCollisionEnter / onCollisionExit is used for stard / end of a collision with any object(s) from the other collision layer

@@ -1,6 +1,7 @@
 package engine.scene;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import engine.Engine;
 import engine.scene.Collisions.LayerCollision;
@@ -13,12 +14,17 @@ public class Scene extends Activateable
     protected final Collisions collisions;
     
     protected Engine engine;
-
+    
+    private Stack<GameObject> newObjects;
+    private Stack<GameObject> removedObjects;
+    
     public Scene(int collisionLayerCount, LayerCollision[] layerCollisions)
     {
         deactivate();
         
-        gameObjects = new ArrayList<>();
+        gameObjects = new ArrayList<GameObject>();
+        removedObjects = new Stack<GameObject>();
+        newObjects = new Stack<GameObject>();
         
         // setup collisions
         collisions = new Collisions(collisionLayerCount, layerCollisions);
@@ -30,49 +36,65 @@ public class Scene extends Activateable
     
     public final void addObject(GameObject gameObject)
     {
-        gameObjects.add(gameObject);
-        gameObject.setScene(this.engine, this);
-        gameObject.activate();
-        
-        if(isActive()) 
-            gameObject.start();
+        newObjects.push(gameObject);
     }
     
     public final void removeObject(GameObject gameObject)
     {
-        gameObjects.remove(gameObject);
-        gameObject.setScene(this.engine, null);
+        removedObjects.push(gameObject);
     }
     
     public void start()
     {
         activate();
 
-        /*for(GameObject gameObject : gameObjects)
+        for(GameObject gameObject : gameObjects)
         {
             if(gameObject.isActive())
                 gameObject.start();
-        }*/ // TODO: fix ConcurrentModificationException
+        } // TODO: fix ConcurrentModificationException
         
-        for(int i = 0; i < gameObjects.size(); i++)
+        /*for(int i = 0; i < gameObjects.size(); i++)
         {
             if(gameObjects.get(i).isActive())
                 gameObjects.get(i).start();
-        }
+        }*/
     }
     
     public void update(double deltaTime)
     {
-        /*for(GameObject gameObject : gameObjects)
+        for(GameObject gameObject : gameObjects)
         {
             if(gameObject.isActive())
                 gameObject.update(deltaTime);
-        }*/ // TODO: fix ConcurrentModificationException
+        } // TODO: fix ConcurrentModificationException
         
-        for(int i = 0; i < gameObjects.size(); i++)
+        /*for(int i = 0; i < gameObjects.size(); i++)
         {
             if(gameObjects.get(i).isActive())
                 gameObjects.get(i).update(deltaTime);
+        }*/
+        
+        // add new game objects
+        while(!newObjects.empty())
+        {
+            GameObject g = newObjects.pop();
+            
+            gameObjects.add(g);
+            g.setScene(this.engine, this);
+            g.activate();
+            
+            if(isActive())
+                g.start();
+        }
+        
+        // remove destroyed game objects
+        while(!removedObjects.empty())
+        {
+            GameObject g = removedObjects.pop();
+            
+            gameObjects.remove(g);
+            g.setScene(this.engine, null);
         }
         
         // collisions

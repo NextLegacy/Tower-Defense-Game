@@ -40,7 +40,7 @@ public class DiagonalObstacleObject extends DiagonalCollisionGameObject
     @Override
     public void render(RenderLayer layer, double deltaTime)
     {
-        if(layer.is("test"))
+        if(layer.is("debug"))
         {
             if(horizontal)
             {

@@ -86,6 +86,7 @@ public class Enemy extends CollisionGameObject
         position = path.points[0].clone();
         pathIndex = 1;
         nextPoint = path.points[pathIndex];
+        sprite.rotation = nextPoint.sub(position).angle();
     }
     
     @Override
@@ -122,7 +123,7 @@ public class Enemy extends CollisionGameObject
     @Override
     public void render(RenderLayer layer, double deltaTime) {
         sprite.position = position.sub(sprite.size.div(2));
-        if(layer.name() == "test2")
+        if(layer.is("enemys"))
         {
             layer.renderSprite(sprite);
             

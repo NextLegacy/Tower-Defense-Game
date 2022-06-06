@@ -1,6 +1,5 @@
 package game.gameObjects.tower;
 
-import java.awt.Color;
 import java.util.ArrayList;
 
 import engine.scene.CollisionGameObject;

@@ -32,7 +32,7 @@ public class ObstacleObject extends CollisionGameObject
     @Override
     public void render(RenderLayer layer, double deltaTime)
     {
-        if(layer.is("test"))
+        if(layer.is("debug"))
         {
             layer.graphics().setColor(new Color(0, 0, 255));
             layer.graphics().drawRect((int) (position.x - size.x / 2), (int) (position.y - size.y / 2), (int) size.x, (int) size.y);

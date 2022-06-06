@@ -1,6 +1,7 @@
 package engine.scene;
 
 import java.util.ArrayList;
+import java.util.Stack;
 
 import engine.math.Vector;
 
@@ -8,6 +9,11 @@ public class Collisions
 {
     private final ArrayList<ArrayList<CollisionGameObject>> layers;
     private final LayerCollision[] layerCollisions;
+    
+    private Stack<CollisionGameObject> newObjects;
+    private Stack<Integer> newObjectLayers;
+    private Stack<CollisionGameObject> removedObjects;
+    private Stack<Integer> removedObjectLayers;
     
     /**
      * 
@@ -22,12 +28,24 @@ public class Collisions
             layers.add(new ArrayList<CollisionGameObject>());
         }
         
+        newObjects = new Stack<CollisionGameObject>();
+        newObjectLayers = new Stack<Integer>();
+        removedObjects = new Stack<CollisionGameObject>();
+        removedObjectLayers = new Stack<Integer>();
+        
         this.layerCollisions = layerCollisions;
     }
     
     public void addObject(CollisionGameObject o, int layer)
     {
-        layers.get(layer).add(o);
+        newObjects.push(o);
+        newObjectLayers.push(layer);
+    }
+    
+    public void removeObject(CollisionGameObject o, int layer)
+    {
+        removedObjects.push(o);
+        removedObjectLayers.push(layer);
     }
     
     public void collisionsUpdate()
@@ -45,7 +63,7 @@ public class Collisions
                     ArrayList<CollisionGameObject> collisionObjects = new ArrayList<CollisionGameObject>();
                     for(CollisionGameObject objB : layerB)
                     {
-                        if(objA != objB && collision(objA, objB))
+                        if(objA != objB /*&& objA.isActive() && objB.isActive()*/ && collision(objA, objB))
                         {
                             collisionObjects.add(objB);
                         }
@@ -71,6 +89,16 @@ public class Collisions
                     }
                 }
             }
+        }
+        
+        // add and remove objects to / from the layers
+        while(!newObjects.empty())
+        {
+            layers.get(newObjectLayers.pop()).add(newObjects.pop());
+        }
+        while(!removedObjects.empty())
+        {
+            layers.get(removedObjectLayers.pop()).remove(removedObjects.pop());
         }
     }
     
@@ -128,7 +156,7 @@ public class Collisions
         ArrayList<CollisionGameObject> ret = new ArrayList<CollisionGameObject>();
         for(CollisionGameObject obj : layers.get(collisionLayer))
         {
-            if(inCircle(obj, x, y, radius)) ret.add(obj);
+            if(obj.isActive() && inCircle(obj, x, y, radius)) ret.add(obj);
         }
         return ret;
     }
@@ -154,7 +182,6 @@ public class Collisions
             this.a = a;
             this.b = b;
             active = startActive;
-            
         }
     }
 }

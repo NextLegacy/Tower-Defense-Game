@@ -76,7 +76,7 @@ public class GameScene extends Scene
     
     @Override
     public void render(RenderLayer layer, double deltaTime) {
-        if(layer.name() == "background")
+        if(layer.is("background"))
             layer.renderSprite(map.background);
         
         if (layer.is("debug"))

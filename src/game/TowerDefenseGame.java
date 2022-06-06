@@ -1,7 +1,7 @@
 package game;
 
 import engine.Engine;
-import game.scenes.GameScene;
+import game.scenes.MainMenuScene;
 
 public final class TowerDefenseGame
 {
@@ -23,7 +23,7 @@ public final class TowerDefenseGame
 
         Engine engine = new Engine(1280, 720, 120, 60, layers);
         
-        engine.setActiveScene(new GameScene("test_map"));
+        engine.setActiveScene(new MainMenuScene());
         engine.activate();
     }
 

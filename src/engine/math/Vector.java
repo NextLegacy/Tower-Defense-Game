@@ -129,7 +129,9 @@ public class Vector
 
     public double angle()
     {
-        return y >= 0 ? Math.acos(x) : -Math.acos(x);
+        Vector n = normalized();
+
+        return n.y >= 0 ? Math.acos(n.x) : -Math.acos(n.x);
     }
     
     public double angleTo(Vector vec) 

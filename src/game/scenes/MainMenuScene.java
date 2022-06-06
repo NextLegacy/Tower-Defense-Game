@@ -19,7 +19,7 @@ public class MainMenuScene extends Scene
     {
         super(0, new LayerCollision[0]);
         
-        background = new Sprite("main_menu");
+        background = new Sprite("backgrounds/main_menu");
     }
     
     @Override

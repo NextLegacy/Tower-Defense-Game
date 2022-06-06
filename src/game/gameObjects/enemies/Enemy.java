@@ -117,7 +117,7 @@ public class Enemy extends CollisionGameObject
     
     protected void onPathEnd()
     {
-        // TODO: decrease scene health or add scene damage method
+        ((GameScene) scene).damage(health);
     }
     
     @Override

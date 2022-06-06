@@ -41,12 +41,16 @@ public class GameScene extends Scene
 
     public TowerMenu towerMenu;
 
-    public double money = 2345;
+    public double money;
+    public int health;
     
     public GameScene(String mapName)
     {
         super(4, new LayerCollision[] {new LayerCollision(1, 0, false), new LayerCollision(1, 1, false), new LayerCollision(3, 2, true)}); // collision layers: [map (obstacles), towers, enemies, projectiles]
         this.mapName = mapName;
+        
+        money = 1234567890;
+        health = 1;
     }
 
     @Override
@@ -60,9 +64,16 @@ public class GameScene extends Scene
         map = new Map(mapName);
         map.addGameObjects(this);
         
-        waveManager = new WaveManager(this);
+        waveManager = new WaveManager(this, engine);
         
         //addObject(new TestMouseCollider()); // debug
+    }
+    
+    public void damage(int amount)
+    {
+        health -= amount;
+        if(health <= 0)
+            engine.setActiveScene(new GameOverScene(false));
     }
     
     @Override
@@ -85,7 +96,10 @@ public class GameScene extends Scene
         {
             layer.graphics().setFont(MONEY_FONT);
             layer.graphics().setColor(Color.YELLOW);
-            layer.drawStringCentered((int)money+"$", MENU_AREA_START.add(MENU_AREA_SIZE.x / 2, 20));
+            layer.drawStringCentered((int)money+"$", MENU_AREA_START.add(MENU_AREA_SIZE.x / 2 + 20, 20));
+            layer.graphics().setColor(Color.RED);
+            layer.drawStringCentered(health + "♥", MENU_AREA_START.add(40, 20));
+            
         }
             
         super.render(layer, deltaTime);

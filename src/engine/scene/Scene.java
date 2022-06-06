@@ -59,13 +59,7 @@ public class Scene extends Activateable
         {
             gameObject.activate();
             gameObject.start();
-        } // TODO: fix ConcurrentModificationException
-        
-        /*for(int i = 0; i < gameObjects.size(); i++)
-        {
-            if(gameObjects.get(i).isActive())
-                gameObjects.get(i).start();
-        }*/
+        }
     }
     
     public void update(double deltaTime)
@@ -74,13 +68,7 @@ public class Scene extends Activateable
         {
             if(gameObject.isActive())
                 gameObject.update(deltaTime);
-        } // TODO: fix ConcurrentModificationException
-        
-        /*for(int i = 0; i < gameObjects.size(); i++)
-        {
-            if(gameObjects.get(i).isActive())
-                gameObjects.get(i).update(deltaTime);
-        }*/
+        }
         
         // add new game objects
         while(!newObjects.empty())

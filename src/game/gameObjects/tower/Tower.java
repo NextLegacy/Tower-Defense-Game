@@ -51,8 +51,9 @@ public abstract class Tower extends CollisionGameObject
         if (layer.isNot("debug"))
             return;
 
-        if (selected)
-            layer.graphics().fillArc((int)position.x, (int)position.y, (int)range, (int)range, 0, 360);
+        //if (selected)
+        layer.graphics().drawOval((int)(position.x-range), (int)(position.y-range), (int)range*2, (int)range*2);    
+        //layer.graphics().fillArc((int)(position.x/2), (int)(position.y/2), (int)range/2, (int)range/2, 0, 360);
 
         layer.renderSpriteCentered(sprite);
     }

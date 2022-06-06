@@ -52,8 +52,6 @@ public class TowerPlaceablePreview<T extends Tower> extends CollisionGameObject
 
         if (input.left().isDown() && canBePlaced)
         {
-            System.out.println(canBePlaced);
-
             gameScene.money -= towerPlaceable.cost;
 
             Tower tower = towerPlaceable.createTower();

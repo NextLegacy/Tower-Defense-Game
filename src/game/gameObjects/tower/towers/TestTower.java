@@ -2,6 +2,7 @@ package game.gameObjects.tower.towers;
 
 import java.util.ArrayList;
 
+import engine.math.Vector;
 import engine.scene.CollisionGameObject;
 import engine.scene.GameObject;
 import engine.utils.Sprite;
@@ -18,8 +19,8 @@ public class TestTower extends Tower
     public TestTower()
     {
         super();
-        this.range = 1000;
-        this.fireRate = 1;
+        this.range = 150;
+        this.fireRate = 0.01;
     }
     
     @Override
@@ -33,7 +34,7 @@ public class TestTower extends Tower
             {
                 Enemy enemy = (Enemy)gameObject;
 
-                gameScene().addObject(new OneWayProjectile(new Sprite(""), position, enemy.position));
+                scene.addObject(new OneWayProjectile(new Sprite("").setSize(new Vector(10, 10)), position, enemy.position.sub(position).normalized()));
             }
         }
     }

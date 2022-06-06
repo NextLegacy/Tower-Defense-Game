@@ -34,14 +34,22 @@ public class Scene extends Activateable
     
     public final void setEngine(Engine engine) { this.engine = engine; }
     
-    public final void addObject(GameObject gameObject)
+    public final void addObject(GameObject g)
     {
-        newObjects.push(gameObject);
+        g.setScene(this.engine, this);
+        g.activate();
+        
+        if(isActive())
+            g.start();
+        
+        newObjects.push(g);
     }
     
-    public final void removeObject(GameObject gameObject)
+    public final void removeObject(GameObject g)
     {
-        removedObjects.push(gameObject);
+        g.setScene(this.engine, null);
+        
+        removedObjects.push(g);
     }
     
     public void start()
@@ -79,22 +87,14 @@ public class Scene extends Activateable
         while(!newObjects.empty())
         {
             GameObject g = newObjects.pop();
-            
             gameObjects.add(g);
-            g.setScene(this.engine, this);
-            g.activate();
-            
-            if(isActive())
-                g.start();
         }
         
         // remove destroyed game objects
         while(!removedObjects.empty())
         {
             GameObject g = removedObjects.pop();
-            
             gameObjects.remove(g);
-            g.setScene(this.engine, null);
         }
         
         // collisions

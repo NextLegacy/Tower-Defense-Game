@@ -6,6 +6,7 @@ import engine.scene.Collisions.LayerCollision;
 import engine.utils.Sprite;
 import engine.window.RenderLayer;
 import game.gameObjects.DebugGameObject;
+import game.menu.CloseButton;
 import game.menu.MapButton;
 import game.menu.MapMetadata;
 import game.menu.StartButton;
@@ -18,7 +19,7 @@ public class MainMenuScene extends Scene
     {
         super(0, new LayerCollision[0]);
         
-        background = new Sprite("main_menu");
+        background = new Sprite("backgrounds/main_menu");
     }
     
     @Override
@@ -26,6 +27,7 @@ public class MainMenuScene extends Scene
     {
         addObject(new StartButton(new Vector(640, 360)));
         addObject(new DebugGameObject());
+        addObject(new CloseButton());
     }
     
     public void showMaps()

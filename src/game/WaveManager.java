@@ -3,8 +3,10 @@ package game;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import engine.Engine;
 import engine.utils.Lambda.Func0;
 import game.gameObjects.enemies.Enemy;
+import game.scenes.GameOverScene;
 import game.scenes.GameScene;
 
 public class WaveManager
@@ -14,15 +16,17 @@ public class WaveManager
     public boolean started;
     
     private GameScene scene;
+    private Engine engine;
     
     private ArrayList<Enemy> sceneEnemies;
     
     private static final HashMap<String, Func0<Enemy>> enemieTypes = getEnemies();
     private static final String[] waves = getWaves();
     
-    public WaveManager(GameScene scene)
+    public WaveManager(GameScene scene, Engine engine)
     {
         this.scene = scene;
+        this.engine = engine;
         waveNumber = 0;
         
         sceneEnemies = new ArrayList<Enemy>();
@@ -35,7 +39,7 @@ public class WaveManager
         waveNumber++;
         if(waveNumber >= waves.length)
         {
-            System.out.println("no more waves");
+            engine.setActiveScene(new GameOverScene(true));
             return;
         }
         
@@ -90,6 +94,11 @@ public class WaveManager
     {
         started = false;
         currentWave = null;
+        
+        if(waveNumber + 1 >= waves.length)
+        {
+            engine.setActiveScene(new GameOverScene(true));
+        }
     }
     
     private static HashMap<String, Func0<Enemy>> getEnemies()

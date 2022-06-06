@@ -18,7 +18,8 @@ public final class TowerDefenseGame
             "enemys",
             "towers",
             "ui",
-            "debug"
+            "debug",
+            "window"
         };
 
         Engine engine = new Engine(1280, 720, 120, 60, layers);

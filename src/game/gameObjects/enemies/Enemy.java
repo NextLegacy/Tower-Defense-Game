@@ -1,7 +1,6 @@
 package game.gameObjects.enemies;
 
 import java.awt.Color;
-import java.util.ArrayList;
 
 import engine.math.Vector;
 import engine.scene.CollisionGameObject;
@@ -36,7 +35,7 @@ public class Enemy extends CollisionGameObject
     
     public Enemy(int s)
     {
-        super(1);
+        super(2);
         
         // TODO: this belongs in the subclasses
         sprite = new Sprite("enemies/test_enemy");
@@ -63,16 +62,7 @@ public class Enemy extends CollisionGameObject
         }
     }
     
-    protected void onKill()
-    {
-        // explosion (for testing)
-        ArrayList<CollisionGameObject> e = collisions.objectsInCircle(1, (int) position.x, (int) position.y, 300);
-        for(CollisionGameObject o : e)
-        {
-            if(o instanceof Enemy && o.isActive())
-                ((Enemy) o).damage(10);
-        }
-    }
+    protected void onKill() { }
     
     @Override
     public void onDestroy() {
@@ -113,7 +103,6 @@ public class Enemy extends CollisionGameObject
             nextPoint = path.points[pathIndex];
             sprite.rotation = nextPoint.sub(position).normalized().angle();
             // TODO: maybe handle overshooting a point by moving past it to the next one in the same tick
-            damage(5); // debug
         }
         else
         {

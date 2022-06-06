@@ -49,7 +49,7 @@ public class TestTower extends Tower
         }
         if (target != null)
         {
-            scene.addObject(new HomingProjectile(new Sprite("").setSize(new Vector(30, 30)), position, target));
+            scene.addObject(new HomingProjectile(new Sprite("").setSize(new Vector(30, 30)), target, position, 5));
         } 
     }
 

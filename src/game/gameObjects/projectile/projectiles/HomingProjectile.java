@@ -9,20 +9,25 @@ import game.gameObjects.projectile.Projectile;
 public class HomingProjectile extends Projectile
 {
     private CollisionGameObject target;
-    
-    public HomingProjectile(Sprite sprite, Vector position, CollisionGameObject target)
+    private double speed;
+    Vector direction;
+
+    public HomingProjectile(Sprite sprite, CollisionGameObject target, Vector position, double speed)
     {
         super(sprite, position);
         this.target = target;
+        this.speed = speed;
+        this.direction = Vector.one();
     }
+
 
     @Override
     public final void update(double deltaTime) 
     {
-        //if (target.isNotActive())
-        //    destroy();
-        
-        velocity = velocity.add(target.position.sub(position).normalized().mul(deltaTime*5));
+        if (target.isActive())
+            direction = target.position.sub(position).normalized();
+
+        velocity = velocity.add(direction.mul(deltaTime * speed));
         super.update(deltaTime);
     }
 

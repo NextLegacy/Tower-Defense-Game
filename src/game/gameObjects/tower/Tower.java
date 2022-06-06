@@ -47,8 +47,6 @@ public abstract class Tower extends CollisionGameObject
     @Override
     public void update(double deltaTime)
     {
-        System.out.println(size);
-
         sprite.position = position;
 
         time += deltaTime;

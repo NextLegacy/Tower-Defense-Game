@@ -8,6 +8,18 @@ import game.gameObjects.tower.upgrades.UpgradePathType;
 
 public class TestTower extends Tower
 {
+    public TestTower()
+    {
+        super();
+        this.fireRate = 1;
+    }
+    
+    @Override
+    protected void fire() 
+    {
+        //System.out.println("fire");
+    }
+
     @Override
     protected UpgradeManager createUpgradeManager() 
     {

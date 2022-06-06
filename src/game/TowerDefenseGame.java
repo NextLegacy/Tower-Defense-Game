@@ -8,12 +8,17 @@ public final class TowerDefenseGame
     private static TowerDefenseGame towerDefenseGame;
     
     private TowerDefenseGame() { }
+
     public void start()
     {
         var layers = new String[] 
         {
-            "game",
+            "background",
+            "projectiles",
+            "enemys",
+            "towers",
             "ui",
+            "debug"
         };
 
         Engine engine = new Engine(1280, 720, 120, 60, layers);

@@ -130,19 +130,19 @@ public class InputListener extends InputAdapter
         if (e.getButton() == MouseEvent.BUTTON1)
         {
             LEFT.isDown = false;
-            LEFT.timeOnStart = 0.0d;
+            //LEFT.timeOnStart = 0.0d;
             return;
         }
         else if (e.getButton() == MouseEvent.BUTTON3)
         {
             RIGHT.isDown = false;
-            RIGHT.timeOnStart = 0.0d;
+            //RIGHT.timeOnStart = 0.0d;
             return;
         }
         else if (e.getButton() == MouseEvent.BUTTON2)
         {
             WHEEL.isDown = false;
-            WHEEL.timeOnStart = 0.0d;
+            //WHEEL.timeOnStart = 0.0d;
             return;
         }
     }
@@ -263,14 +263,14 @@ public class InputListener extends InputAdapter
 
         public boolean isClickedInArea(Vector from, Vector to, double maxHoldTime) 
         {
-            return isHoldInArea(from, to) &&
-                   downTime() < maxHoldTime;
+            return mouse().isInRange(from, to) &&
+                   (isUp() && downTime() <= maxHoldTime);
         }
 
         public boolean isClickedInBounds(Vector position, Vector size, double maxHoldTime) 
         {
-            return isHoldInBounds(position, size) &&
-                   downTime() < maxHoldTime;
+            return mouse().isInBounds(position, size) &&
+                   (isUp() && downTime() <= maxHoldTime);
         }
 
         public boolean isDown()     { return this.isDown; }

@@ -22,7 +22,7 @@ public class Sprite
     private AffineTransform transform;
     private AffineTransform centeredTransform;
 
-    public Sprite()
+    private Sprite()
     {
         position = Vector.zero();
         rotation = 0;
@@ -67,6 +67,23 @@ public class Sprite
     }
 
     public BufferedImage image() { return image; }
+
+    public Sprite deriveSprite()
+    {
+        Sprite sprite = new Sprite(image);
+
+        sprite.position = position.clone();
+        sprite.rotation = rotation;
+        sprite.size = size.clone();
+
+        return sprite;
+    }
+
+    public Sprite setPosition(Vector position) { this.position = position; return this; }
+
+    public Sprite setRotation(double rotation) { this.rotation = rotation; return this;}
+
+    public Sprite setSize(Vector size) { this.size = size; return this; }
 
     public AffineTransform transform()
     {

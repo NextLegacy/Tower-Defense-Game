@@ -33,10 +33,10 @@ public class Vector
     
     public Vector fill(double n) { return this.set(n, n); }
 
-    public Vector mul(Vector vec) {return new Vector(this.x * (vec.x), this.y * (vec.y)); }
-    public Vector div(Vector vec) {return new Vector(this.x / (vec.x), this.y / (vec.y)); }
-    public Vector add(Vector vec) {return new Vector(this.x + (vec.x), this.y + (vec.y)); }
-    public Vector sub(Vector vec) {return new Vector(this.x - (vec.x), this.y - (vec.y)); }
+    public Vector mul(Vector vec) { return new Vector(this.x * (vec.x), this.y * (vec.y)); }
+    public Vector div(Vector vec) { return new Vector(this.x / (vec.x), this.y / (vec.y)); }
+    public Vector add(Vector vec) { return new Vector(this.x + (vec.x), this.y + (vec.y)); }
+    public Vector sub(Vector vec) { return new Vector(this.x - (vec.x), this.y - (vec.y)); }
 
     public Vector mul(double n) { return new Vector(this.x * n, this.y * n); }
     public Vector div(double n) { return new Vector(this.x / n, this.y / n); }
@@ -98,8 +98,13 @@ public class Vector
 
     public boolean isInBounds(Vector position, Vector size)
     {
-        return this.isInRangeX(position.x - size.x / 2, position.x + size.x / 2) &&
-               this.isInRangeY(position.y - size.y / 2, position.y + size.y / 2);
+        return this.isInRangeX(position.x, position.x + size.x) &&
+               this.isInRangeY(position.y, position.y + size.y);
+    }
+
+    public boolean isOutOfBounds(Vector position, Vector size)
+    {
+        return !this.isInBounds(position, size);
     }
 
     public Vector inverse()

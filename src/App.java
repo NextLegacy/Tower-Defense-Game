@@ -2,7 +2,7 @@ import game.TowerDefenseGame;
 
 public class App 
 {
-    public void main(String[] args)
+    public static void main(String[] args)
     {
         TowerDefenseGame towerDefenseGame = TowerDefenseGame.getInstance();
 

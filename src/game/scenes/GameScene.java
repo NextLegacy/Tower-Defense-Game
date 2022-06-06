@@ -1,5 +1,6 @@
 package game.scenes;
 
+import engine.math.Vector;
 import engine.scene.Scene;
 import engine.scene.Collisions.LayerCollision;
 import engine.window.RenderLayer;
@@ -9,6 +10,23 @@ import game.gameObjects.tower.TowerMenu;
 
 public class GameScene extends Scene
 {
+    public final static Vector GAME_AREA_START = new Vector(0, 0);
+    public final static Vector GAME_AREA_END = new Vector(1000, 720);
+
+    public final static Vector GAME_AREA_SIZE = new Vector(1000, 720);
+    
+    public final static Vector MENU_AREA_START = new Vector(1000, 0);
+    public final static Vector MENU_AREA_SIZE = new Vector(280, 720);
+    
+    public final static Vector PLACEABLE_TOWER_SIZE = new Vector(60, 60);
+
+    public final static Vector PLACEABLE_TOWER_AREA_START = new Vector(1000, 0);
+    public final static Vector PLACEABLE_TOWER_AREA_SIZE = new Vector(280, 410);
+    
+    public final static Vector upgradeSize = new Vector(90, 90);
+    public final static Vector upgradeMenuBegin = new Vector(1010, 310);
+    public final static Vector upgradeMenuEnd = new Vector(260, 400);
+
     private String mapName;
     public Map map;
     

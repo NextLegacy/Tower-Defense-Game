@@ -67,6 +67,7 @@ public class Enemy extends CollisionGameObject
     
     @Override
     public void onDestroy() {
+        super.onDestroy();
         waveManager.removeEnemy(this);
     }
     
@@ -102,7 +103,7 @@ public class Enemy extends CollisionGameObject
                 return;
             }
             nextPoint = path.points[pathIndex];
-            sprite.rotation = nextPoint.sub(position).normalized().angle();
+            sprite.rotation = nextPoint.sub(position).angle();
             // TODO: maybe handle overshooting a point by moving past it to the next one in the same tick
         }
         else

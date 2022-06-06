@@ -2,7 +2,6 @@ package game.gameObjects.tower.upgrades;
 
 import engine.scene.Activateable;
 import engine.utils.Sprite;
-import engine.utils.Lambda.Action;
 import engine.utils.Lambda.Action1;
 
 public class Upgrade extends Activateable

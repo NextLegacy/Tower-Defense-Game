@@ -5,9 +5,15 @@ import engine.utils.Lambda.Func0;
 
 public class TowerPlaceable<T extends Tower>
 {
-    private final Sprite sprite;
+    public final Sprite sprite;
     
     private Func0<T> towerFactory;
+
+    public TowerPlaceable(Sprite sprite, Func0<T> towerFactory)
+    {
+        this.sprite = sprite;
+        this.towerFactory = towerFactory;
+    }
 
     public TowerPlaceable(String imageName, Func0<T> towerFactory)
     {
@@ -17,5 +23,5 @@ public class TowerPlaceable<T extends Tower>
 
     public Sprite sprite() { return sprite; }
 
-    public T creater() { return towerFactory.invoke(); }
+    public T createTower() { return towerFactory.invoke(); }
 }

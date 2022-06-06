@@ -1,5 +1,6 @@
 package game.gameObjects.tower;
 
+import engine.math.Vector;
 import engine.scene.CollisionGameObject;
 import engine.utils.Sprite;
 import engine.window.RenderLayer;
@@ -24,6 +25,7 @@ public abstract class Tower extends CollisionGameObject
     public Tower()
     {
         super(1);
+        this.sprite = new Sprite("");
         this.upgradeManager = createUpgradeManager();
     }
 
@@ -33,6 +35,9 @@ public abstract class Tower extends CollisionGameObject
     @Override
     public final void update(double deltaTime)
     {
+        sprite.position = position;
+        sprite.size = new Vector(60, 60);
+
         time += deltaTime;
 
         if (time >= fireRate)
@@ -43,9 +48,9 @@ public abstract class Tower extends CollisionGameObject
     }
 
     @Override
-    public void render(RenderLayer layer, double deltaTime) 
+    public void render(RenderLayer layer, double deltaTime)
     {
-        if (layer.isNot("towers"))
+        if (layer.isNot("debug"))
             return;
 
         if (selected)

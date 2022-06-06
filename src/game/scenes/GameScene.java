@@ -1,8 +1,12 @@
 package game.scenes;
 
+import java.awt.Color;
+import java.awt.Font;
+
 import engine.math.Vector;
 import engine.scene.Scene;
 import engine.scene.Collisions.LayerCollision;
+import engine.utils.Fonts;
 import engine.window.RenderLayer;
 import game.gameObjects.DebugGameObject;
 import game.gameObjects.enemies.Enemy;
@@ -10,25 +14,30 @@ import game.gameObjects.tower.TowerMenu;
 
 public class GameScene extends Scene
 {
-    public final static Vector GAME_AREA_START = new Vector(0, 0);
-    public final static Vector GAME_AREA_END = new Vector(1000, 720);
+    public static final Font MONEY_FONT = Fonts.get("[FONT NAME]", 25, Font.PLAIN);
 
-    public final static Vector GAME_AREA_SIZE = new Vector(1000, 720);
-    
-    public final static Vector MENU_AREA_START = new Vector(1000, 0);
-    public final static Vector MENU_AREA_SIZE = new Vector(280, 720);
-    
-    public final static Vector PLACEABLE_TOWER_SIZE = new Vector(60, 60);
 
-    public final static Vector PLACEABLE_TOWER_AREA_START = new Vector(1000, 0);
-    public final static Vector PLACEABLE_TOWER_AREA_SIZE = new Vector(280, 410);
+    public static final Vector GAME_AREA_START = new Vector(0, 0);
+    public static final Vector GAME_AREA_END = new Vector(1000, 720);
+
+    public static final Vector GAME_AREA_SIZE = new Vector(1000, 720);
     
-    public final static Vector upgradeSize = new Vector(90, 90);
-    public final static Vector upgradeMenuBegin = new Vector(1010, 310);
-    public final static Vector upgradeMenuEnd = new Vector(260, 400);
+    public static final Vector MENU_AREA_START = new Vector(1000, 0);
+    public static final Vector MENU_AREA_SIZE = new Vector(280, 720);
+    
+    public static final Vector PLACEABLE_TOWER_IN_MENU_SIZE = new Vector(60, 60);
+
+    public static final Vector PLACEABLE_TOWER_AREA_START = new Vector(1000, 0);
+    public static final Vector PLACEABLE_TOWER_AREA_SIZE = new Vector(280, 410);
+    
+    public static final Vector UPGRADE_SIZE = new Vector(90, 90);
+    public static final Vector UPGRADE_MENU_BEGIN = new Vector(1010, 310);
+    public static final Vector UPGRADE_MENU_END = new Vector(260, 400);
 
     private String mapName;
     public Map map;
+
+    public double money = 2345;
     
     public GameScene(String mapName)
     {
@@ -68,6 +77,14 @@ public class GameScene extends Scene
     public void render(RenderLayer layer, double deltaTime) {
         if(layer.name() == "background")
             layer.renderSprite(map.background);
+
+        if (layer.is("debug"))
+        {
+            layer.graphics().setFont(MONEY_FONT);
+            layer.graphics().setColor(Color.YELLOW);
+            layer.drawStringCentered((int)money+"$", MENU_AREA_START.add(MENU_AREA_SIZE.x / 2, 20));
+        }
+            
         super.render(layer, deltaTime);
     }
 }

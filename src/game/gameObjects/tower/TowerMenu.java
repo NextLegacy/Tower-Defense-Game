@@ -14,20 +14,28 @@ public class TowerMenu extends GameObject
 {
     public Tower selectedTower;
 
-    public TowerPlaceable<?> placeAbleTower;
-    public Sprite placeAbleTowerSprite;
+    public TowerPlaceablePreview<?> placeableTowerPreview;
 
     public TowerPlaceable<?>[] placeableTowers;
+
+    public GameScene gameScene;
 
     public TowerMenu()
     {
         this.placeableTowers = new TowerPlaceable[]
         {
-            new TowerPlaceable<TestTower>("testTower", TestTower::new),
-            new TowerPlaceable<TestTower>("testTower", TestTower::new),
-            new TowerPlaceable<TestTower>("testTower", TestTower::new),
-            new TowerPlaceable<TestTower>("testTower", TestTower::new),
-            new TowerPlaceable<TestTower>("testTower", TestTower::new),
+            new TowerPlaceable<TestTower>("testTower", 2345, TestTower::new),
+            new TowerPlaceable<TestTower>("testTower", 3245, TestTower::new),
+            new TowerPlaceable<TestTower>("testTower", 13, TestTower::new),
+            new TowerPlaceable<TestTower>("testTower", 234, TestTower::new),
+            new TowerPlaceable<TestTower>("testTower", 2314, TestTower::new),
+            new TowerPlaceable<TestTower>("testTower", 213, TestTower::new),
+            new TowerPlaceable<TestTower>("testTower", 234, TestTower::new),
+            new TowerPlaceable<TestTower>("testTower", 835, TestTower::new),
+            new TowerPlaceable<TestTower>("testTower", 548, TestTower::new),
+            new TowerPlaceable<TestTower>("testTower", 452, TestTower::new),
+            new TowerPlaceable<TestTower>("testTower", 272, TestTower::new),
+            new TowerPlaceable<TestTower>("testTower", 52725, TestTower::new),
         };
 
         setupTowers();
@@ -39,11 +47,10 @@ public class TowerMenu extends GameObject
         int y = 0;
         for (int i = 0; i < placeableTowers.length; i++)
         {
-            placeableTowers[i].sprite().size = GameScene.PLACEABLE_TOWER_SIZE;
-
-            placeableTowers[i].sprite().position = new Vector
+            placeableTowers[i].towerInMenuSprite.position = new Vector
             (
-                GameScene.MENU_AREA_START.x + 12.5 + (5 + GameScene.PLACEABLE_TOWER_SIZE.x) * x, GameScene.MENU_AREA_START.y + 20 + y * (placeableTowers[i].sprite().image().getHeight())
+                GameScene.MENU_AREA_START.x + 5 + x * (10 + GameScene.PLACEABLE_TOWER_IN_MENU_SIZE.x), 
+                GameScene.MENU_AREA_START.y + 35 + y * (35 + GameScene.PLACEABLE_TOWER_IN_MENU_SIZE.y)
             );
 
             x++;
@@ -56,19 +63,29 @@ public class TowerMenu extends GameObject
     }   
 
     @Override
+    public void start() 
+    {
+        this.gameScene = (GameScene) scene;
+    }
+
+    @Override
     public void update(double deltaTime) 
     {
-        if (placeAbleTower == null)
+        if (placeableTowerPreview == null || placeableTowerPreview.isNotActive())
         {
             for (TowerPlaceable<?> placeableTower : placeableTowers)
             {
-                if (input.left().isClickedInBounds(placeableTower.sprite().position, GameScene.PLACEABLE_TOWER_SIZE, 0.10))
+                if (gameScene.money < placeableTower.cost)
+                    continue;
+
+                if (input.left().isClickedInBounds(placeableTower.towerInMenuSprite.position, GameScene.PLACEABLE_TOWER_IN_MENU_SIZE, 0.10))
                 {
                     System.out.println("Tower selected");
 
-                    placeAbleTower = placeableTower;
-                    placeAbleTowerSprite = placeableTower.sprite().deriveSprite();
-                    placeAbleTowerSprite.position = GameScene.GAME_AREA_SIZE.div(2);
+                    placeableTowerPreview = new TowerPlaceablePreview<>(placeableTower);
+
+                    gameScene.addObject(placeableTowerPreview);
+                    
                     break;
                 }
             }
@@ -77,29 +94,9 @@ public class TowerMenu extends GameObject
         {
             if (input.key(KeyEvent.VK_ESCAPE).isDown())
             {
-                placeAbleTower = null;
-                placeAbleTowerSprite = null;
+                placeableTowerPreview.destroy();
 
                 return;
-            }
-
-            placeAbleTowerSprite.position.lerp(
-                placeAbleTowerSprite.position, 
-                input.mouse().position().clamp(Vector.zero(), GameScene.GAME_AREA_SIZE), //TODO: add Spritesize of Tower to clamp
-                deltaTime * 13 
-            );
-            
-            if (input.left().isDown())
-            {
-                System.out.println("Tower placed");
-
-                Tower tower = placeAbleTower.createTower();
-                tower.position = placeAbleTowerSprite.position;
-                
-                scene.addObject(tower);
-
-                placeAbleTower = null;
-                placeAbleTowerSprite = null;
             }
         }
     }
@@ -111,34 +108,38 @@ public class TowerMenu extends GameObject
 
         layer.graphics().setColor(new Color(0x4aa1fa));
 
-        renderTowerToPlace(layer);
         renderSelectionMenu(layer);
         renderUpgradeMenu(layer);
     }
 
-    public void renderTowerToPlace(RenderLayer layer)
-    {
-        if (placeAbleTowerSprite == null) 
-            return;
-    
-        layer.renderSpriteCentered(placeAbleTowerSprite);
-    }
-
     public void renderSelectionMenu(RenderLayer layer) 
     {
-        layer.graphics().setColor(new Color(0x4aa1fa));
+        layer.graphics().setColor(Color.gray);
         layer.fillRect(GameScene.MENU_AREA_START, GameScene.MENU_AREA_SIZE);
 
         for (int i = 0; i < placeableTowers.length; i++)
         {
             TowerPlaceable<?> placeableTower = placeableTowers[i];
-            layer.renderSprite(placeableTower.sprite());
+            layer.renderSprite(placeableTower.towerInMenuSprite);
+
+            layer.graphics().setFont(GameScene.MONEY_FONT.deriveFont(25f - (placeableTower.cost+"$").length()));
+
+            if (gameScene.money >= placeableTower.cost)
+            {
+                layer.graphics().setColor(Color.GREEN);
+            }
+            else
+            {
+                layer.graphics().setColor(Color.RED);
+            }
+            
+            layer.drawStringCentered((int)placeableTower.cost+"$", placeableTower.towerInMenuSprite.position.add(GameScene.PLACEABLE_TOWER_IN_MENU_SIZE.x / 2, GameScene.PLACEABLE_TOWER_IN_MENU_SIZE.y * 1.25));
         }
     }
 
     public void renderUpgradeMenu(RenderLayer layer) 
     {
         layer.graphics().setColor(new Color(0x8a8a8a));
-        layer.fillRect(GameScene.upgradeMenuBegin, GameScene.upgradeMenuEnd);
+        layer.fillRect(GameScene.UPGRADE_MENU_BEGIN, GameScene.UPGRADE_MENU_END);
     }
 }

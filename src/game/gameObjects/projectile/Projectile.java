@@ -23,20 +23,19 @@ public abstract class Projectile extends CollisionGameObject
         super(0);
         this.sprite = sprite;
         this.position = position;
-        this.velocity = new Vector(0, 0);
-
+        velocity = new Vector(0, 0);
     }
 
     @Override
     public void update(double deltaTime)
     {
-        this.position.add(velocity);
+        position.add(velocity);
 
-        if (this.position.isOutOfBounds(GameScene.GAME_AREA_END.mul(2).inverse(), GameScene.GAME_AREA_END.mul(2)))
-            this.destroy();
+        if (position.isOutOfBounds(GameScene.GAME_AREA_END.mul(2).inverse(), GameScene.GAME_AREA_END.mul(2)))
+            destroy();
 
-        this.sprite.position = this.position;
-        this.sprite.rotation = this.rotation;
+        sprite.position = position;
+        sprite.rotation = rotation;
     }
 
     @Override
@@ -58,6 +57,9 @@ public abstract class Projectile extends CollisionGameObject
             if (collisionObject instanceof Enemy)
             {
                 onHitEnemy((Enemy)collisionObject);
+                
+                if (isNotActive())
+                    break;
             }
         }    
     }

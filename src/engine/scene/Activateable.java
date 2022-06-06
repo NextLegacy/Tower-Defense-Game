@@ -24,4 +24,5 @@ public abstract class Activateable
     public void onDeactivate() { }
 
     public final boolean isActive() { return isActive; }
+    public final boolean isNotActive() { return !isActive; }
 }

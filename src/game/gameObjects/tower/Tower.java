@@ -36,7 +36,6 @@ public abstract class Tower extends CollisionGameObject
     public final void update(double deltaTime)
     {
         sprite.position = position;
-        sprite.size = new Vector(60, 60);
 
         time += deltaTime;
 

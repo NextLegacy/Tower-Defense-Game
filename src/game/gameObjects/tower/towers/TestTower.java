@@ -17,7 +17,7 @@ public class TestTower extends Tower
     @Override
     protected void fire() 
     {
-        //System.out.println("fire");
+        
     }
 
     @Override

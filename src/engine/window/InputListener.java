@@ -224,7 +224,7 @@ public class InputListener extends InputAdapter
             this.POSITION_NOW = Vector.zero();
         }
 
-        public Vector position() { return this.POSITION_BEFORE; }
+        public Vector position() { return this.POSITION_NOW.clone(); }
         public Vector speed()    { return this.POSITION_NOW.sub(this.POSITION_BEFORE); }
 
         public boolean isInRange(Vector from, Vector to)

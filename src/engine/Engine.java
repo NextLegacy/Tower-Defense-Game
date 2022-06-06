@@ -103,8 +103,6 @@ public class Engine extends Activateable
 
             Scene currentScene = null;
 
-            boolean sceneChanged = false;
-
             while(isActive())
             {
                 final long now = System.nanoTime();
@@ -133,8 +131,6 @@ public class Engine extends Activateable
                         
                         start();
 
-                        sceneChanged = true;
-
                         break;
                     }
                     
@@ -144,9 +140,8 @@ public class Engine extends Activateable
                     deltaT--;
                 }
 
-                if (sceneChanged)
+                if (currentScene != activeScene)
                 {
-                    sceneChanged = false;
                     continue;
                 }
 

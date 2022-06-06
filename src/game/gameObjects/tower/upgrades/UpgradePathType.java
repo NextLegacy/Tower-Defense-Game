@@ -11,6 +11,9 @@ public enum UpgradePathType
         (upgradePath, upgradeIndex) -> 
         {
             upgradePath.currentUpgradeIndex++;
+
+            if (upgradePath.currentUpgrade() != null)
+                upgradePath.currentUpgrade().activate();
         }
     ),
     ONLY_ONE
@@ -18,10 +21,13 @@ public enum UpgradePathType
         (upgradePath, upgradeIndex) -> true,
         (upgradePath, upgradeIndex) -> 
         {
-            if (upgradePath.currentUpgrade().isActive())
+            if (upgradePath.currentUpgrade() != null && upgradePath.currentUpgrade().isActive())
                 upgradePath.currentUpgrade().deactivate();
 
             upgradePath.currentUpgradeIndex = upgradeIndex;
+
+            if (upgradePath.currentUpgrade() != null)
+                upgradePath.currentUpgrade().activate();
         }
     ),
     FIRST_AND_ONLY_ONE
@@ -29,10 +35,32 @@ public enum UpgradePathType
         (upgradePath, upgradeIndex) -> (upgradePath.currentUpgradeIndex == -1 && upgradeIndex == 0) || upgradePath.currentUpgradeIndex >= 0,
         (upgradePath, upgradeIndex) -> 
         {
-            if (upgradePath.currentUpgrade().isActive() && upgradePath.currentUpgradeIndex < 0)
+            if (upgradePath.currentUpgradeIndex == -1)
+            {
+                upgradePath.currentUpgradeIndex = 0;
+                upgradePath.currentUpgrade().activate();
+            }
+
+            if (upgradeIndex > 0)
+            {
+                if (upgradePath.currentUpgrade() != null && upgradePath.currentUpgrade().isActive() && upgradePath.currentUpgrade().upgradeIndex != 0)
+                    upgradePath.currentUpgrade().deactivate();
+
+                upgradePath.currentUpgradeIndex = upgradeIndex;
+
+                if (upgradePath.currentUpgrade() != null)
+                    upgradePath.currentUpgrade().activate();
+            }
+
+            /*
+            if (upgradePath.currentUpgrade() != null && upgradePath.currentUpgrade().isActive() && upgradePath.currentUpgradeIndex > 0)
                 upgradePath.currentUpgrade().deactivate();
 
             upgradePath.currentUpgradeIndex = upgradeIndex;
+
+            if (upgradePath.currentUpgrade() != null)
+                upgradePath.currentUpgrade().activate();
+            */
         }
     ),
     ;

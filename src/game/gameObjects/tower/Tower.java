@@ -30,7 +30,7 @@ public abstract class Tower extends CollisionGameObject
         this.sprite = new Sprite("");
         this.upgradeManager = createUpgradeManager();
 
-        this.upgradeManager.setupSprites();
+        this.upgradeManager.setupUpgrade();
     }
 
     @Override

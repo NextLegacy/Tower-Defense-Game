@@ -18,6 +18,8 @@ public class Upgrade extends Activateable
     private Action1<Upgrade> activate;
     private Action1<Upgrade> deactivate;
     
+    public UpgradePath upgradePath;
+
     public Vector ui_position;
     public int upgradeIndex;
 
@@ -37,12 +39,22 @@ public class Upgrade extends Activateable
         this.deactivate = deactivate;
     }
 
+    public boolean canBeActivated(double money)
+    {
+        return (upgradePath.canBeActivated(upgradeIndex) && (money >= cost() || isUnlocked));
+    }
+
+    public void activateUpgrade()
+    {
+        upgradePath.activateUpgrade(upgradeIndex);
+    }
+
     public final String name() { return name; }
     public final String description() { return description; }
-    public final  double cost() { return cost; }
+    public final double cost() { return cost; }
 
     public final Sprite sprite() { return sprite; }
 
-    @Override public final void onActivate() { activate.invoke(this); }
+    @Override public final void onActivate() { isUnlocked = true; activate.invoke(this); }
     @Override public final void onDeactivate() { deactivate.invoke(this); }
 }

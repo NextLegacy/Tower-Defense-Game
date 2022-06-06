@@ -23,7 +23,7 @@ public class UpgradePath
     public UpgradePathType type() { return type; }
     public Upgrade[] upgrades() { return upgrades; }
 
-    public Upgrade currentUpgrade() { return upgrades[currentUpgradeIndex]; }
+    public Upgrade currentUpgrade() { return currentUpgradeIndex >= 0 && currentUpgradeIndex < upgrades.length ? upgrades[currentUpgradeIndex] : null; }
     public Upgrade getUpgrade(int upgradeIndex) { return upgrades[upgradeIndex]; }
 
     public boolean canBeActivated(int upgradeIndex)

@@ -21,7 +21,7 @@ public class TestTower extends Tower
         super();
         this.sprite = new Sprite("stein");
         this.range = 150;
-        this.fireRate = 0.05;
+        this.fireRate = 2;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class TestTower extends Tower
                     "faster", 
                     "does fire faster", 
                     10, 
-                    (upgrade) -> fireRate = 10,
+                    (upgrade) -> fireRate = 1,
                     Upgrade.NO_EFFECT
                 ),
                 new Upgrade(
@@ -71,7 +71,7 @@ public class TestTower extends Tower
                     "much_faster", 
                     "does fire way faster", 
                     100, 
-                    (upgrade) -> fireRate = 100,
+                    (upgrade) -> fireRate = 0.1,
                     Upgrade.NO_EFFECT
                 ),
                 new Upgrade(
@@ -79,7 +79,7 @@ public class TestTower extends Tower
                     "lightspeed", 
                     "most firerate in game", 
                     1000, 
-                    (upgrade) -> fireRate = 1000,
+                    (upgrade) -> fireRate = 0.01,
                     Upgrade.NO_EFFECT
                 )
             ),
@@ -131,6 +131,14 @@ public class TestTower extends Tower
                     "much_bullets", 
                     "does shoot way\nmore bullets at once", 
                     100, 
+                    Upgrade.NO_EFFECT,
+                    Upgrade.NO_EFFECT
+                ),
+                new Upgrade(
+                    "ulta bullets",
+                    "ultra_bullets", 
+                    "most damage in game", 
+                    1000, 
                     Upgrade.NO_EFFECT,
                     Upgrade.NO_EFFECT
                 ),

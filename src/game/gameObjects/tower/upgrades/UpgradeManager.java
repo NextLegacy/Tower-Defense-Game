@@ -17,15 +17,17 @@ public class UpgradeManager
         this.UPGRADE_PATHS = upgradePaths;
     }
 
-    public void setupSprites()
+    public void setupUpgrade()
     {
         for (int i = 0; i < UPGRADE_PATHS.length; i++)
         {
-            UpgradePath path = UPGRADE_PATHS[i];
+            UpgradePath upgradePath = UPGRADE_PATHS[i];
 
-            for (int j = 0; j < path.upgrades().length; j++)
+            for (int j = 0; j < upgradePath.upgrades().length; j++)
             {
-                Upgrade upgrade = path.upgrades()[j];
+                Upgrade upgrade = upgradePath.upgrades()[j];
+
+                upgrade.upgradePath = upgradePath;
 
                 upgrade.ui_position = new Vector
                 (

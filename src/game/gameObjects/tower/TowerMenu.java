@@ -107,8 +107,6 @@ public class TowerMenu extends GameObject
             }
         }
 
-        //boolean isAnySelected = false;
-
         if (selectedTower != null)
         for (UpgradePath upgradePath : selectedTower.upgradeManager.UPGRADE_PATHS)
         {
@@ -118,14 +116,20 @@ public class TowerMenu extends GameObject
                 {
                     selectedUpgrade = upgrade;
 
-                    //isAnySelected = true;
-
                     break;
                 }
             }
         }
 
-        //if (!isAnySelected)
+        if (selectedUpgrade != null)
+        {
+            if (selectedUpgrade.canBeActivated(gameScene.money))
+            if (input.left().isClickedInBounds(selectedUpgrade.sprite().position, GameScene.UPGRADE_BUTTON_SIZE))
+            {
+                selectedUpgrade.activateUpgrade();
+            }
+        }
+
         if (input.mouse().position().isOutOfBounds(GameScene.UPGRADE_MENU_START, GameScene.UPGRADE_MENU_SIZE))
             selectedUpgrade = null;
 
@@ -177,9 +181,6 @@ public class TowerMenu extends GameObject
 
     public void renderUpgradeMenu(RenderLayer layer) 
     {
-        //layer.graphics().setColor(new Color(0x8a8a8a));
-        //layer.fillRect(GameScene.UPGRADE_MENU_START, GameScene.UPGRADE_MENU_SIZE);
-
         if (selectedTower == null)
             return;
         
@@ -189,6 +190,8 @@ public class TowerMenu extends GameObject
             renderUpgradePath(layer, upgradePath, ++colum);
         }
 
+        layer.graphics().setColor(Color.black);
+        
         if (selectedUpgrade != null)
         {
             renderUpgradeDescription(layer, selectedUpgrade);
@@ -221,9 +224,11 @@ public class TowerMenu extends GameObject
             i++;
         }
 
+        String cost = upgrade.isUnlocked ? "Unlocked" : ((int)upgrade.cost() + "$");
+
         layer.graphics().setFont(UPGRADE_MONEY_FONT);
 
-        layer.drawStringCentered((int)upgrade.cost()+"$", GameScene.UPGRADE_MENU_START.add(GameScene.UPGRADE_MENU_SIZE.x / 2, textMetrics.getHeight() + 25 + (descriptionMetrics.getHeight()/1.5) * i));
+        layer.drawStringCentered(cost, GameScene.UPGRADE_MENU_START.add(GameScene.UPGRADE_MENU_SIZE.x / 2, textMetrics.getHeight() + 25 + (descriptionMetrics.getHeight()/1.5) * i));
     }
 
     public void renderUpgradePath(RenderLayer layer, UpgradePath path, int colum)
@@ -234,7 +239,7 @@ public class TowerMenu extends GameObject
             {
                 layer.setColor(0x0000ffff);
             }
-            if (upgrade.isUnlocked)
+            else if (upgrade.isUnlocked)
             {
                 layer.setColor(0x00ff00ff);
             }

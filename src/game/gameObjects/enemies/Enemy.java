@@ -42,6 +42,7 @@ public class Enemy extends CollisionGameObject
         speed = s;
         maxHealth = 30;
         health = 30;
+        size = sprite.size.clone();
     }
     
     public boolean isFurtherThan(Enemy b)

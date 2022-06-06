@@ -5,15 +5,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import engine.math.Vector;
+import engine.scene.GameObject;
 import engine.utils.ResourceManager;
 import engine.utils.Sprite;
+import game.gameObjects.DiagonalObstacleObject;
 import game.gameObjects.ObstacleObject;
 
 public class Map
 {
     public String name;
     public Sprite background;
-    public ArrayList<ObstacleObject> obstacles;
+    public ArrayList<GameObject> obstacles;
     public Path path;
     
     public Map(String name)
@@ -28,12 +30,13 @@ public class Map
         try
         {
             ArrayList<Vector> pathPoints = new ArrayList<Vector>();
-            obstacles = new ArrayList<ObstacleObject>();
+            obstacles = new ArrayList<GameObject>();
             
             String line;
             reader = ResourceManager.getReader("maps", name);
             while((line = reader.readLine()) != null)
             {
+                if(line == "") continue;
                 try
                 {
                     String[] parts = line.split(" ");
@@ -48,13 +51,25 @@ public class Map
                             break;
                         
                         case "o":
-                            Vector pointA = new Vector(Double.parseDouble(parts[1]), Double.parseDouble(parts[2]));
-                            Vector pointB = new Vector(Double.parseDouble(parts[3]), Double.parseDouble(parts[4]));
-                            obstacles.add(ObstacleObject.fromPoints(pointA, pointB));
+                            Vector pointA = new Vector(Double.parseDouble(parts[2]), Double.parseDouble(parts[3]));
+                            Vector pointB = new Vector(Double.parseDouble(parts[4]), Double.parseDouble(parts[5]));
+                            switch(parts[1])
+                            {
+                                case "b":
+                                    obstacles.add(ObstacleObject.fromPoints(pointA, pointB));
+                                    break;
+                                case "h":
+                                    obstacles.add(DiagonalObstacleObject.fromPoints(true, pointA, pointB, Double.parseDouble(parts[6])));
+                                    break;
+                                case "v":
+                                    obstacles.add(DiagonalObstacleObject.fromPoints(false, pointA, pointB, Double.parseDouble(parts[6])));
+                                    break;
+                                default:
+                                    throw new Exception("Invalid map file format!");
+                            }
                             break;
                         
-                        default:
-                            throw new Exception("Invalid map file format!");
+                        // default: line is a comment
                     }
                 }
                 catch(Exception e)
@@ -81,7 +96,7 @@ public class Map
     // the obstacles are GameObjects and must be added to the Scene
     public void addGameObjects(GameScene scene)
     {
-        for(ObstacleObject g : obstacles)
+        for(GameObject g : obstacles)
         {
             scene.addObject(g);
         }

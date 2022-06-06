@@ -1,6 +1,7 @@
 package game.gameObjects.enemies;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import engine.math.Vector;
 import engine.scene.CollisionGameObject;
@@ -41,25 +42,37 @@ public class Enemy extends CollisionGameObject
         health = 30;
     }
     
-    /*public boolean isFurtherThan(Enemy b)
+    public boolean isFurtherThan(Enemy b)
     {
-        
-    }*/
+        if(pathIndex > b.pathIndex) return true;
+        if(pathIndex == b.pathIndex && lastPointDistance > b.lastPointDistance) return true;
+        return false;
+    }
     
     public void damage(int amount)
     {
         health -= amount;
         if(health <= 0)
         {
-            onKill();
             destroy();
+            onKill();
         }
     }
     
-    protected void onKill() { }
+    protected void onKill()
+    {
+        // explosion (for testing)
+        ArrayList<CollisionGameObject> e = collisions.objectsInCircle(1, (int) position.x, (int) position.y, 300);
+        for(CollisionGameObject o : e)
+        {
+            if(o instanceof Enemy && o.isActive())
+                ((Enemy) o).damage(10);
+        }
+    }
     
     @Override
     public void onSceneChange() {
+        super.onSceneChange();
         if(scene instanceof GameScene) path = ((GameScene)scene).map.path;
     }
     
@@ -119,6 +132,7 @@ public class Enemy extends CollisionGameObject
             layer.graphics().fillRect(x + healthbarProgress, y, HEALTHBAR_WIDTH - healthbarProgress, HEALTHBAR_HEIGHT);
             layer.graphics().setColor(HEALTH_COLOR_C);
             layer.graphics().drawRect(x - 1, y - 1, HEALTHBAR_WIDTH + 1, HEALTHBAR_HEIGHT + 1);
+            // TODO: maybe show <health> / <maxhelath> as text
         }
     }
 }

@@ -51,8 +51,8 @@ public class GameScene extends Scene
         super(4, new LayerCollision[] {new LayerCollision(1, 0, false), new LayerCollision(1, 1, false), new LayerCollision(3, 2, true)}); // collision layers: [map (obstacles), towers, enemies, projectiles]
         this.mapName = mapName;
         
-        money = 1234567890;
-        health = 1;
+        money = 500;
+        health = 200;
     }
 
     @Override

@@ -31,7 +31,7 @@ public class GameScene extends Scene
     public static final Vector PLACEABLE_TOWER_IN_MENU_SIZE = new Vector(60, 60);
 
     public static final Vector PLACEABLE_TOWER_AREA_START = new Vector(1000, 0);
-    public static final Vector PLACEABLE_TOWER_AREA_SIZE = new Vector(280, 410);
+    public static final Vector PLACEABLE_TOWER_AREA_SIZE = new Vector(280, 310);
     
     public static final Vector UPGRADE_BUTTON_SIZE = new Vector(60, 60);
     public static final Vector UPGRADE_MENU_START = new Vector(1010, 310);

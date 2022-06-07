@@ -18,29 +18,30 @@ public class TowerMenu extends GameObject
     public TowerPlaceablePreview<?> placeableTowerPreview;
     
     public TowerPlaceable<?>[] placeableTowers;
+    public TowerPlaceable<?> mouseOverTowerPlaceable;
     
     public GameScene gameScene;
     
     private Tower selectedTower;
     
-    private Upgrade selectedUpgrade;
+    private Upgrade mouseOverUpgrade;
 
     public TowerMenu()
     {
         this.placeableTowers = new TowerPlaceable[]
         {
-            new TowerPlaceable<TestTower>("stein", 2345, TestTower::new),
-            new TowerPlaceable<TestTower>("marker", 3245, TestTower::new),
-            new TowerPlaceable<TestTower>("testTower", 13, TestTower::new),
-            new TowerPlaceable<TestTower>("box_20x20", 234, TestTower::new),
-            new TowerPlaceable<TestTower>("testTower", 2314, TestTower::new),
-            new TowerPlaceable<TestTower>("testTower", 213, TestTower::new),
-            new TowerPlaceable<TestTower>("testTower", 234, TestTower::new),
-            new TowerPlaceable<TestTower>("testTower", 835, TestTower::new),
-            new TowerPlaceable<TestTower>("testTower", 548, TestTower::new),
-            new TowerPlaceable<TestTower>("testTower", 452, TestTower::new),
-            new TowerPlaceable<TestTower>("testTower", 272, TestTower::new),
-            new TowerPlaceable<TestTower>("testTower", 52725, TestTower::new),
+            new TowerPlaceable<TestTower>("Peter", "ist der Peter", 2345, "stein", TestTower::new),
+            new TowerPlaceable<TestTower>("Hildegard", "Hildegart mein Name", 3245, "marker", TestTower::new),
+            new TowerPlaceable<TestTower>("Spongebob", "Wer wohnt in einer Ananas\nganz tiem im Meer", 13, "testTower", TestTower::new),
+            new TowerPlaceable<TestTower>("Köln", "Ganz in der\nnähe von Deutschland", 234, "box_20x20", TestTower::new),
+            new TowerPlaceable<TestTower>("Steini", "Mr Stein", 2314, "testTower", TestTower::new),
+            new TowerPlaceable<TestTower>("Camper Joè", "Auch gennant:\nVercampter Joè", 213, "testTower", TestTower::new),
+            new TowerPlaceable<TestTower>("Fortnite", "FORTNITE", 234, "testTower", TestTower::new),
+            new TowerPlaceable<TestTower>("Minecraft", "BlockSchlacht", 835, "testTower", TestTower::new),
+            new TowerPlaceable<TestTower>("Salzburg", "ungesüßt", 548, "testTower", TestTower::new),
+            new TowerPlaceable<TestTower>("Nochmal Peter", "ist wieder der Peter", 452, "testTower", TestTower::new),
+            new TowerPlaceable<TestTower>("Patrick Star", "Spongebobs bester Freund", 272, "testTower", TestTower::new),
+            new TowerPlaceable<TestTower>("King julien", "Der allbekannte\nKönig King Julien der III", 52725, "testTower", TestTower::new),
         };
 
         setupTowers();
@@ -91,20 +92,26 @@ public class TowerMenu extends GameObject
         {
             for (TowerPlaceable<?> placeableTower : placeableTowers)
             {
-                if (gameScene.money < placeableTower.cost)
-                    continue;
-
-                if (input.left().isClickedInBounds(placeableTower.towerInMenuSprite.position, GameScene.PLACEABLE_TOWER_IN_MENU_SIZE))
+                if (input.mouse().isInBounds(placeableTower.towerInMenuSprite.position, GameScene.PLACEABLE_TOWER_IN_MENU_SIZE))
                 {
-                    placeableTowerPreview = new TowerPlaceablePreview<>(placeableTower);
-
-                    scene.addObject(placeableTowerPreview);
-                    
-                    setSelectedTower(null);
-
+                    mouseOverTowerPlaceable = placeableTower;
                     break;
                 }
             }
+        }
+
+        if (mouseOverTowerPlaceable != null)
+            if (!input.mouse().isInBounds(GameScene.PLACEABLE_TOWER_AREA_START, GameScene.PLACEABLE_TOWER_AREA_SIZE)) 
+                mouseOverTowerPlaceable = null;
+
+        else if (mouseOverTowerPlaceable != null && input.left().isClicked() && gameScene.money >= mouseOverTowerPlaceable.cost)
+        {
+            placeableTowerPreview = new TowerPlaceablePreview<>(mouseOverTowerPlaceable);
+            
+            scene.addObject(placeableTowerPreview);
+            
+            mouseOverTowerPlaceable = null;
+            setSelectedTower(null);
         }
 
         if (selectedTower != null)
@@ -114,24 +121,24 @@ public class TowerMenu extends GameObject
             {
                 if (input.mouse().isInBounds(upgrade.sprite().position, GameScene.UPGRADE_BUTTON_SIZE))
                 {
-                    selectedUpgrade = upgrade;
+                    mouseOverUpgrade = upgrade;
 
                     break;
                 }
             }
         }
 
-        if (selectedUpgrade != null)
+        if (mouseOverUpgrade != null)
         {
-            if (selectedUpgrade.canBeActivated(gameScene.money))
-            if (input.left().isClickedInBounds(selectedUpgrade.sprite().position, GameScene.UPGRADE_BUTTON_SIZE))
+            if (mouseOverUpgrade.canBeActivated(gameScene.money))
+            if (input.left().isClickedInBounds(mouseOverUpgrade.sprite().position, GameScene.UPGRADE_BUTTON_SIZE))
             {
-                selectedUpgrade.activateUpgrade();
+                mouseOverUpgrade.activateUpgrade();
             }
         }
 
         if (input.mouse().position().isOutOfBounds(GameScene.UPGRADE_MENU_START, GameScene.UPGRADE_MENU_SIZE))
-            selectedUpgrade = null;
+            mouseOverUpgrade = null;
 
         if (input.key(KeyEvent.VK_ESCAPE).isDown())
         {
@@ -151,7 +158,10 @@ public class TowerMenu extends GameObject
         layer.graphics().setColor(new Color(0x4aa1fa));
 
         renderSelectionMenu(layer);
-        renderUpgradeMenu(layer);
+        if (mouseOverTowerPlaceable != null)
+            renderTowerPlaceableDetails(layer);
+        else
+            renderUpgradeMenu(layer);
     }
 
     public void renderSelectionMenu(RenderLayer layer) 
@@ -179,6 +189,37 @@ public class TowerMenu extends GameObject
         }
     }
 
+    private Font TEXT_FONT = GameScene.TEXT_FONT.deriveFont(25f);
+    private Font DESCRIPTION_FONT = GameScene.DESCRIPTION_FONT.deriveFont(19f);
+    private Font MONEY_FONT = GameScene.MONEY_FONT.deriveFont(20f);
+
+    public void renderTowerPlaceableDetails(RenderLayer layer) 
+    {
+        layer.graphics().setColor(Color.black);
+        
+        FontMetrics textMetrics = layer.getMetrics(TEXT_FONT.deriveFont(30f));
+        FontMetrics descriptionMetrics = layer.getMetrics(DESCRIPTION_FONT);
+
+        layer.graphics().setFont(TEXT_FONT.deriveFont(30f));
+        layer.drawStringCentered(mouseOverTowerPlaceable.name, GameScene.UPGRADE_MENU_START.add(GameScene.UPGRADE_MENU_SIZE.x / 2, 50));
+
+        layer.graphics().setFont(DESCRIPTION_FONT);
+
+        int i = 0;
+        for (String line : mouseOverTowerPlaceable.description.split("\n"))
+        {
+            layer.drawStringCentered(line, GameScene.UPGRADE_MENU_START.add(GameScene.UPGRADE_MENU_SIZE.x / 2, textMetrics.getHeight() + 60 + (descriptionMetrics.getHeight()/1.5) * i));
+            i++;
+        }
+
+        String cost = (int)mouseOverTowerPlaceable.cost + "$";
+
+        layer.graphics().setFont(MONEY_FONT.deriveFont(25f));
+
+        layer.drawStringCentered(cost, GameScene.UPGRADE_MENU_START.add(GameScene.UPGRADE_MENU_SIZE.x / 2, textMetrics.getHeight() + 80 + (descriptionMetrics.getHeight()/1.5) * i));
+    
+    }
+
     public void renderUpgradeMenu(RenderLayer layer) 
     {
         if (selectedTower == null)
@@ -192,30 +233,26 @@ public class TowerMenu extends GameObject
 
         layer.graphics().setColor(Color.black);
         
-        if (selectedUpgrade != null)
+        if (mouseOverUpgrade != null)
         {
-            renderUpgradeDescription(layer, selectedUpgrade);
+            renderUpgradeDescription(layer, mouseOverUpgrade);
         } else
         {
-            layer.graphics().setFont(UPGRADE_TEXT_FONT.deriveFont(40f));
+            layer.graphics().setFont(TEXT_FONT.deriveFont(40f));
             layer.drawStringCentered("Upgrades", GameScene.UPGRADE_MENU_START.add(GameScene.UPGRADE_MENU_SIZE.x / 2, 55));
         }
     }
 
-    private Font UPGRADE_TEXT_FONT = GameScene.TEXT_FONT.deriveFont(25f);
-    private Font UPGRADE_DESCRIPTION_FONT = GameScene.DESCRIPTION_FONT.deriveFont(17f);
-    private Font UPGRADE_MONEY_FONT = GameScene.MONEY_FONT.deriveFont(20f);
-
     public void renderUpgradeDescription(RenderLayer layer, Upgrade upgrade)
     {
-        layer.graphics().setFont(UPGRADE_TEXT_FONT);
+        FontMetrics textMetrics = layer.getMetrics(TEXT_FONT);
+        FontMetrics descriptionMetrics = layer.getMetrics(DESCRIPTION_FONT);
         
-        FontMetrics textMetrics = layer.getMetrics(UPGRADE_TEXT_FONT);
-        FontMetrics descriptionMetrics = layer.getMetrics(UPGRADE_DESCRIPTION_FONT);
+        layer.graphics().setFont(TEXT_FONT);
 
         layer.drawStringCentered(upgrade.name(), GameScene.UPGRADE_MENU_START.add(GameScene.UPGRADE_MENU_SIZE.x / 2, 20));
 
-        layer.graphics().setFont(UPGRADE_DESCRIPTION_FONT);
+        layer.graphics().setFont(DESCRIPTION_FONT);
 
         int i = 0;
         for (String line : upgrade.description().split("\n"))
@@ -226,7 +263,7 @@ public class TowerMenu extends GameObject
 
         String cost = upgrade.isUnlocked ? "Unlocked" : ((int)upgrade.cost() + "$");
 
-        layer.graphics().setFont(UPGRADE_MONEY_FONT);
+        layer.graphics().setFont(MONEY_FONT);
 
         layer.drawStringCentered(cost, GameScene.UPGRADE_MENU_START.add(GameScene.UPGRADE_MENU_SIZE.x / 2, textMetrics.getHeight() + 25 + (descriptionMetrics.getHeight()/1.5) * i));
     }

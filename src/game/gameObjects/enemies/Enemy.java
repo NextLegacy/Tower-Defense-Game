@@ -10,7 +10,7 @@ import game.WaveManager;
 import game.scenes.GameScene;
 import game.scenes.Path;
 
-public class Enemy extends CollisionGameObject
+public abstract class Enemy extends CollisionGameObject
 {
     public double speed;
     
@@ -26,6 +26,8 @@ public class Enemy extends CollisionGameObject
     
     protected WaveManager waveManager;
     
+    protected boolean goToPathStart;
+    
     protected static final Color HEALTH_COLOR_A = new Color(23, 196, 23);
     protected static final Color HEALTH_COLOR_B = new Color(196, 23, 23);
     protected static final Color HEALTH_COLOR_C = new Color(0, 0, 0);
@@ -33,16 +35,18 @@ public class Enemy extends CollisionGameObject
     protected static final int HEALTHBAR_HEIGHT = 5;
     protected static final int HEALTHBAR_DISTANCE = 5;
     
-    public Enemy(int s)
+    public Enemy(boolean goToPathStart)
     {
         super(2);
         
-        // TODO: this belongs in the subclasses
+        this.goToPathStart = goToPathStart;
+        
+        /*// TODO: this belongs in the subclasses
         sprite = new Sprite("enemies/test_enemy");
-        speed = s;
+        speed = 20;
         maxHealth = 30;
         health = 30;
-        size = sprite.size.clone();
+        size = sprite.size.clone();*/
     }
     
     public boolean isFurtherThan(Enemy b)
@@ -58,8 +62,8 @@ public class Enemy extends CollisionGameObject
         if(health <= 0)
         {
             ((GameScene) scene).money += maxHealth;
-            destroy();
             onKill();
+            destroy();
         }
     }
     
@@ -82,11 +86,17 @@ public class Enemy extends CollisionGameObject
     }
     
     @Override
-    public void start() {
-        position = path.points[0].clone();
-        pathIndex = 1;
-        nextPoint = path.points[pathIndex];
-        sprite.rotation = nextPoint.sub(position).angle();
+    public void start()
+    {
+        waveManager.addEnemy(this);
+        
+        if(goToPathStart)
+        {
+            position = path.points[0].clone();
+            pathIndex = 1;
+            nextPoint = path.points[pathIndex];
+            sprite.rotation = nextPoint.sub(position).angle();
+        }
     }
     
     @Override
@@ -122,10 +132,10 @@ public class Enemy extends CollisionGameObject
     
     @Override
     public void render(RenderLayer layer, double deltaTime) {
-        sprite.position = position.sub(sprite.size.div(2));
+        sprite.position = position;
         if(layer.is("enemys"))
         {
-            layer.renderSprite(sprite);
+            layer.renderSpriteCentered(sprite);
             
             // draw health bar
             int healthbarProgress = (int) ((double) health / (double) maxHealth * HEALTHBAR_WIDTH);

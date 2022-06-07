@@ -6,6 +6,10 @@ import java.util.HashMap;
 import engine.Engine;
 import engine.utils.Lambda.Func0;
 import game.gameObjects.enemies.Enemy;
+import game.gameObjects.enemies.NormalEnemy;
+import game.gameObjects.enemies.SplittingEnemy;
+import game.gameObjects.enemies.NormalEnemy.NormalEnemyType;
+import game.gameObjects.enemies.SplittingEnemy.SplittingEnumType;
 import game.scenes.GameOverScene;
 import game.scenes.GameScene;
 
@@ -27,7 +31,7 @@ public class WaveManager
     {
         this.scene = scene;
         this.engine = engine;
-        waveNumber = 0;
+        waveNumber = 1;
         
         sceneEnemies = new ArrayList<Enemy>();
     }
@@ -36,7 +40,6 @@ public class WaveManager
     {
         if(started) return;
         
-        waveNumber++;
         if(waveNumber >= waves.length)
         {
             engine.setActiveScene(new GameOverScene(true));
@@ -64,25 +67,30 @@ public class WaveManager
             else
             {
                 subWave.remainingDelay -= deltaTime;
-                if(subWave.remainingDelay <= 0) 
+                while(subWave.remainingDelay <= 0) 
                 {
                     subWave.remainingEnemies--;
                     
                     Enemy newEnemy = enemieTypes.get(subWave.enemyType).invoke();
-                    sceneEnemies.add(newEnemy);
                     scene.addObject(newEnemy); // spawn enemy
                     
                     if(subWave.remainingEnemies <= 0)
                     {
                         subWave.finished = true;
-                        continue;
+                        break;
                     }
                     subWave.remainingDelay += subWave.delay;
                 }
+                if(subWave.finished) continue;
             }
         }
         
         if(stop && sceneEnemies.size() == 0) waveEnd();
+    }
+    
+    public void addEnemy(Enemy enemy)
+    {
+        sceneEnemies.add(enemy);
     }
     
     public void removeEnemy(Enemy enemy)
@@ -94,8 +102,9 @@ public class WaveManager
     {
         started = false;
         currentWave = null;
+        waveNumber++;
         
-        if(waveNumber + 1 >= waves.length)
+        if(waveNumber >= waves.length)
         {
             engine.setActiveScene(new GameOverScene(true));
         }
@@ -105,9 +114,32 @@ public class WaveManager
     {
         HashMap<String, Func0<Enemy>> map = new HashMap<String, Func0<Enemy>>();
         
-        map.put("test_enemy_slow", () -> new Enemy(100));
-        map.put("test_enemy", () -> new Enemy(200));
-        map.put("test_enemy_fast", () -> new Enemy(400));
+        // normal enemies
+        map.put("blue_0", () -> new NormalEnemy(true, NormalEnemyType.BLUE, 0));
+        map.put("blue_1", () -> new NormalEnemy(true, NormalEnemyType.BLUE, 1));
+        map.put("blue_2", () -> new NormalEnemy(true, NormalEnemyType.BLUE, 2));
+        map.put("blue_3", () -> new NormalEnemy(true, NormalEnemyType.BLUE, 3));
+        map.put("blue_4", () -> new NormalEnemy(true, NormalEnemyType.BLUE, 4));
+        map.put("green_0", () -> new NormalEnemy(true, NormalEnemyType.GREEN, 0));
+        map.put("green_1", () -> new NormalEnemy(true, NormalEnemyType.GREEN, 1));
+        map.put("green_2", () -> new NormalEnemy(true, NormalEnemyType.GREEN, 2));
+        map.put("green_3", () -> new NormalEnemy(true, NormalEnemyType.GREEN, 3));
+        map.put("green_4", () -> new NormalEnemy(true, NormalEnemyType.GREEN, 4));
+        map.put("red_0", () -> new NormalEnemy(true, NormalEnemyType.RED, 0));
+        map.put("red_1", () -> new NormalEnemy(true, NormalEnemyType.RED, 1));
+        map.put("red_2", () -> new NormalEnemy(true, NormalEnemyType.RED, 2));
+        map.put("red_3", () -> new NormalEnemy(true, NormalEnemyType.RED, 3));
+        map.put("red_4", () -> new NormalEnemy(true, NormalEnemyType.RED, 4));
+        
+        // splitting enemies
+        map.put("blue_s_1", () -> new SplittingEnemy(true, SplittingEnumType.BLUE_1));
+        map.put("blue_s_4", () -> new SplittingEnemy(true, SplittingEnumType.BLUE_4));
+        map.put("green_s_1", () -> new SplittingEnemy(true, SplittingEnumType.GREEN_1));
+        map.put("green_s_4", () -> new SplittingEnemy(true, SplittingEnumType.GREEN_4));
+        map.put("red_s_1", () -> new SplittingEnemy(true, SplittingEnumType.RED_1));
+        map.put("red_s_4", () -> new SplittingEnemy(true, SplittingEnumType.RED_4));
+        
+        // boss enemies
         
         return map;
     }
@@ -117,8 +149,11 @@ public class WaveManager
         return new String[]
         {
             "",
-            "test_enemy, 5, 0, 2",
-            "test_enemy_slow, 11, 0, 2; test_enemy, 8, 6, 2; test_enemy_fast, 5, 12, 2"
+            "blue_0, 5, 0, 2",
+            "blue_0, 10, 0, 1; blue_1, 5, 10, 2",
+            "blue_0, 2, 0, 1; blue_1, 2, 2, 1; blue_2, 2, 4, 1; blue_3, 2, 6, 1; blue_4, 2, 8, 1",
+            "blue_0, 2, 0, 1; blue_1, 2, 2, 1; blue_2, 2, 4, 1; blue_3, 2, 6, 1; blue_4, 2, 8, 1; green_0, 2, 10, 1; green_1, 2, 12, 1; green_2, 2, 14, 1; green_3, 2, 16, 1; green_4, 2, 18, 1; red_0, 2, 20, 1; red_1, 2, 22, 1; red_2, 2, 24, 1; red_3, 2, 26, 1; red_4, 2, 28, 1",
+            "blue_s_1, 1, 0, 0; blue_s_4, 1, 5, 0; green_s_1, 1, 10, 0; green_s_4, 1, 15, 0; red_s_1, 1, 20, 0; red_s_4, 1, 25, 0"
         };
     }
     

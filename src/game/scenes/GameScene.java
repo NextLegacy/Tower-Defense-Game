@@ -78,14 +78,6 @@ public class GameScene extends Scene
             engine.setActiveScene(new GameOverScene(false));
     }
     
-    public boolean spendMoney(int amount)
-    {
-        if(amount > money) return false;
-        
-        money -= amount;
-        return true;
-    }
-    
     @Override
     public void update(double deltaTime) {
         if(engine.getInputListener().key(KeyEvent.VK_S).isDown())

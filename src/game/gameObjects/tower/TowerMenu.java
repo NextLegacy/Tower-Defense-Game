@@ -109,7 +109,7 @@ public class TowerMenu extends GameObject
             placeableTowerPreview = new TowerPlaceablePreview<>(mouseOverTowerPlaceable);
             
             scene.addObject(placeableTowerPreview);
-            
+
             mouseOverTowerPlaceable = null;
             setSelectedTower(null);
         }
@@ -133,6 +133,9 @@ public class TowerMenu extends GameObject
             if (mouseOverUpgrade.canBeActivated(gameScene.money))
             if (input.left().isClickedInBounds(mouseOverUpgrade.sprite().position, GameScene.UPGRADE_BUTTON_SIZE))
             {
+                if (!mouseOverUpgrade.isUnlocked) 
+                    gameScene.money -= mouseOverUpgrade.cost();
+                    
                 mouseOverUpgrade.activateUpgrade();
             }
         }
@@ -272,6 +275,13 @@ public class TowerMenu extends GameObject
     {
         for (Upgrade upgrade : path.upgrades())
         {
+            //Dont render Upgrades that are not activatable
+            //if(upgrade.isNotActive() && !path.canBeActivated(upgrade.upgradeIndex))
+            //{ 
+            //    continue;
+                //layer.setColor(0x101010ff);
+            //}
+
             if (upgrade.isActive())
             {
                 layer.setColor(0x0000ffff);
@@ -288,7 +298,7 @@ public class TowerMenu extends GameObject
             {
                 layer.setColor(0xffff00ff);
             }
-            else
+            else if (upgrade.cost() > gameScene.money)
             {
                 layer.setColor(0xff0000ff);
             }

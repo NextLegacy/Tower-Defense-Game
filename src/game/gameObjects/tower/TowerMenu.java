@@ -216,7 +216,7 @@ public class TowerMenu extends GameObject
 
         layer.graphics().setFont(MONEY_FONT.deriveFont(25f));
 
-        layer.drawStringCentered(cost, GameScene.UPGRADE_MENU_START.add(GameScene.UPGRADE_MENU_SIZE.x / 2, textMetrics.getHeight() + 80 + (descriptionMetrics.getHeight()/1.5) * i));
+        layer.drawStringCentered(cost, GameScene.UPGRADE_MENU_START.add(GameScene.UPGRADE_MENU_SIZE.x / 2, textMetrics.getHeight() + 75 + (descriptionMetrics.getHeight()/1.5) * i));
     
     }
 
@@ -280,17 +280,17 @@ public class TowerMenu extends GameObject
             {
                 layer.setColor(0x00ff00ff);
             }
-            else if (path.canBeActivated(upgrade.upgradeIndex) && upgrade.cost() < gameScene.money)
+            else if(!path.canBeActivated(upgrade.upgradeIndex))
+            {
+                layer.setColor(0x101010ff);
+            }
+            else if (upgrade.cost() < gameScene.money)
             {
                 layer.setColor(0xffff00ff);
             }
-            else if (upgrade.cost() > gameScene.money)
-            {
-                layer.setColor(0xff0000ff);
-            }
             else
             {
-                layer.setColor(0x101010ff);
+                layer.setColor(0xff0000ff);
             }
 
             layer.renderSprite(upgrade.sprite());

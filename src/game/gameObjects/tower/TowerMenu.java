@@ -208,7 +208,7 @@ public class TowerMenu extends GameObject
         int i = 0;
         for (String line : mouseOverTowerPlaceable.description.split("\n"))
         {
-            layer.drawStringCentered(line, GameScene.UPGRADE_MENU_START.add(GameScene.UPGRADE_MENU_SIZE.x / 2, textMetrics.getHeight() + 60 + (descriptionMetrics.getHeight()/1.5) * i));
+            layer.drawStringCentered(line, GameScene.UPGRADE_MENU_START.add(GameScene.UPGRADE_MENU_SIZE.x / 2, textMetrics.getHeight() + 50 + (descriptionMetrics.getHeight()/1.5) * i));
             i++;
         }
 

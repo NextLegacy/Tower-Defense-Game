@@ -117,4 +117,6 @@ public class Sprite
         
         transform.scale(ratio.x, ratio.y);
     }
+
+    public static Sprite ohno() { return new Sprite("ohno"); }
 }

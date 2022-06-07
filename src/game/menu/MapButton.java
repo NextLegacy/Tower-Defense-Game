@@ -39,7 +39,7 @@ public class MapButton extends GameObject
             layer.renderSprite(sprite);
             layer.renderSprite(preview);
             layer.graphics().setFont(GameScene.MONEY_FONT.deriveFont(25));
-            layer.drawStringCentered(map.name, sprite.position.add(125, 200));
+            layer.drawStringCentered(map.displayName, sprite.position.add(125, 200));
             layer.graphics().setColor(map.difficulty.color);
             layer.drawStringCentered(map.difficulty.displayName, sprite.position.add(125, 250));
         }

@@ -6,14 +6,12 @@ public class MapMetadata
 {
     public static final MapMetadata[] maps = new MapMetadata[]
     {
-        new MapMetadata("test_map", "Test", "backgrounds/test_bg", Difficulty.EASY),
-        new MapMetadata("test_map", "Test", "backgrounds/test_bg", Difficulty.EASY),
-        new MapMetadata("test_map", "Test", "backgrounds/test_bg", Difficulty.MEDIUM),
-        new MapMetadata("test_map", "Test", "backgrounds/test_bg", Difficulty.MEDIUM),
-        new MapMetadata("test_map", "Test", "backgrounds/test_bg", Difficulty.MEDIUM),
-        new MapMetadata("test_map", "Test", "backgrounds/test_bg", Difficulty.HARD),
-        new MapMetadata("test_map", "Test", "backgrounds/test_bg", Difficulty.HARD),
-        new MapMetadata("test_map", "Test", "backgrounds/test_bg", Difficulty.HARD)
+        new MapMetadata("meadow", "Wiese (nicht fertig)", "backgrounds/meadow_bg", Difficulty.EASY),
+        new MapMetadata("ice", "Eis", "backgrounds/ice_bg", Difficulty.EASY),
+        new MapMetadata("mountain", "Berg (nicht fertig)", "backgrounds/mountain_bg", Difficulty.MEDIUM),
+        new MapMetadata("islands", "Inseln", "backgrounds/islands_bg", Difficulty.MEDIUM),
+        new MapMetadata("volcano", "Vulkan (nicht fertig)", "backgrounds/volcano_bg", Difficulty.HARD),
+        new MapMetadata("space", "Weltraum", "backgrounds/space_bg", Difficulty.HARD)
     };
     
     public String name;
@@ -31,9 +29,9 @@ public class MapMetadata
     
     public static enum Difficulty
     {
-        EASY("easy", new Color(23, 211, 23)),
-        MEDIUM("medium", new Color(211, 211, 23)),
-        HARD("hard", new Color(211, 23, 23));
+        EASY("einfach", new Color(23, 211, 23)),
+        MEDIUM("mittel", new Color(211, 211, 23)),
+        HARD("schwierig", new Color(211, 23, 23));
         
         public String displayName;
         public Color color;

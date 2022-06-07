@@ -9,6 +9,7 @@ import engine.math.Vector;
 import engine.scene.GameObject;
 import engine.utils.Sprite;
 import engine.window.RenderLayer;
+import game.gameObjects.tower.towers.CrossbowTower;
 import game.gameObjects.tower.towers.ShapeBraker;
 import game.gameObjects.tower.towers.TestTower;
 import game.gameObjects.tower.upgrades.Upgrade;
@@ -32,8 +33,8 @@ public class TowerMenu extends GameObject
     {
         this.placeableTowers = new TowerPlaceable[]
         {
-            new TowerPlaceable<ShapeBraker>("Peter", "ist der Peter", 10, new Sprite("towers/shapebraker_default").setSize(ShapeBraker.SIZE), ShapeBraker::new),
-            new TowerPlaceable<TestTower>("Hildegard", "Hildegart mein Name", 3245, "marker", TestTower::new),
+            new TowerPlaceable<ShapeBraker>("ShapeBraker", "Zerstört Formen\nliebend gern", 10, new Sprite("towers/shapebraker_default").setSize(ShapeBraker.SIZE), ShapeBraker::new),
+            new TowerPlaceable<CrossbowTower>("Crossbow", "Wirft Pfeile\nErweist sich als\nsehr nützlich gegen\nFormen", 3245, new Sprite("towers/crossbow_default").setSize(CrossbowTower.SIZE), CrossbowTower::new),
             new TowerPlaceable<TestTower>("Spongebob", "Wer wohnt in einer Ananas\nganz tiem im Meer", 13, "testTower", TestTower::new),
             new TowerPlaceable<TestTower>("Köln", "Ganz in der\nnähe von Deutschland", 234, "box_20x20", TestTower::new),
             new TowerPlaceable<TestTower>("Steini", "Mr Stein", 2314, "testTower", TestTower::new),

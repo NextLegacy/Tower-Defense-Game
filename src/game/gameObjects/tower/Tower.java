@@ -1,6 +1,7 @@
 package game.gameObjects.tower;
 
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import engine.math.Vector;
@@ -41,7 +42,7 @@ public abstract class Tower extends CollisionGameObject
 
     public Enemy getFurthestEnemy(Vector position)
     {
-        ArrayList<CollisionGameObject> gameObjects = collisions.objectsInCircle(2, (int)position.x, (int)position.y, (int)range);
+        ArrayList<CollisionGameObject> gameObjects = collisions.objectsInCircle(2, position.x, position.y, range);
 
         Enemy target = null;
 
@@ -91,6 +92,12 @@ public abstract class Tower extends CollisionGameObject
         if (input.left().isClickedInBounds(sprite.position.sub(sprite.size.div(2)), sprite.size))
         {
             gameScene.towerMenu.setSelectedTower(this);
+        }
+
+        if (selected && input.key(KeyEvent.VK_DELETE).isDown())
+        {
+            destroy();
+            gameScene.towerMenu.setSelectedTower(null);
         }
     }
 

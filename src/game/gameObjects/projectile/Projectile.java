@@ -7,6 +7,7 @@ import engine.scene.CollisionGameObject;
 import engine.utils.Sprite;
 import engine.utils.Lambda.Action;
 import engine.utils.Lambda.Action1;
+import engine.utils.Lambda.Action2;
 import engine.utils.Lambda.Func;
 import engine.utils.Lambda.Func0;
 import engine.window.RenderLayer;
@@ -21,7 +22,9 @@ public abstract class Projectile extends CollisionGameObject
 
     public double rotation;
 
-    public Projectile(Sprite sprite, Vector position)
+    private Action2<Projectile, Enemy> onHit;
+
+    public Projectile(Sprite sprite, Vector position, Action2<Projectile, Enemy> onhit)
     {
         super(3);
 
@@ -30,6 +33,8 @@ public abstract class Projectile extends CollisionGameObject
         this.sprite = sprite.deriveSprite();
 
         this.sprite.setPosition(position);
+
+        this.onHit = onhit;
 
         size = sprite.size;
 
@@ -57,7 +62,7 @@ public abstract class Projectile extends CollisionGameObject
         layer.renderSpriteCentered(sprite);
     }
 
-    public void onHitEnemy(Enemy enemy) { }
+    public void onHitEnemy(Enemy enemy) { onHit.invoke(this, enemy); }
 
     @Override
     public void onCollision(ArrayList<CollisionGameObject> collisionObjects) 

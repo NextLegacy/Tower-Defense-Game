@@ -7,7 +7,9 @@ import engine.scene.CollisionGameObject;
 import engine.scene.GameObject;
 import engine.utils.Sprite;
 import engine.utils.SpriteSheet;
+import engine.utils.Lambda.Action2;
 import game.gameObjects.enemies.Enemy;
+import game.gameObjects.projectile.Projectile;
 import game.gameObjects.projectile.projectiles.HomingProjectile;
 import game.gameObjects.projectile.projectiles.OneWayProjectile;
 import game.gameObjects.tower.Tower;
@@ -57,7 +59,7 @@ public class ShapeBraker extends Tower
         DOWN = this.position.add(0, SIZE.x/2);
     }
 
-    private int x = -1;
+    private int x = 0;
     private int y = -1;
     
     @Override
@@ -155,27 +157,18 @@ public class ShapeBraker extends Tower
 
     private void shootNormalBullet(Vector position, Vector direction)
     {
-        gameScene.addObject(new OneWayProjectile(BULLET.setSize(bulletSize), position, direction, 45)
-        {
-            @Override
-            public void onHitEnemy(Enemy enemy) 
-            {
-                enemy.damage(damage);
-                this.destroy();
-            }
-        });
+        gameScene.addObject(new OneWayProjectile(BULLET.setSize(bulletSize), position, direction, 400, this::onHit));
     }
 
     private void shootHomingBullet(Vector position)
     {
-        gameScene.addObject(new HomingProjectile(BULLET.setSize(bulletSize), position, this::getFurthestEnemy, 45)
-        {
-            public void onHitEnemy(Enemy enemy) 
-            {
-                enemy.damage(damage);
-                this.destroy();
-            }
-        });
+        gameScene.addObject(new HomingProjectile(BULLET.setSize(bulletSize), position, this::getFurthestEnemy, 14, this::onHit));
+    }
+
+    private void onHit(Projectile projectile, Enemy enemy)
+    {
+        enemy.damage(damage);
+        projectile.destroy();
     }
 
     @Override
@@ -198,7 +191,7 @@ public class ShapeBraker extends Tower
                     "Homing Bullets", 
                     UPGRADE_SHEET.getSprite(0, 2), 
                     "Bullets will home in on the enemy", 
-                    500, 
+                    1500, 
                     (upgrade) -> homing = true, 
                     (upgrade) -> homing = false
                 )
@@ -218,7 +211,7 @@ public class ShapeBraker extends Tower
                     "Bigger Bullets", 
                     UPGRADE_SHEET.getSprite(1, 1),
                     "Bullets are bigger", 
-                    300, 
+                    300,
                     (upgrade) -> bulletSize = new Vector(20, 20),
                     (upgrade) -> bulletSize = DEFAULT_BULLET_SIZE
                 ),

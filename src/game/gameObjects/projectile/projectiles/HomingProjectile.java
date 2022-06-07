@@ -3,6 +3,7 @@ package game.gameObjects.projectile.projectiles;
 import engine.math.Vector;
 import engine.scene.CollisionGameObject;
 import engine.utils.Sprite;
+import engine.utils.Lambda.Action2;
 import engine.utils.Lambda.Func0;
 import engine.utils.Lambda.Func1;
 import game.gameObjects.enemies.Enemy;
@@ -16,17 +17,17 @@ public class HomingProjectile extends Projectile
     private double speed;
     Vector direction;
 
-    public HomingProjectile(Sprite sprite, Vector position, CollisionGameObject target, double speed)
+    public HomingProjectile(Sprite sprite, Vector position, CollisionGameObject target, double speed, Action2<Projectile, Enemy> onHit)
     {
-        super(sprite, position);
+        super(sprite, position, onHit);
         this.target = target;
         this.speed = speed;
         this.direction = Vector.one();
     }
 
-    public HomingProjectile(Sprite sprite, Vector position, Func1<CollisionGameObject, Vector> getTarget, double speed)
+    public HomingProjectile(Sprite sprite, Vector position, Func1<CollisionGameObject, Vector> getTarget, double speed, Action2<Projectile, Enemy> onHit)
     {
-        super(sprite, position);
+        super(sprite, position, onHit);
         this.getTarget = getTarget;
         this.speed = speed;
         this.direction = Vector.fromAngle(position.angle());
@@ -42,7 +43,7 @@ public class HomingProjectile extends Projectile
         if (target != null && target.isActive())
             direction = target.position.sub(position).normalized();
 
-        velocity = direction.mul(deltaTime * speed);
+        velocity = velocity.add(direction.mul(deltaTime * speed));
         super.update(deltaTime);
     }
 

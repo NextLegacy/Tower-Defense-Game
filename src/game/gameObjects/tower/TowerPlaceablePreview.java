@@ -63,17 +63,20 @@ public class TowerPlaceablePreview<T extends Tower> extends CollisionGameObject
     @Override
     public void render(RenderLayer layer, double deltaTime) 
     {
-        if (layer.is("debug"))
-            layer.renderSpriteCentered(sprite);
+        if (layer.isNot("towers"))
+            return;
 
         if (canBePlaced)
             layer.setColor(0);
         else
-            layer.setColor(0xff0000af);
+            layer.setColor(0xff0000a9);
         
         sprite.position = position;
 
-        layer.fillRectCentered(sprite.position, sprite.size);
+        layer.drawRectCentered(sprite.position, sprite.size, 8);
+
+        layer.renderSpriteCentered(sprite);
+
     }
 
     @Override

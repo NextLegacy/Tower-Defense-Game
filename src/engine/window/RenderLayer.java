@@ -145,6 +145,17 @@ public class RenderLayer
         this.graphics().drawRect((int)(position.x - size.x / 2), (int)(position.y - size.y / 2), (int)size.x, (int)size.y);
     }
 
+    public void drawRectCentered(Vector position, Vector size, double thickness)
+    {
+        position = position.sub(thickness).sub(size.div(2));
+        size = size.add(thickness * 2).sub(0, 1);
+
+        for (int i = 0; i < thickness; i++)
+        {
+            this.graphics().drawRect((int)(position.x + i), (int)(position.y + i), (int)size.x - i * 2, (int)size.y - i * 2);
+        }
+    }
+
     public void fillRect(Vector position, Vector size)
     {
         this.graphics().fillRect((int)position.x, (int)position.y, (int)size.x, (int)size.y);

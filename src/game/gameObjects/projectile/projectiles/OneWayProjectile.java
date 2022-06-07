@@ -2,6 +2,8 @@ package game.gameObjects.projectile.projectiles;
 
 import engine.math.Vector;
 import engine.utils.Sprite;
+import engine.utils.Lambda.Action2;
+import game.gameObjects.enemies.Enemy;
 import game.gameObjects.projectile.Projectile;
 
 public class OneWayProjectile extends Projectile
@@ -10,9 +12,11 @@ public class OneWayProjectile extends Projectile
 
     private double speed;
 
-    public OneWayProjectile(Sprite sprite, Vector position, Vector direction, double speed) 
+    public OneWayProjectile(Sprite sprite, Vector position, Vector direction, double speed, Action2<Projectile, Enemy> onHit) 
     {
-        super(sprite, position);
+        super(sprite, position, onHit);
+
+        rotation = direction.angle();
 
         this.direction = direction;
         this.speed = speed;

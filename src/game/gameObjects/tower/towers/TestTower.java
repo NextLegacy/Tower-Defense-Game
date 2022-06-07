@@ -49,7 +49,11 @@ public class TestTower extends Tower
         if (target != null)
         {
             lookAt(target.position);
-            scene.addObject(new HomingProjectile(new Sprite("stein").setSize(new Vector(30, 30)), position, target, 5));
+            scene.addObject(new HomingProjectile(new Sprite("stein").setSize(new Vector(30, 30)), position, target, 5, (projectile, enemey) -> 
+            {
+                enemey.damage(1);
+                projectile.destroy();
+            }));
         } 
     }
 
@@ -57,10 +61,10 @@ public class TestTower extends Tower
     protected UpgradeManager createUpgradeManager() 
     {
         return new UpgradeManager(
-            /*new UpgradePath(UpgradePathType.ONE_BY_ONE, 
+            new UpgradePath(UpgradePathType.ONE_BY_ONE, 
                 new Upgrade(
                     "faster", 
-                    "faster", 
+                    Sprite.ohno(), 
                     "does fire faster", 
                     10, 
                     (upgrade) -> fireRate = 1,
@@ -68,7 +72,7 @@ public class TestTower extends Tower
                 ),
                 new Upgrade(
                     "much faster", 
-                    "much_faster", 
+                    Sprite.ohno(), 
                     "does fire way faster", 
                     100, 
                     (upgrade) -> fireRate = 0.1,
@@ -76,7 +80,7 @@ public class TestTower extends Tower
                 ),
                 new Upgrade(
                     "lightspeed",
-                    "lightspeed", 
+                    Sprite.ohno(), 
                     "most firerate in game", 
                     1000, 
                     (upgrade) -> fireRate = 0.01,
@@ -86,7 +90,7 @@ public class TestTower extends Tower
             new UpgradePath(UpgradePathType.ONLY_ONE,
                 new Upgrade(
                     "more range", 
-                    "range", 
+                    Sprite.ohno(), 
                     "does hava more range", 
                     10, 
                     (upgrade) -> range = 10,
@@ -94,7 +98,7 @@ public class TestTower extends Tower
                 ),
                 new Upgrade(
                     "much more range", 
-                    "much_range", 
+                    Sprite.ohno(), 
                     "does hava way more range", 
                     100, 
                     (upgrade) -> range = 100,
@@ -102,7 +106,7 @@ public class TestTower extends Tower
                 ),
                 new Upgrade(
                     "ultravision",
-                    "ultravision", 
+                    Sprite.ohno(), 
                     "ultra range", 
                     1000, 
                     (upgrade) -> range = 1000,
@@ -110,7 +114,7 @@ public class TestTower extends Tower
                 ),
                 new Upgrade(
                     "mega ultravision",
-                    "mega_ultravision", 
+                    Sprite.ohno(), 
                     "most range in game", 
                     10000, 
                     (upgrade) -> range = 1000,
@@ -120,7 +124,7 @@ public class TestTower extends Tower
             new UpgradePath(UpgradePathType.FIRST_AND_ONLY_ONE,
                 new Upgrade(
                     "bullet", 
-                    "bullet", 
+                    Sprite.ohno(), 
                     "does fire bullets", 
                     10, 
                     Upgrade.NO_EFFECT,
@@ -128,7 +132,7 @@ public class TestTower extends Tower
                 ),
                 new Upgrade(
                     "much more bullets", 
-                    "much_bullets", 
+                    Sprite.ohno(), 
                     "does shoot way\nmore bullets at once", 
                     100, 
                     Upgrade.NO_EFFECT,
@@ -136,7 +140,7 @@ public class TestTower extends Tower
                 ),
                 new Upgrade(
                     "ulta bullets",
-                    "ultra_bullets", 
+                    Sprite.ohno(), 
                     "most damage in game", 
                     1000, 
                     Upgrade.NO_EFFECT,
@@ -144,13 +148,13 @@ public class TestTower extends Tower
                 ),
                 new Upgrade(
                     "ulta bullets",
-                    "ultra_bullets", 
+                    Sprite.ohno(), 
                     "most damage in game", 
                     1000, 
                     Upgrade.NO_EFFECT,
                     Upgrade.NO_EFFECT
                 )
-            )*/
+            )
         );
     }
 }

@@ -140,7 +140,7 @@ public class CrossbowTower extends Tower
                     UPGRADE_SHEET.getSprite(2, 2),
                     "Ultra Reichweite",
                     1680, 
-                    (upgrade) -> piercing = 500, 
+                    (upgrade) -> range = 500, 
                     Upgrade.NO_EFFECT
                 )
             )

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import engine.math.Vector;
 import engine.scene.CollisionGameObject;
 import engine.utils.Sprite;
+import engine.utils.Lambda.Action;
+import engine.utils.Lambda.Action1;
 import engine.utils.Lambda.Func;
 import engine.utils.Lambda.Func0;
 import engine.window.RenderLayer;
@@ -25,7 +27,9 @@ public abstract class Projectile extends CollisionGameObject
 
         this.position = position;
 
-        this.sprite = sprite;
+        this.sprite = sprite.deriveSprite();
+
+        this.sprite.setPosition(position);
 
         size = sprite.size;
 

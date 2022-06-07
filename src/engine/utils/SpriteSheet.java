@@ -43,6 +43,6 @@ public class SpriteSheet
             return Sprite.ohno();
         }
 
-        return sprites[x][y];
+        return sprites[x][y].deriveSprite();
     }
 }

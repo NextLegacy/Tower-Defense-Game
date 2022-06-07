@@ -47,8 +47,7 @@ public class TowerPlaceablePreview<T extends Tower> extends CollisionGameObject
         {
             gameScene.money -= towerPlaceable.cost;
 
-            Tower tower = towerPlaceable.createTower();
-            tower.position = position;
+            Tower tower = towerPlaceable.createTower(position);
             
             scene.addObject(tower);
 

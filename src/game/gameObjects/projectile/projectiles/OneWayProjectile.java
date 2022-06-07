@@ -8,16 +8,20 @@ public class OneWayProjectile extends Projectile
 {
     private Vector direction;
 
-    public OneWayProjectile(Sprite sprite, Vector position, Vector direction) 
+    private double speed;
+
+    public OneWayProjectile(Sprite sprite, Vector position, Vector direction, double speed) 
     {
         super(sprite, position);
+
         this.direction = direction;
+        this.speed = speed;
     }
 
     @Override
     public void update(double deltaTime)
     {
-        velocity = velocity.add(direction.mul(deltaTime*100));
+        velocity = direction.mul(deltaTime*speed);
         super.update(deltaTime);
     }
 }

@@ -26,11 +26,11 @@ public class Upgrade extends Activateable
     public boolean isUnlocked;
 
     public Upgrade(
-        String name, String imageName, String description, double cost,
+        String name, Sprite sprite, String description, double cost,
         Action1<Upgrade> activate, Action1<Upgrade> deactivate)
     {
         this.name = name;
-        this.sprite = new Sprite("/upgrades/" + imageName + ".png");
+        this.sprite = sprite;
 
         this.description = description;
         this.cost = cost;

@@ -1,11 +1,14 @@
 package game.gameObjects.tower;
 
 import java.awt.Color;
+import java.util.ArrayList;
 
 import engine.math.Vector;
 import engine.scene.CollisionGameObject;
+import engine.scene.GameObject;
 import engine.utils.Sprite;
 import engine.window.RenderLayer;
+import game.gameObjects.enemies.Enemy;
 import game.gameObjects.tower.upgrades.UpgradeManager;
 import game.scenes.GameScene;
 
@@ -24,13 +27,41 @@ public abstract class Tower extends CollisionGameObject
 
     private double time;
 
-    public Tower()
+    public Tower(Vector position)
     {
         super(1);
+
+        this.position = position;
+
         this.sprite = new Sprite("");
         this.upgradeManager = createUpgradeManager();
 
         this.upgradeManager.setupUpgrade();
+    }
+
+    public Enemy getFurthestEnemy(Vector position)
+    {
+        ArrayList<CollisionGameObject> gameObjects = collisions.objectsInCircle(2, (int)position.x, (int)position.y, (int)range);
+
+        Enemy target = null;
+
+        for (GameObject gameObject : gameObjects)
+        {
+            if (gameObject.isNotActive())
+                continue;
+                
+            if (gameObject instanceof Enemy)
+            {
+                Enemy enemy = (Enemy)gameObject;
+
+                if (target == null)
+                    target = enemy;
+                else if (enemy.isFurtherThan(target))
+                    target = enemy;
+            }
+        }
+
+        return target;
     }
 
     @Override

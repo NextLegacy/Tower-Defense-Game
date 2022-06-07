@@ -182,7 +182,7 @@ public class Vector
     public static Vector zero() { return new Vector( 0, 0); }
     public static Vector one () { return new Vector( 1, 1); }
 
-    public static Vector up     () { return new Vector( 0, 1); }
+    public static Vector up     () { return new Vector( 0, -1); }
     public static Vector right  () { return new Vector( 1, 0); }
 
     public static Vector down   () { return Vector.up()   .inverse(); }

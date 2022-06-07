@@ -16,9 +16,9 @@ import game.gameObjects.tower.upgrades.UpgradePathType;
 
 public class TestTower extends Tower
 {
-    public TestTower()
+    public TestTower(Vector position)
     {
-        super();
+        super(position);
         this.sprite = new Sprite("stein");
         this.range = 150;
         this.fireRate = 2;
@@ -49,7 +49,7 @@ public class TestTower extends Tower
         if (target != null)
         {
             lookAt(target.position);
-            scene.addObject(new HomingProjectile(new Sprite("stein").setSize(new Vector(30, 30)), target, position, 5));
+            scene.addObject(new HomingProjectile(new Sprite("stein").setSize(new Vector(30, 30)), position, target, 5));
         } 
     }
 
@@ -57,7 +57,7 @@ public class TestTower extends Tower
     protected UpgradeManager createUpgradeManager() 
     {
         return new UpgradeManager(
-            new UpgradePath(UpgradePathType.ONE_BY_ONE, 
+            /*new UpgradePath(UpgradePathType.ONE_BY_ONE, 
                 new Upgrade(
                     "faster", 
                     "faster", 
@@ -150,7 +150,7 @@ public class TestTower extends Tower
                     Upgrade.NO_EFFECT,
                     Upgrade.NO_EFFECT
                 )
-            )
+            )*/
         );
     }
 }

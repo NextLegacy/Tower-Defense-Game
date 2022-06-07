@@ -27,34 +27,18 @@ public class TestTower extends Tower
     @Override
     protected void fire() 
     {
-        ArrayList<CollisionGameObject> gameObjects = collisions.objectsInCircle(2, (int)position.x, (int)position.y, (int)range);
+        Enemy target = getFurthestEnemy(position);
 
-        Enemy target = null;
+        if (target == null)
+            return;
 
-        for (GameObject gameObject : gameObjects)
+        lookAt(target.position);
+
+        scene.addObject(new HomingProjectile(new Sprite("stein").setSize(new Vector(30, 30)), position, this::getFurthestEnemy, 5, (projectile, enemey) -> 
         {
-            if (gameObject.isNotActive())
-                continue;
-                
-            if (gameObject instanceof Enemy)
-            {
-                Enemy enemy = (Enemy)gameObject;
-
-                if (target == null)
-                    target = enemy;
-                else if (enemy.isFurtherThan(target))
-                    target = enemy;
-            }
-        }
-        if (target != null)
-        {
-            lookAt(target.position);
-            scene.addObject(new HomingProjectile(new Sprite("stein").setSize(new Vector(30, 30)), position, target, 5, (projectile, enemey) -> 
-            {
-                enemey.damage(1);
-                projectile.destroy();
-            }));
-        } 
+            enemey.damage(1);
+            projectile.destroy();
+        }));
     }
 
     @Override

@@ -30,7 +30,7 @@ public class HomingProjectile extends Projectile
         super(sprite, position, onHit);
         this.getTarget = getTarget;
         this.speed = speed;
-        this.direction = Vector.fromAngle(position.angle());
+        this.direction = Vector.zero();
     }
 
 

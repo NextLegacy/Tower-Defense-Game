@@ -46,9 +46,9 @@ public class CrossbowTower extends Tower
 
         Vector direction = target.position.sub(position).normalized();
 
-        gameScene.addObject(new PiercingProjectile(BULLET, position, direction, 900, 2, (projectile, enemy) ->
+        gameScene.addObject(new PiercingProjectile(BULLET, position, direction, 900, piercing, (projectile, enemy) ->
         {
-            enemy.damage(1);
+            enemy.damage(damage);
         }));
     }
 

@@ -60,27 +60,27 @@ public class CrossbowTower extends Tower
             new UpgradePath(UpgradePathType.ONE_BY_ONE, 
                 new Upgrade
                 (
-                    "More Damage", 
+                    "mehr Schaden", 
                     UPGRADE_SHEET.getSprite(2, 0),
-                    "Does make 3 damage", 
+                    "Macht 3 Schaden.", 
                     250, 
                     (upgrade) -> damage = 3, 
                     Upgrade.NO_EFFECT
                 ),
                 new Upgrade
                 (
-                    "Way more Damage", 
+                    "noch mehr Schaden", 
                     UPGRADE_SHEET.getSprite(2, 1),
-                    "Does make 4 damage",
+                    "Macht 4 Schaden.",
                     500, 
                     (upgrade) -> damage = 4, 
                     Upgrade.NO_EFFECT
                 ),
                 new Upgrade
                 (
-                    "Even more Damage", 
+                    "viel mehr Schaden", 
                     UPGRADE_SHEET.getSprite(2, 2),
-                    "Does make 5 damage",
+                    "Macht 5 Schaden.",
                     680, 
                     (upgrade) -> damage = 5, 
                     Upgrade.NO_EFFECT
@@ -89,27 +89,27 @@ public class CrossbowTower extends Tower
             new UpgradePath(UpgradePathType.ONE_BY_ONE, 
                 new Upgrade
                 (
-                    "More Pierce", 
+                    "Durchschlagskaft", 
                     UPGRADE_SHEET.getSprite(2, 0),
-                    "Does make 3 Pierce", 
+                    "Es können 3 Gegner getroffen werden.", 
                     250, 
                     (upgrade) -> piercing = 3, 
                     Upgrade.NO_EFFECT
                 ),
                 new Upgrade
                 (
-                    "Way more Pierce", 
+                    "mehr Durchschlagskaft", 
                     UPGRADE_SHEET.getSprite(2, 1),
-                    "Does make 5 Pierce",
+                    "Es können 5 Gegner getroffen werden.",
                     500, 
                     (upgrade) -> piercing = 5, 
                     Upgrade.NO_EFFECT
                 ),
                 new Upgrade
                 (
-                    "Even more Pierce", 
+                    "noch mehr Durchschlagskraft", 
                     UPGRADE_SHEET.getSprite(2, 2),
-                    "Does make 7 Pierce",
+                    "Es können 7 Gegner getroffen werden.",
                     680, 
                     (upgrade) -> piercing = 7, 
                     Upgrade.NO_EFFECT
@@ -118,7 +118,7 @@ public class CrossbowTower extends Tower
             new UpgradePath(UpgradePathType.ONE_BY_ONE, 
                 new Upgrade
                 (
-                    "More Range", 
+                    "mehr Reichweite", 
                     UPGRADE_SHEET.getSprite(2, 0),
                     "Hat mehr Reichweite", 
                     250, 
@@ -127,18 +127,18 @@ public class CrossbowTower extends Tower
                 ),
                 new Upgrade
                 (
-                    "Way more Range", 
+                    "noch mehr Reichweite", 
                     UPGRADE_SHEET.getSprite(2, 1),
-                    "Noch viel mehr Reichweite",
+                    "Noch viel mehr Reichweite.",
                     500, 
                     (upgrade) -> range = 200, 
                     Upgrade.NO_EFFECT
                 ),
                 new Upgrade
                 (
-                    "Even more Range", 
+                    "Ultra Reichweite", 
                     UPGRADE_SHEET.getSprite(2, 2),
-                    "Ultra Reichweite",
+                    "Sehr hohe Reichweite.",
                     1680, 
                     (upgrade) -> range = 500, 
                     Upgrade.NO_EFFECT

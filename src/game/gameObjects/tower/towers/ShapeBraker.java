@@ -179,18 +179,18 @@ public class ShapeBraker extends Tower
             new UpgradePath(UpgradePathType.ONLY_ONE,
                 new Upgrade
                 (
-                    "More FireRate", 
+                    "schneller feuern", 
                     UPGRADE_SHEET.getSprite(0, 1), 
-                    "Does Fire super fasst", 
+                    "Schießt super schnell.", 
                     350, 
                     (upgrade) -> fireRate = 0.4, 
                     (upgrade) -> fireRate = DEFAULT_FIRE_RATE
                 ),
                 new Upgrade
                 (
-                    "Homing Bullets", 
+                    "verfolgende Schüsse", 
                     UPGRADE_SHEET.getSprite(0, 2), 
-                    "Bullets will home in on the enemy", 
+                    "Projektile verfolgen Gegner.", 
                     1500, 
                     (upgrade) -> homing = true, 
                     (upgrade) -> homing = false
@@ -199,28 +199,28 @@ public class ShapeBraker extends Tower
             new UpgradePath(UpgradePathType.ONLY_ONE, 
                 new Upgrade
                 (
-                    "More Range", 
+                    "mehr Reichweite", 
                     UPGRADE_SHEET.getSprite(1, 0), 
-                    "Range is increased", 
-                    50, 
+                    "Erhöht die Reichweite.", 
+                    50,
                     (upgrade) -> range = 225,
                     (upgrade) -> range = DEFAULT_RANGE
                 ),
                 new Upgrade
                 (
-                    "Bigger Bullets", 
+                    "größere Kugeln", 
                     UPGRADE_SHEET.getSprite(1, 1),
-                    "Bullets are bigger", 
+                    "Projektile sind größer.", 
                     300,
                     (upgrade) -> bulletSize = new Vector(20, 20),
                     (upgrade) -> bulletSize = DEFAULT_BULLET_SIZE
                 ),
                 new Upgrade
                 (
-                    "Three Bullets", 
+                    "drei Kugeln", 
                     UPGRADE_SHEET.getSprite(1, 2),
-                    "Three bullets are shot", 
-                    600, 
+                    "Es werden drei\nKugeln geschossen.", 
+                    600,
                     (upgrade) -> threeBullets = true, 
                     (upgrade) -> threeBullets = false
                 )
@@ -228,28 +228,28 @@ public class ShapeBraker extends Tower
             new UpgradePath(UpgradePathType.ONE_BY_ONE, 
                 new Upgrade
                 (
-                    "More Damage", 
+                    "mehr Schaden", 
                     UPGRADE_SHEET.getSprite(2, 0),
-                    "Does make 3 damage", 
-                    250, 
+                    "Kugeln machen 3 Schaden.", 
+                    250,
                     (upgrade) -> damage = 3, 
                     Upgrade.NO_EFFECT
                 ),
                 new Upgrade
                 (
-                    "Way more Damage", 
+                    "noch mehr Schaden", 
                     UPGRADE_SHEET.getSprite(2, 1),
-                    "Does make 4 damage",
-                    500, 
+                    "Kugeln machen 4 Schaden.",
+                    500,
                     (upgrade) -> damage = 4, 
                     Upgrade.NO_EFFECT
                 ),
                 new Upgrade
                 (
-                    "Even more Damage", 
+                    "viel mehr Schaden", 
                     UPGRADE_SHEET.getSprite(2, 2),
-                    "Does make 5 damage",
-                    680, 
+                    "Kugeln machen 5 Schaden.",
+                    680,
                     (upgrade) -> damage = 5, 
                     Upgrade.NO_EFFECT
                 )

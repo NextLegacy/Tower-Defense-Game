@@ -104,7 +104,7 @@ public abstract class Tower extends CollisionGameObject
     @Override
     public void render(RenderLayer layer, double deltaTime)
     {
-        if (layer.isNot("debug"))
+        if (layer.isNot("towers"))
             return;
 
         layer.graphics().setColor(new Color(20, 20, 20, 50));

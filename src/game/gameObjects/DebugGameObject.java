@@ -12,7 +12,7 @@ public class DebugGameObject extends GameObject
     @Override
     public void render(RenderLayer layer, double deltaTime) 
     {
-        if (layer.isNot("debug")) return; 
+        if (layer.isNot("window")) return; 
 
         layer.graphics().setColor(Color.red);
         layer.graphics().setFont(Fonts.get("Cascadia Code", 13, Font.PLAIN));

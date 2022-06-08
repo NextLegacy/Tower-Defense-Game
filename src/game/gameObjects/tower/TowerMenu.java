@@ -11,7 +11,7 @@ import engine.utils.Sprite;
 import engine.window.RenderLayer;
 import game.gameObjects.tower.towers.CrossbowTower;
 import game.gameObjects.tower.towers.ShapeBraker;
-import game.gameObjects.tower.towers.TestTower;
+import game.gameObjects.tower.towers.Stone;
 import game.gameObjects.tower.upgrades.Upgrade;
 import game.gameObjects.tower.upgrades.UpgradePath;
 import game.scenes.GameScene;
@@ -33,8 +33,10 @@ public class TowerMenu extends GameObject
     {
         this.placeableTowers = new TowerPlaceable[]
         {
-            new TowerPlaceable<ShapeBraker>("ShapeBraker", "Zerstört Formen\nliebend gern", 10, new Sprite("towers/shapebraker_default").setSize(ShapeBraker.SIZE), ShapeBraker::new),
-            new TowerPlaceable<CrossbowTower>("Crossbow", "Wirft Pfeile\nErweist sich als\nsehr nützlich gegen\nFormen", 3245, new Sprite("towers/crossbow_default").setSize(CrossbowTower.SIZE), CrossbowTower::new),
+            new TowerPlaceable<ShapeBraker>("ShapeBraker", "Zerstört Formen\nliebend gern",450, new Sprite("towers/shapebraker_default").setSize(ShapeBraker.SIZE), ShapeBraker::new),
+            new TowerPlaceable<CrossbowTower>("Crossbow", "Wirft Pfeile\nErweist sich als\nsehr nützlich gegen\nFormen", 500, new Sprite("towers/crossbow_default").setSize(CrossbowTower.SIZE), CrossbowTower::new),
+            new TowerPlaceable<Stone>("Stein", "Wirft Steine\nErweist sich als\nsehr nützlich gegen\nFormen", 1000, new Sprite("towers/stein_default").setSize(Stone.SIZE), Stone::new),
+            /*
             new TowerPlaceable<TestTower>("Spongebob", "Wer wohnt in einer Ananas\nganz tiem im Meer", 13, "testTower", TestTower::new),
             new TowerPlaceable<TestTower>("Köln", "Ganz in der\nnähe von Deutschland", 234, "box_20x20", TestTower::new),
             new TowerPlaceable<TestTower>("Steini", "Mr Stein", 2314, "testTower", TestTower::new),
@@ -45,6 +47,7 @@ public class TowerMenu extends GameObject
             new TowerPlaceable<TestTower>("Nochmal Peter", "ist wieder der Peter", 452, "testTower", TestTower::new),
             new TowerPlaceable<TestTower>("Patrick Star", "Spongebobs bester Freund", 272, "testTower", TestTower::new),
             new TowerPlaceable<TestTower>("King julien", "Der allbekannte\nKönig King Julien der III", 52725, "testTower", TestTower::new),
+            */
         };
 
         setupTowers();

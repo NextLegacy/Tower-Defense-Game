@@ -51,7 +51,7 @@ public class GameScene extends Scene
         super(4, new LayerCollision[] {new LayerCollision(1, 0, false), new LayerCollision(1, 1, false), new LayerCollision(3, 2, true)}); // collision layers: [map (obstacles), towers, enemies, projectiles]
         this.mapName = mapName;
         
-        money = 11500;
+        money = 1125000;
         health = 200;
     }
 
@@ -66,7 +66,7 @@ public class GameScene extends Scene
         map = new Map(mapName);
         map.addGameObjects(this);
         
-        waveManager = new WaveManager(this, engine);
+        waveManager = new WaveManager(this);
         
         //addObject(new TestMouseCollider()); // debug
     }
@@ -94,7 +94,7 @@ public class GameScene extends Scene
         if(layer.is("background"))
             layer.renderSprite(map.background);
         
-        if (layer.is("debug"))
+        if (layer.is("window"))
         {
             layer.graphics().setFont(MONEY_FONT);
             layer.graphics().setColor(Color.YELLOW);

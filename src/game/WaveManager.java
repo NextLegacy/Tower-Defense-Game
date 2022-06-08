@@ -1,16 +1,19 @@
 package game;
 
+import java.io.BufferedReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
-import engine.Engine;
+//import engine.Engine;
 import engine.utils.Lambda.Func0;
 import game.gameObjects.enemies.Enemy;
 import game.gameObjects.enemies.NormalEnemy;
 import game.gameObjects.enemies.SplittingEnemy;
 import game.gameObjects.enemies.NormalEnemy.NormalEnemyType;
 import game.gameObjects.enemies.SplittingEnemy.SplittingEnumType;
-import game.scenes.GameOverScene;
 import game.scenes.GameScene;
 
 public class WaveManager
@@ -20,20 +23,25 @@ public class WaveManager
     public boolean started;
     
     private GameScene scene;
-    private Engine engine;
+    //private Engine engine;
     
     private ArrayList<Enemy> sceneEnemies;
     
     private static final HashMap<String, Func0<Enemy>> enemieTypes = getEnemies();
+    private static final String[] enemyTypeList = getEnemiesList();
     private static final String[] waves = getWaves();
     
-    public WaveManager(GameScene scene, Engine engine)
+    private Random random;
+
+    public WaveManager(GameScene scene/*, Engine engine*/)
     {
         this.scene = scene;
-        this.engine = engine;
-        waveNumber = 1;
+        //this.engine = engine;
+        waveNumber = 0;
         
         sceneEnemies = new ArrayList<Enemy>();
+
+        random = new Random(42);
     }
     
     public void startNextWave()
@@ -42,11 +50,23 @@ public class WaveManager
         
         if(waveNumber >= waves.length)
         {
-            engine.setActiveScene(new GameOverScene(true));
-            return;
+            //engine.setActiveScene(new GameOverScene(true));
+            int subCount = random.nextInt(3, 6);
+            SubWave[] subs = new SubWave[subCount];
+            int enemyTypeCount = enemieTypes.values().toArray().length;
+            for(int i = 0; i < subCount; i++)
+            {
+                int type = random.nextInt(0, enemyTypeCount);
+                double countBase = Math.log(waveNumber) * (enemyTypeCount * 2 - type) * 0.05;
+                int count = random.nextInt((int) (countBase * 0.8), (int) (countBase * 1.5)); 
+                subs[i] = new SubWave(enemyTypeList[type], count, i * random.nextDouble(1, 10), random.nextDouble(0, 20) / count);
+            }
+            currentWave = new Wave(subs);
         }
-        
-        currentWave = new Wave(waves[waveNumber]);
+        else
+        {
+            currentWave = new Wave(waves[waveNumber]);
+        }
         started = true;
     }
     
@@ -104,10 +124,10 @@ public class WaveManager
         currentWave = null;
         waveNumber++;
         
-        if(waveNumber >= waves.length)
+        /*if(waveNumber >= waves.length)
         {
             engine.setActiveScene(new GameOverScene(true));
-        }
+        }*/
     }
     
     private static HashMap<String, Func0<Enemy>> getEnemies()
@@ -140,21 +160,52 @@ public class WaveManager
         map.put("red_s_4", () -> new SplittingEnemy(true, SplittingEnumType.RED_4));
         
         // boss enemies
+        // :(
         
         return map;
+    }
+
+    public static String[] getEnemiesList()
+    {
+        return new String[]
+        {
+            "blue_0", "blue_1", "blue_2", "blue_3", "blue_4",
+            "green_0", "green_1", "green_2", "green_3", "green_4",
+            "red_0", "red_1", "red_2", "red_3", "red_4",
+            "blue_s_1", "blue_s_4",
+            "green_s_1", "green_s_4",
+            "red_s_1", "red_s_4"
+        };
     }
     
     private static String[] getWaves()
     {
-        return new String[]
+        String[] ret = new String[] {"red_0, 1, 0, 0"};
+        try(BufferedReader reader = engine.utils.ResourceManager.getReader("waves", "waves"))
+        {
+            Object[] lines = reader.lines().toArray();
+            ret = new String[lines.length];
+            for(int i = 0; i < lines.length; i++)
+            {
+                ret[i] = (String) lines[i];
+            }
+            reader.close();
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        return ret;
+
+        /*return new String[]
         {
             "",
             "blue_0, 5, 0, 2",
             "blue_0, 10, 0, 1; blue_1, 5, 10, 2",
-            "blue_0, 2, 0, 1; blue_1, 2, 2, 1; blue_2, 2, 4, 1; blue_3, 2, 6, 1; blue_4, 2, 8, 1",
-            "blue_0, 2, 0, 1; blue_1, 2, 2, 1; blue_2, 2, 4, 1; blue_3, 2, 6, 1; blue_4, 2, 8, 1; green_0, 2, 10, 1; green_1, 2, 12, 1; green_2, 2, 14, 1; green_3, 2, 16, 1; green_4, 2, 18, 1; red_0, 2, 20, 1; red_1, 2, 22, 1; red_2, 2, 24, 1; red_3, 2, 26, 1; red_4, 2, 28, 1",
-            "blue_s_1, 1, 0, 0; blue_s_4, 1, 5, 0; green_s_1, 1, 10, 0; green_s_4, 1, 15, 0; red_s_1, 1, 20, 0; red_s_4, 1, 25, 0"
-        };
+            //"blue_0, 2, 0, 1; blue_1, 2, 2, 1; blue_2, 2, 4, 1; blue_3, 2, 6, 1; blue_4, 2, 8, 1",
+            //"blue_0, 2, 0, 1; blue_1, 2, 2, 1; blue_2, 2, 4, 1; blue_3, 2, 6, 1; blue_4, 2, 8, 1; green_0, 2, 10, 1; green_1, 2, 12, 1; green_2, 2, 14, 1; green_3, 2, 16, 1; green_4, 2, 18, 1; red_0, 2, 20, 1; red_1, 2, 22, 1; red_2, 2, 24, 1; red_3, 2, 26, 1; red_4, 2, 28, 1",
+            //"blue_s_1, 1, 0, 0; blue_s_4, 1, 5, 0; green_s_1, 1, 10, 0; green_s_4, 1, 15, 0; red_s_1, 1, 20, 0; red_s_4, 1, 25, 0"
+        };*/
     }
     
     public class Wave
@@ -170,6 +221,11 @@ public class WaveManager
                 String[] properties = subs[i].split(",");
                 subWaves[i] = new SubWave(properties[0], Integer.parseInt(properties[1]), Double.parseDouble(properties[2]), Double.parseDouble(properties[3]));
             }
+        }
+
+        public Wave(SubWave[] subWaves)
+        {
+            this.subWaves = subWaves;
         }
     }
     

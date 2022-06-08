@@ -53,7 +53,7 @@ public abstract class Projectile extends CollisionGameObject
     @Override
     public void render(RenderLayer layer, double deltaTime)
     {
-        if (layer.isNot("debug")) 
+        if (layer.isNot("projectiles")) 
             return;
 
         sprite.position = position;

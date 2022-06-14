@@ -1,10 +1,6 @@
 package game.gameObjects.tower.towers;
 
-import java.util.ArrayList;
-
 import engine.math.Vector;
-import engine.scene.CollisionGameObject;
-import engine.scene.GameObject;
 import engine.utils.Sprite;
 import engine.utils.SpriteSheet;
 import game.gameObjects.enemies.Enemy;
@@ -41,7 +37,7 @@ public class Stone extends Tower
 
         lookAt(target.position);
 
-        scene.addObject(new HomingProjectile(new Sprite("towers/stein_default").setSize(SIZE.mul(0.5)), position, this::getFurthestEnemy, 5, (projectile, enemey) -> 
+        scene.addObject(new HomingProjectile(new Sprite("towers/stein_default").setSize(SIZE.mul(0.5)), range, position, position.directionTo(target.position), this::getFurthestEnemy, 5, (projectile, enemey) -> 
         {
             enemey.damage(damage);
             projectile.destroy();

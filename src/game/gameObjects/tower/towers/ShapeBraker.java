@@ -1,13 +1,8 @@
 package game.gameObjects.tower.towers;
 
-import java.util.ArrayList;
-
 import engine.math.Vector;
-import engine.scene.CollisionGameObject;
-import engine.scene.GameObject;
 import engine.utils.Sprite;
 import engine.utils.SpriteSheet;
-import engine.utils.Lambda.Action2;
 import game.gameObjects.enemies.Enemy;
 import game.gameObjects.projectile.Projectile;
 import game.gameObjects.projectile.projectiles.HomingProjectile;
@@ -130,28 +125,28 @@ public class ShapeBraker extends Tower
     {
         if (threeBullets)
         {
-            shootHomingBullet(LEFT.sub(bulletSize.div(2)));
-            shootHomingBullet(LEFT);
-            shootHomingBullet(LEFT.add(bulletSize.div(2)));
+            shootHomingBullet(LEFT.sub(10, 0), Vector.left());
+            shootHomingBullet(LEFT, Vector.left());
+            shootHomingBullet(LEFT.add(10, 0), Vector.left());
 
-            shootHomingBullet(RIGHT.sub(bulletSize.div(2)));
-            shootHomingBullet(RIGHT);
-            shootHomingBullet(RIGHT.add(bulletSize.div(2)));
+            shootHomingBullet(RIGHT.sub(10, 0), Vector.right());
+            shootHomingBullet(RIGHT, Vector.right());
+            shootHomingBullet(RIGHT.add(10, 0), Vector.right());
 
-            shootHomingBullet(UP.sub(bulletSize.div(2)));
-            shootHomingBullet(UP);
-            shootHomingBullet(UP.add(bulletSize.div(2)));
+            shootHomingBullet(UP.sub(10, 0), Vector.up());
+            shootHomingBullet(UP, Vector.up());
+            shootHomingBullet(UP.add(10, 0), Vector.up());
 
-            shootHomingBullet(DOWN.sub(bulletSize.div(2)));
-            shootHomingBullet(DOWN);
-            shootHomingBullet(DOWN.add(bulletSize.div(2)));
+            shootHomingBullet(DOWN.sub(10, 0), Vector.down());
+            shootHomingBullet(DOWN, Vector.down());
+            shootHomingBullet(DOWN.add(10, 0), Vector.down());
         }
         else
         {
-            shootHomingBullet(LEFT);
-            shootHomingBullet(RIGHT);
-            shootHomingBullet(UP);
-            shootHomingBullet(DOWN);
+            shootHomingBullet(LEFT, Vector.left());
+            shootHomingBullet(RIGHT, Vector.right());
+            shootHomingBullet(UP, Vector.up());
+            shootHomingBullet(DOWN, Vector.down());
         }
     }
 
@@ -160,9 +155,9 @@ public class ShapeBraker extends Tower
         gameScene.addObject(new OneWayProjectile(BULLET.setSize(bulletSize), position, direction, 400, this::onHit));
     }
 
-    private void shootHomingBullet(Vector position)
+    private void shootHomingBullet(Vector position, Vector direction)
     {
-        gameScene.addObject(new HomingProjectile(BULLET.setSize(bulletSize), position, this::getFurthestEnemy, 14, this::onHit));
+        gameScene.addObject(new HomingProjectile(BULLET.setSize(bulletSize), range, position, direction, this::getFurthestEnemy, 14, this::onHit));
     }
 
     private void onHit(Projectile projectile, Enemy enemy)

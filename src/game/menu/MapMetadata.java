@@ -6,11 +6,11 @@ public class MapMetadata
 {
     public static final MapMetadata[] maps = new MapMetadata[]
     {
-        new MapMetadata("meadow", "Wiese (nicht fertig)", "backgrounds/meadow_bg", Difficulty.EASY),
+        new MapMetadata("meadow", "Wiese", "backgrounds/meadow_bg", Difficulty.EASY),
         new MapMetadata("ice", "Eis", "backgrounds/ice_bg", Difficulty.EASY),
-        new MapMetadata("mountain", "Berg (nicht fertig)", "backgrounds/mountain_bg", Difficulty.MEDIUM),
+        new MapMetadata("mountain", "Berg", "backgrounds/mountain_bg", Difficulty.MEDIUM),
         new MapMetadata("islands", "Inseln", "backgrounds/islands_bg", Difficulty.MEDIUM),
-        new MapMetadata("volcano", "Vulkan (nicht fertig)", "backgrounds/volcano_bg", Difficulty.HARD),
+        new MapMetadata("volcano", "Vulkan", "backgrounds/volcano_bg", Difficulty.HARD),
         new MapMetadata("space", "Weltraum", "backgrounds/space_bg", Difficulty.HARD)
     };
     

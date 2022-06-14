@@ -24,8 +24,8 @@ public class SplittingEnemy extends Enemy
     @Override
     protected void onKill()
     {
+        // spawn splitting enemies
         Vector forward = nextPoint.sub(position).normalized();
-        
         for(int i = 0; i < type.splitCount; i++)
         {
             NormalEnemy newEnemy = new NormalEnemy(false, type.splitType, type.splitTier);

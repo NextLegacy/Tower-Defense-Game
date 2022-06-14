@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
-//import engine.Engine;
 import engine.utils.Lambda.Func0;
+import game.gameObjects.enemies.BossCyan;
+import game.gameObjects.enemies.BossMagenta;
+import game.gameObjects.enemies.BossYellow;
 import game.gameObjects.enemies.Enemy;
 import game.gameObjects.enemies.NormalEnemy;
 import game.gameObjects.enemies.SplittingEnemy;
@@ -21,20 +23,18 @@ public class WaveManager
     public boolean started;
     
     private GameScene scene;
-    //private Engine engine;
     
     private ArrayList<Enemy> sceneEnemies;
     
     private static final HashMap<String, Func0<Enemy>> enemieTypes = getEnemies();
     private static final String[] enemyTypeList = getEnemiesList();
-    private static final String[] waves = getWaves();
+    private static final String[] waves = new String[] {"b_magenta, 1, 0, 0; red_s_4, 1, 0, 0"};//getWaves();
     
     private Random random;
 
-    public WaveManager(GameScene scene/*, Engine engine*/)
+    public WaveManager(GameScene scene)
     {
         this.scene = scene;
-        //this.engine = engine;
         waveNumber = 0;
         
         sceneEnemies = new ArrayList<Enemy>();
@@ -48,7 +48,7 @@ public class WaveManager
         
         if(waveNumber >= waves.length)
         {
-            //engine.setActiveScene(new GameOverScene(true));
+            // generate random wave
             int subCount = random.nextInt(3, 6);
             SubWave[] subs = new SubWave[subCount];
             int enemyTypeCount = enemieTypes.values().toArray().length;
@@ -63,6 +63,7 @@ public class WaveManager
         }
         else
         {
+            // start predefined wave
             currentWave = new Wave(waves[waveNumber]);
         }
         started = true;
@@ -89,8 +90,9 @@ public class WaveManager
                 {
                     subWave.remainingEnemies--;
                     
+                    // spawn enemy
                     Enemy newEnemy = enemieTypes.get(subWave.enemyType).invoke();
-                    scene.addObject(newEnemy); // spawn enemy
+                    scene.addObject(newEnemy);
                     
                     if(subWave.remainingEnemies <= 0)
                     {
@@ -158,12 +160,14 @@ public class WaveManager
         map.put("red_s_4", () -> new SplittingEnemy(true, SplittingEnumType.RED_4));
         
         // boss enemies
-        // :(
+        map.put("b_yellow", () -> new BossYellow());
+        map.put("b_cyan", () -> new BossCyan());
+        map.put("b_magenta", () -> new BossMagenta());
         
         return map;
     }
 
-    public static String[] getEnemiesList()
+    private static String[] getEnemiesList()
     {
         return new String[]
         {
@@ -173,6 +177,14 @@ public class WaveManager
             "blue_s_1", "blue_s_4",
             "green_s_1", "green_s_4",
             "red_s_1", "red_s_4"
+        };
+    }
+    
+    private static String[] getBossList()
+    {
+        return new String[]
+        {
+            "b_yellow", "b_cyan", "b_magenta"
         };
     }
     

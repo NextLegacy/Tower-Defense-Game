@@ -64,12 +64,26 @@ public class Scene extends Activateable
     
     public void update(double deltaTime)
     {
+        // main GameObject update loop
         for(GameObject gameObject : gameObjects)
         {
             if(gameObject.isActive())
                 gameObject.update(deltaTime);
         }
         
+        syncGameObjects();
+        
+        // collisions
+        collisions.collisionsUpdate();
+        
+        syncGameObjects();
+    }
+    
+    /**
+     * Removes or adds GameObjects to the GameObject list outside the main update loop.
+     */
+    private void syncGameObjects()
+    {
         // add new game objects
         while(!newObjects.empty())
         {
@@ -83,9 +97,6 @@ public class Scene extends Activateable
             GameObject g = removedObjects.pop();
             gameObjects.remove(g);
         }
-        
-        // collisions
-        collisions.collisionsUpdate();
     }
 
     public void render(RenderLayer layer, double deltaTime)
@@ -107,5 +118,7 @@ public class Scene extends Activateable
 
         for(GameObject gameObject : gameObjects)
             gameObject.destroy();
+        
+        syncGameObjects();
     }
 }

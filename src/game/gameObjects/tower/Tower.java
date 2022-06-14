@@ -40,7 +40,17 @@ public abstract class Tower extends CollisionGameObject
         this.upgradeManager.setupUpgrade();
     }
 
+    //public Func1<Enemy, Vector> getFurthestEnemyInRangeFactory(double range)
+    //{
+    //    return (position) -> getFurthestEnemy(position, range);
+    //}
+
     public Enemy getFurthestEnemy(Vector position)
+    {
+        return getFurthestEnemy(position, range);
+    }
+
+    public Enemy getFurthestEnemy(Vector position, double range)
     {
         ArrayList<CollisionGameObject> gameObjects = collisions.objectsInCircle(2, position.x, position.y, range);
 

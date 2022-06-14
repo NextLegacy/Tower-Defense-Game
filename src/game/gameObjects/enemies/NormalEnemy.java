@@ -19,9 +19,9 @@ public class NormalEnemy extends Enemy
     
     public static enum NormalEnemyType
     {
-        BLUE( "blue",  0, 100, 20, 20, 10),
-        GREEN("green", 1, 200, 30, 10, 5),
-        RED(  "red",   2, 50,  15, 40, 15);
+        BLUE ("blue",  0, 100, 20, 20, 10),
+        GREEN("green", 1, 200, 30, 10,  5),
+        RED  ("red",   2,  50, 15, 40, 15);
         
         public String label;
         public int spriteRow;

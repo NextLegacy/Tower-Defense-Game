@@ -162,7 +162,7 @@ public class TowerMenu extends GameObject
     @Override
     public void render(RenderLayer layer, double deltaTime) 
     {
-        if (layer.isNot("background")) return;
+        if (layer.isNot("ui")) return;
 
         layer.graphics().setColor(new Color(0x4aa1fa));
 

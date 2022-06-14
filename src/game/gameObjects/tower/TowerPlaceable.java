@@ -2,7 +2,6 @@ package game.gameObjects.tower;
 
 import engine.math.Vector;
 import engine.utils.Sprite;
-import engine.utils.Lambda.Func0;
 import engine.utils.Lambda.Func1;
 import game.scenes.GameScene;
 

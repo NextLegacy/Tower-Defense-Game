@@ -117,6 +117,11 @@ public class Vector
         return this.sub(vec).magnitude();
     }
 
+    public Vector directionTo(Vector vec)
+    {
+        return vec.sub(this).normalized();
+    }
+
     public double magnitude() 
     {
         return Math.sqrt(this.dot(this));

@@ -28,7 +28,8 @@ public class WaveManager
     
     private static final HashMap<String, Func0<Enemy>> enemieTypes = getEnemies();
     private static final String[] enemyTypeList = getEnemiesList();
-    private static final String[] waves = new String[] {"b_magenta, 1, 0, 0; red_s_4, 1, 0, 0"};//getWaves();
+    private static final String[] bossTypeList = getBossList();
+    private static final String[] waves = getWaves();
     
     private Random random;
 
@@ -49,15 +50,21 @@ public class WaveManager
         if(waveNumber >= waves.length)
         {
             // generate random wave
+            int bossCount = (int) (waveNumber / 25);
             int subCount = random.nextInt(3, 6);
-            SubWave[] subs = new SubWave[subCount];
-            int enemyTypeCount = enemieTypes.values().toArray().length;
-            for(int i = 0; i < subCount; i++)
+            SubWave[] subs = new SubWave[subCount + bossCount];
+            for(int i = 0; i < subCount; i++) // add non-boss enemies
             {
-                int type = random.nextInt(0, enemyTypeCount);
-                double countBase = Math.log(waveNumber) * (enemyTypeCount * 2 - type) * 0.05;
-                int count = random.nextInt((int) (countBase * 0.8), (int) (countBase * 1.5)); 
-                subs[i] = new SubWave(enemyTypeList[type], count, i * random.nextDouble(1, 10), random.nextDouble(0, 20) / count);
+                int type = random.nextInt(0, enemyTypeList.length);
+                double countBase = Math.log(waveNumber) * (enemyTypeList.length - type + 20) * 0.05; // indicator for how strong the selected an enemy type is
+                int count = random.nextInt((int) (countBase * 0.8), (int) (countBase * 1.2)); 
+                subs[i] = new SubWave(enemyTypeList[type], count, i * random.nextDouble(1, 5), random.nextDouble(0, 10) / count);
+            }
+            for(int i = subCount; i < subCount + bossCount; i++) // add boss enemies
+            {
+                System.out.println(bossCount);
+                int type = random.nextInt(0, bossTypeList.length);
+                subs[i] = new SubWave(bossTypeList[type], 1, i * random.nextDouble(2, 5), 0);
             }
             currentWave = new Wave(subs);
         }

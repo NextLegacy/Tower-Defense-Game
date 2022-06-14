@@ -8,6 +8,7 @@ import engine.math.Vector;
 import engine.scene.CollisionGameObject;
 import engine.scene.GameObject;
 import engine.utils.Sprite;
+import engine.utils.SpriteSheet;
 import engine.window.RenderLayer;
 import game.gameObjects.enemies.Enemy;
 import game.gameObjects.tower.upgrades.UpgradeManager;
@@ -19,6 +20,29 @@ public abstract class Tower extends CollisionGameObject
 
     public boolean selected = false;
 
+    /**
+     * 000 100 200 300
+     * 010 110 210 310
+     * 020 120 220 320
+     * 030 130 230 330
+     * 
+     * 001 101 201 301
+     * 011 111 211 311
+     * 021 121 221 321
+     * 031 131 231 331
+     * 
+     * 002 102 202 302
+     * 012 112 212 312
+     * 022 122 222 322
+     * 032 132 232 332
+     * 
+     * 003 103 203 303
+     * 013 113 213 313
+     * 023 123 223 323
+     * 033 133 233 333
+     */
+    protected SpriteSheet spriteSheet;
+
     protected Sprite sprite;
 
     protected double range;
@@ -28,22 +52,23 @@ public abstract class Tower extends CollisionGameObject
 
     private double time;
 
-    public Tower(Vector position)
+    protected double rotation;
+
+    public Tower(Vector position, Vector size)
     {
         super(1);
 
+        this.size = size;
+
         this.position = position;
+
+        this.rotation = 0;
 
         this.sprite = new Sprite("");
         this.upgradeManager = createUpgradeManager();
 
-        this.upgradeManager.setupUpgrade();
+        this.upgradeManager.setupUpgrades();
     }
-
-    //public Func1<Enemy, Vector> getFurthestEnemyInRangeFactory(double range)
-    //{
-    //    return (position) -> getFurthestEnemy(position, range);
-    //}
 
     public Enemy getFurthestEnemy(Vector position)
     {
@@ -78,7 +103,6 @@ public abstract class Tower extends CollisionGameObject
     @Override
     public void start() 
     {
-        size = sprite.size;
         this.gameScene = (GameScene) scene;
     }
     
@@ -122,11 +146,18 @@ public abstract class Tower extends CollisionGameObject
         if(selected)
             layer.graphics().fillOval((int)(position.x-range), (int)(position.y-range), (int)range*2, (int)range*2);    
 
+        if (spriteSheet != null)
+            sprite = spriteSheet.getSprite
+            (
+                upgradeManager.UPGRADE_PATHS[0].currentUpgradeIndex, 
+                upgradeManager.UPGRADE_PATHS[1].currentUpgradeIndex + upgradeManager.UPGRADE_PATHS[2].currentUpgradeIndex * 4
+            ).setPosition(position).setSize(size).setRotation(rotation);
+
         layer.renderSpriteCentered(sprite);
     }
 
     public void lookAt(Vector target)
     {
-        sprite.rotation = target.sub(position).angle();
+        rotation = target.sub(position).angle();
     }
 }

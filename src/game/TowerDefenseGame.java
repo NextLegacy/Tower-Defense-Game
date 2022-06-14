@@ -18,7 +18,7 @@ public final class TowerDefenseGame
             "enemys",
             "towers",
             "ui",
-            "debug",
+            //"debug",
             "window"
         };
 

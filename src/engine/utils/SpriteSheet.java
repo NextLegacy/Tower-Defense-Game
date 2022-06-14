@@ -6,10 +6,10 @@ import engine.math.Vector;
 
 public class SpriteSheet 
 {
-    private final BufferedImage spriteSheet;
-    private final Vector size;
-    private final Vector tileSize;
-    private final Sprite[][] sprites;
+    public final BufferedImage spriteSheet;
+    public final Vector size;
+    public final Vector tileSize;
+    public final Sprite[][] sprites;
 
     public SpriteSheet(BufferedImage image, Vector tileSize)
     {

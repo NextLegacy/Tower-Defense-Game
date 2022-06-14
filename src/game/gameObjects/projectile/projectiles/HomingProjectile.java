@@ -49,10 +49,4 @@ public class HomingProjectile extends Projectile
         velocity = velocity.add(direction.mul(deltaTime * speed));
         super.update(deltaTime);
     }
-
-    public void onHitEnemy(Enemy enemy) 
-    {
-        enemy.damage(1);
-        destroy();
-    }
 }

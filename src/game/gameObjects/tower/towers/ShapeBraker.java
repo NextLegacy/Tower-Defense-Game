@@ -5,8 +5,8 @@ import engine.utils.Sprite;
 import engine.utils.SpriteSheet;
 import game.gameObjects.enemies.Enemy;
 import game.gameObjects.projectile.Projectile;
-import game.gameObjects.projectile.projectiles.HomingProjectile;
-import game.gameObjects.projectile.projectiles.OneWayProjectile;
+import game.gameObjects.projectile.projectiles.PiercingHomingProjectile;
+import game.gameObjects.projectile.projectiles.PiercingOneWayProjectile;
 import game.gameObjects.tower.Tower;
 import game.gameObjects.tower.upgrades.Upgrade;
 import game.gameObjects.tower.upgrades.UpgradeManager;
@@ -15,26 +15,38 @@ import game.gameObjects.tower.upgrades.UpgradePathType;
 
 public class ShapeBraker extends Tower 
 {
-    public static final Vector SIZE = new Vector(95, 95);
-
-    public static final Sprite SPRITE = new Sprite("/towers/shapebraker_default").setSize(SIZE);
+    public static final Vector SIZE = new Vector(85, 85);
 
     public static final Sprite BULLET = new Sprite("/projectiles/ball");
 
     public static final SpriteSheet UPGRADE_SHEET = new SpriteSheet("upgrades/shapebraker", new Vector(30, 30));
-    public static final SpriteSheet TOWE_SHEET = new SpriteSheet("towers/shapebraker_upgraded", new Vector(50, 50));
 
-    public final Vector DEFAULT_BULLET_SIZE = new Vector(10, 10);
+    public static final SpriteSheet TOWER_SPRITE_SHEET = new SpriteSheet("towers/shapebraker", new Vector(50, 50));
+
+    public final int DEFAULT_DAMAGE = 3;
+
+    public final int UPGRADED_DAMAGE_1 = 5;
+    public final int UPGRADED_DAMAGE_2 = 6;
+    public final int UPGRADED_DAMAGE_3 = 8;
+
+    public final int DEFAULT_PIERCE = 1;
+    public final int UPGRADED_PIERCE = 4;
+
+    public final Vector DEFAULT_BULLET_SIZE = new Vector(17, 17);
+    public final Vector UPGRADED_BULLET_SIZE = new Vector(25, 25);
+
     public final double DEFAULT_FIRE_RATE = 0.8;
-    public final double DEFAULT_RANGE = 175;
+    public final double UPGRADED_FIRE_RATE = 0.4;
+
+    public final double DEFAULT_RANGE = 125;
+    public final double UPGRADED_RANGE = 225;
 
     public Vector bulletSize = DEFAULT_BULLET_SIZE;
-
-    public int damage = 1;
+    public int pierce = DEFAULT_PIERCE;
+    public int damage = DEFAULT_DAMAGE;
 
     public boolean threeBullets;
-    public boolean rotateTowardsEnemey;
-    public boolean homing;
+    public boolean homingBullets;
 
     public final Vector LEFT;
     public final Vector RIGHT;
@@ -43,50 +55,25 @@ public class ShapeBraker extends Tower
 
     public ShapeBraker(Vector position)
     {
-        super(position);
+        super(position, SIZE);
         range = DEFAULT_RANGE;
         fireRate = DEFAULT_FIRE_RATE;
-        this.sprite = SPRITE.deriveSprite(); 
+
+        this.spriteSheet = TOWER_SPRITE_SHEET;
 
         LEFT = this.position.sub(SIZE.x/2, 0);
         RIGHT = this.position.add(SIZE.x/2, 0);
         UP = this.position.sub(0, SIZE.x/2);
         DOWN = this.position.add(0, SIZE.x/2);
     }
-
-    private int x = 0;
-    private int y = -1;
     
-    @Override
-    public void update(double deltaTime) 
-    {
-        super.update(deltaTime);
-
-        int x = upgradeManager.UPGRADE_PATHS[0].currentUpgradeIndex + 1;
-        int y = upgradeManager.UPGRADE_PATHS[1].currentUpgradeIndex;
-        
-        if (this.x == x && this.y == y)
-            return;
-
-        if (x != -1 || y != -1) 
-        { 
-            if (x == -1) x = 0;
-            else if (y == -1) y = 0;
-
-            this.x = x;
-            this.y = y;
-
-            this.sprite = TOWE_SHEET.getSprite(x, y).setSize(ShapeBraker.SIZE).setPosition(position).setRotation(this.sprite.rotation);
-        }
-    }
-
     @Override
     protected void fire() 
     {
         if (getFurthestEnemy(position) == null)
             return;
 
-        if (homing)
+        if (homingBullets)
             shootHomingBullets();
         else
             shootNormalBullets();
@@ -96,21 +83,21 @@ public class ShapeBraker extends Tower
     {
         if (threeBullets)
         {
-            shootNormalBullet(LEFT.sub(0, 10), Vector.left());
+            shootNormalBullet(LEFT.sub(0, bulletSize.y), Vector.left());
             shootNormalBullet(LEFT, Vector.left());
-            shootNormalBullet(LEFT.add(0, 10), Vector.left());
+            shootNormalBullet(LEFT.add(0, bulletSize.y), Vector.left());
 
-            shootNormalBullet(RIGHT.sub(0, 10), Vector.right());
+            shootNormalBullet(RIGHT.sub(0, bulletSize.y), Vector.right());
             shootNormalBullet(RIGHT, Vector.right());
-            shootNormalBullet(RIGHT.add(0, 10), Vector.right());
+            shootNormalBullet(RIGHT.add(0, bulletSize.y), Vector.right());
 
-            shootNormalBullet(UP.sub(10, 0), Vector.up());
+            shootNormalBullet(UP.sub(bulletSize.x, 0), Vector.up());
             shootNormalBullet(UP, Vector.up());
-            shootNormalBullet(UP.add(10, 0), Vector.up());
+            shootNormalBullet(UP.add(bulletSize.x, 0), Vector.up());
 
-            shootNormalBullet(DOWN.sub(10, 0), Vector.down());
+            shootNormalBullet(DOWN.sub(bulletSize.x, 0), Vector.down());
             shootNormalBullet(DOWN, Vector.down());
-            shootNormalBullet(DOWN.add(10, 0), Vector.down());
+            shootNormalBullet(DOWN.add(bulletSize.x, 0), Vector.down());
         }
         else
         {
@@ -125,21 +112,21 @@ public class ShapeBraker extends Tower
     {
         if (threeBullets)
         {
-            shootHomingBullet(LEFT.sub(10, 0), Vector.left());
+            shootHomingBullet(LEFT.sub(0, bulletSize.y), Vector.left());
             shootHomingBullet(LEFT, Vector.left());
-            shootHomingBullet(LEFT.add(10, 0), Vector.left());
+            shootHomingBullet(LEFT.add(0, bulletSize.y), Vector.left());
 
-            shootHomingBullet(RIGHT.sub(10, 0), Vector.right());
+            shootHomingBullet(RIGHT.sub(0, bulletSize.y), Vector.right());
             shootHomingBullet(RIGHT, Vector.right());
-            shootHomingBullet(RIGHT.add(10, 0), Vector.right());
+            shootHomingBullet(RIGHT.add(0, bulletSize.y), Vector.right());
 
-            shootHomingBullet(UP.sub(10, 0), Vector.up());
+            shootHomingBullet(UP.sub(bulletSize.x, 0), Vector.up());
             shootHomingBullet(UP, Vector.up());
-            shootHomingBullet(UP.add(10, 0), Vector.up());
+            shootHomingBullet(UP.add(bulletSize.x, 0), Vector.up());
 
-            shootHomingBullet(DOWN.sub(10, 0), Vector.down());
+            shootHomingBullet(DOWN.sub(bulletSize.x, 0), Vector.down());
             shootHomingBullet(DOWN, Vector.down());
-            shootHomingBullet(DOWN.add(10, 0), Vector.down());
+            shootHomingBullet(DOWN.add(bulletSize.x, 0), Vector.down());
         }
         else
         {
@@ -152,18 +139,17 @@ public class ShapeBraker extends Tower
 
     private void shootNormalBullet(Vector position, Vector direction)
     {
-        gameScene.addObject(new OneWayProjectile(BULLET.setSize(bulletSize), position, direction, 400, this::onHit));
+        gameScene.addObject(new PiercingOneWayProjectile(BULLET.setSize(bulletSize), position, direction, 600, pierce, this::onHit));
     }
 
     private void shootHomingBullet(Vector position, Vector direction)
     {
-        gameScene.addObject(new HomingProjectile(BULLET.setSize(bulletSize), range, position, direction, this::getFurthestEnemy, 14, this::onHit));
+        gameScene.addObject(new PiercingHomingProjectile(BULLET.setSize(bulletSize), range, position, direction, this::getFurthestEnemy, 24, pierce, this::onHit));
     }
 
     private void onHit(Projectile projectile, Enemy enemy)
     {
         enemy.damage(damage);
-        projectile.destroy();
     }
 
     @Override
@@ -171,81 +157,82 @@ public class ShapeBraker extends Tower
     {
         return new UpgradeManager
         (
+            UPGRADE_SHEET,
             new UpgradePath(UpgradePathType.ONLY_ONE,
                 new Upgrade
                 (
-                    "schneller feuern", 
-                    UPGRADE_SHEET.getSprite(0, 1), 
-                    "Schießt super schnell.", 
-                    350, 
-                    (upgrade) -> fireRate = 0.4, 
-                    (upgrade) -> fireRate = DEFAULT_FIRE_RATE
+                    "Größere Kugeln",
+                    "Die Kugeln sind größer", 
+                    400, 
+                    (upgrade) -> bulletSize = UPGRADED_BULLET_SIZE, 
+                    (upgrade) -> bulletSize = DEFAULT_BULLET_SIZE
                 ),
                 new Upgrade
                 (
-                    "verfolgende Schüsse", 
-                    UPGRADE_SHEET.getSprite(0, 2), 
+                    "Mehr Kugeln",
+                    "Schießt drei Kugeln", 
+                    1250, 
+                    (upgrade) -> threeBullets = true, 
+                    (upgrade) -> threeBullets = false
+                ),
+                new Upgrade
+                (
+                    "verfolgende Schüsse",
                     "Projektile verfolgen Gegner.", 
                     1500, 
-                    (upgrade) -> homing = true, 
-                    (upgrade) -> homing = false
+                    (upgrade) -> homingBullets = true, 
+                    (upgrade) -> homingBullets = false
                 )
             ),
             new UpgradePath(UpgradePathType.ONLY_ONE, 
                 new Upgrade
                 (
-                    "mehr Reichweite", 
-                    UPGRADE_SHEET.getSprite(1, 0), 
+                    "mehr Reichweite",
                     "Erhöht die Reichweite.", 
-                    50,
-                    (upgrade) -> range = 225,
+                    225,
+                    (upgrade) -> range = UPGRADED_RANGE,
                     (upgrade) -> range = DEFAULT_RANGE
                 ),
                 new Upgrade
                 (
-                    "größere Kugeln", 
-                    UPGRADE_SHEET.getSprite(1, 1),
-                    "Projektile sind größer.", 
-                    300,
-                    (upgrade) -> bulletSize = new Vector(20, 20),
-                    (upgrade) -> bulletSize = DEFAULT_BULLET_SIZE
+                    "schnelle Kugeln",
+                    "Projektile sind Schneller.", 
+                    565,
+                    (upgrade) -> fireRate = UPGRADED_FIRE_RATE,
+                    (upgrade) -> fireRate = DEFAULT_FIRE_RATE
                 ),
                 new Upgrade
                 (
-                    "drei Kugeln", 
-                    UPGRADE_SHEET.getSprite(1, 2),
-                    "Es werden drei\nKugeln geschossen.", 
-                    600,
-                    (upgrade) -> threeBullets = true, 
-                    (upgrade) -> threeBullets = false
+                    "Spitze Kugeln",
+                    "Kugeln durchdringen Gegner.", 
+                    740,
+                    (upgrade) -> pierce = UPGRADED_PIERCE, 
+                    (upgrade) -> pierce = DEFAULT_PIERCE
                 )
             ),
             new UpgradePath(UpgradePathType.ONE_BY_ONE, 
                 new Upgrade
                 (
-                    "mehr Schaden", 
-                    UPGRADE_SHEET.getSprite(2, 0),
-                    "Kugeln machen 3 Schaden.", 
+                    "mehr Schaden",
+                    "Kugeln machen 5 Schaden.", 
                     250,
-                    (upgrade) -> damage = 3, 
+                    (upgrade) -> damage = UPGRADED_DAMAGE_1, 
                     Upgrade.NO_EFFECT
                 ),
                 new Upgrade
                 (
-                    "noch mehr Schaden", 
-                    UPGRADE_SHEET.getSprite(2, 1),
-                    "Kugeln machen 4 Schaden.",
+                    "noch mehr Schaden",
+                    "Kugeln machen 6 Schaden.",
                     500,
-                    (upgrade) -> damage = 4, 
+                    (upgrade) -> damage = UPGRADED_DAMAGE_2, 
                     Upgrade.NO_EFFECT
                 ),
                 new Upgrade
                 (
-                    "viel mehr Schaden", 
-                    UPGRADE_SHEET.getSprite(2, 2),
-                    "Kugeln machen 5 Schaden.",
+                    "viel mehr Schaden",
+                    "Kugeln machen 8 Schaden.",
                     680,
-                    (upgrade) -> damage = 5, 
+                    (upgrade) -> damage = UPGRADED_DAMAGE_3, 
                     Upgrade.NO_EFFECT
                 )
             )

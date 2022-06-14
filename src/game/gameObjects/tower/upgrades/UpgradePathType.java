@@ -32,18 +32,18 @@ public enum UpgradePathType
     ),
     FIRST_AND_ONLY_ONE
     (
-        (upgradePath, upgradeIndex) -> (upgradePath.currentUpgradeIndex == -1 && upgradeIndex == 0) || upgradePath.currentUpgradeIndex >= 0,
+        (upgradePath, upgradeIndex) -> (upgradePath.currentUpgradeIndex == 0 && upgradeIndex == 1) || upgradePath.currentUpgradeIndex >= 1,
         (upgradePath, upgradeIndex) -> 
         {
-            if (upgradePath.currentUpgradeIndex == -1)
+            if (upgradePath.currentUpgradeIndex == 0)
             {
-                upgradePath.currentUpgradeIndex = 0;
+                upgradePath.currentUpgradeIndex = 1;
                 upgradePath.currentUpgrade().activate();
             }
 
-            if (upgradeIndex > 0)
+            if (upgradeIndex > 1)
             {
-                if (upgradePath.currentUpgrade() != null && upgradePath.currentUpgrade().isActive() && upgradePath.currentUpgrade().upgradeIndex != 0)
+                if (upgradePath.currentUpgrade() != null && upgradePath.currentUpgrade().isActive() && upgradePath.currentUpgrade().upgradeIndex != 1)
                     upgradePath.currentUpgrade().deactivate();
 
                 upgradePath.currentUpgradeIndex = upgradeIndex;
@@ -51,16 +51,6 @@ public enum UpgradePathType
                 if (upgradePath.currentUpgrade() != null)
                     upgradePath.currentUpgrade().activate();
             }
-
-            /*
-            if (upgradePath.currentUpgrade() != null && upgradePath.currentUpgrade().isActive() && upgradePath.currentUpgradeIndex > 0)
-                upgradePath.currentUpgrade().deactivate();
-
-            upgradePath.currentUpgradeIndex = upgradeIndex;
-
-            if (upgradePath.currentUpgrade() != null)
-                upgradePath.currentUpgrade().activate();
-            */
         }
     ),
     ;

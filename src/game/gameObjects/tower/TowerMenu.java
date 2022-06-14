@@ -9,9 +9,11 @@ import engine.math.Vector;
 import engine.scene.GameObject;
 import engine.utils.Sprite;
 import engine.window.RenderLayer;
+import game.gameObjects.tower.towers.Crossbow;
 import game.gameObjects.tower.towers.CrossbowTower;
 import game.gameObjects.tower.towers.ShapeBraker;
 import game.gameObjects.tower.towers.Stone;
+import game.gameObjects.tower.towers.StoneTower;
 import game.gameObjects.tower.upgrades.Upgrade;
 import game.gameObjects.tower.upgrades.UpgradePath;
 import game.scenes.GameScene;
@@ -33,30 +35,20 @@ public class TowerMenu extends GameObject
     {
         this.placeableTowers = new TowerPlaceable[]
         {
-            new TowerPlaceable<ShapeBraker>("ShapeBraker", "Zerstört Formen\nliebend gern",450, new Sprite("towers/shapebraker_default").setSize(ShapeBraker.SIZE), ShapeBraker::new),
-            new TowerPlaceable<CrossbowTower>("Crossbow", "Wirft Pfeile\nErweist sich als\nsehr nützlich gegen\nFormen", 500, new Sprite("towers/crossbow_default").setSize(CrossbowTower.SIZE), CrossbowTower::new),
-            new TowerPlaceable<Stone>("Stein", "Wirft Steine\nErweist sich als\nsehr nützlich gegen\nFormen", 1000, new Sprite("towers/stein_default").setSize(Stone.SIZE), Stone::new),
-            /*
-            new TowerPlaceable<TestTower>("Spongebob", "Wer wohnt in einer Ananas\nganz tiem im Meer", 13, "testTower", TestTower::new),
-            new TowerPlaceable<TestTower>("Köln", "Ganz in der\nnähe von Deutschland", 234, "box_20x20", TestTower::new),
-            new TowerPlaceable<TestTower>("Steini", "Mr Stein", 2314, "testTower", TestTower::new),
-            new TowerPlaceable<TestTower>("Camper Joè", "Auch gennant:\nVercampter Joè", 213, "testTower", TestTower::new),
-            new TowerPlaceable<TestTower>("Fortnite", "FORTNITE", 234, "testTower", TestTower::new),
-            new TowerPlaceable<TestTower>("Minecraft", "BlockSchlacht", 835, "testTower", TestTower::new),
-            new TowerPlaceable<TestTower>("Salzburg", "ungesüßt", 548, "testTower", TestTower::new),
-            new TowerPlaceable<TestTower>("Nochmal Peter", "ist wieder der Peter", 452, "testTower", TestTower::new),
-            new TowerPlaceable<TestTower>("Patrick Star", "Spongebobs bester Freund", 272, "testTower", TestTower::new),
-            new TowerPlaceable<TestTower>("King julien", "Der allbekannte\nKönig King Julien der III", 52725, "testTower", TestTower::new),
-            */
+            new TowerPlaceable<ShapeBraker>("ShapeBraker", "Zerstört Formen\nliebend gern", 250, ShapeBraker.TOWER_SPRITE_SHEET.getSprite(0, 0).setSize(ShapeBraker.SIZE), ShapeBraker::new),
+            new TowerPlaceable<Crossbow>("Crossbow", "Wirft Pfeile\nErweist sich als\nsehr nützlich gegen\nFormen", 400, new Sprite("towers/crossbow_default").setSize(Crossbow.SIZE), Crossbow::new),
+            new TowerPlaceable<StoneTower>("Steini", "Wirft Zielsuchende Steine", 450, StoneTower.TOWER_SPRITE_SHEET.getSprite(0, 0).setSize(StoneTower.SIZE), StoneTower::new),
+            //new TowerPlaceable<Stone>("Stein", "Wirft Steine\nErweist sich als\nsehr nützlich gegen\nFormen", 1000, new Sprite("towers/stein_default").setSize(Stone.SIZE), Stone::new),
         };
 
-        setupTowers();
+        setupTowerSelectionMenu();
     }
     
-    private void setupTowers()
+    private void setupTowerSelectionMenu()
     {
         int x = 0;
         int y = 0;
+        
         for (int i = 0; i < placeableTowers.length; i++)
         {
             placeableTowers[i].towerInMenuSprite.position = new Vector
@@ -300,7 +292,7 @@ public class TowerMenu extends GameObject
             {
                 layer.setColor(0x101010ff);
             }
-            else if (upgrade.cost() < gameScene.money)
+            else if (upgrade.cost() <= gameScene.money)
             {
                 layer.setColor(0xffff00ff);
             }

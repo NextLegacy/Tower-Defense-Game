@@ -21,7 +21,7 @@ public class Stone extends Tower
     
     public Stone(Vector position)
     {
-        super(position);
+        super(position, SIZE);
         this.sprite = SPRITE.deriveSprite().setSize(SIZE);
         this.range = 150;
         this.fireRate = 2;
@@ -47,11 +47,12 @@ public class Stone extends Tower
     @Override
     protected UpgradeManager createUpgradeManager() 
     {
-        return new UpgradeManager(
+        return new UpgradeManager
+        (
+            UPGRADE_SHEET,
             new UpgradePath(UpgradePathType.ONE_BY_ONE, 
                 new Upgrade(
                     "schneller", 
-                    UPGRADE_SHEET.getSprite(2, 0), 
                     "Wirft schneller.", 
                     10, 
                     (upgrade) -> fireRate = 1,
@@ -59,7 +60,6 @@ public class Stone extends Tower
                 ),
                 new Upgrade(
                     "noch schneller", 
-                    UPGRADE_SHEET.getSprite(2, 1), 
                     "Wirft noch schnerller", 
                     100, 
                     (upgrade) -> fireRate = 0.2,
@@ -67,7 +67,6 @@ public class Stone extends Tower
                 ),
                 new Upgrade(
                     "viel schneller",
-                    UPGRADE_SHEET.getSprite(2, 2), 
                     "", 
                     500, 
                     (upgrade) -> fireRate = 0.05,
@@ -77,7 +76,6 @@ public class Stone extends Tower
             new UpgradePath(UpgradePathType.ONLY_ONE,
                 new Upgrade(
                     "mehr Reichweite", 
-                    UPGRADE_SHEET.getSprite(2, 0), 
                     "Hat mehr Reichweite.", 
                     150, 
                     (upgrade) -> range = 200,
@@ -85,7 +83,6 @@ public class Stone extends Tower
                 ),
                 new Upgrade(
                     "noch mehr Reichweite", 
-                    UPGRADE_SHEET.getSprite(2, 1), 
                     "Die Reichweite wird weiter erhöht.", 
                     400, 
                     (upgrade) -> range = 400,
@@ -93,7 +90,6 @@ public class Stone extends Tower
                 ),
                 new Upgrade(
                     "Ultrasicht",
-                    UPGRADE_SHEET.getSprite(2, 2), 
                     "Sehr hohe Reichweite.", 
                     800, 
                     (upgrade) -> range = 600,
@@ -103,7 +99,6 @@ public class Stone extends Tower
             new UpgradePath(UpgradePathType.FIRST_AND_ONLY_ONE,
                 new Upgrade(
                     "mehr Schaden", 
-                    UPGRADE_SHEET.getSprite(2, 0), 
                     "Macht meht Schaden.", 
                     10, 
                     (upgrade) -> damage = 2,
@@ -111,7 +106,6 @@ public class Stone extends Tower
                 ),
                 new Upgrade(
                     "noch mehr Schaden", 
-                    UPGRADE_SHEET.getSprite(2, 1), 
                     "does shoot way\nmore bullets at once", 
                     400, 
                     (upgrade) -> damage = 4,
@@ -119,7 +113,6 @@ public class Stone extends Tower
                 ),
                 new Upgrade(
                     "Supersteine",
-                    UPGRADE_SHEET.getSprite(2, 2), 
                     "Der höchste Schaden im Spiel.", 
                     700, 
                     (upgrade) -> damage = 7,

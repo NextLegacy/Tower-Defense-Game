@@ -4,6 +4,8 @@ import engine.math.Vector;
 import engine.scene.GameObject;
 import engine.utils.Sprite;
 import engine.window.RenderLayer;
+import game.scenes.GameScene;
+import game.scenes.MainMenuScene;
 
 public class CloseButton extends GameObject
 {
@@ -24,9 +26,17 @@ public class CloseButton extends GameObject
     public void update(double deltaTime)
     {
         if(input.left().isClickedInBounds(sprite.position, sprite.size))
-            engine.deactivate();
+            close();
     }
     
+    public void close()
+    {
+        if (scene instanceof GameScene)
+            engine.setActiveScene(new MainMenuScene());
+        else 
+            engine.deactivate();
+    }
+
     @Override
     public void render(RenderLayer layer, double deltaTime)
     {

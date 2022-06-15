@@ -67,16 +67,21 @@ public abstract class Enemy extends CollisionGameObject
         }
     }
     
+    /**
+     * onKill is called before an Enemy is destroyed because it was killed.
+     */
     protected void onKill() { }
     
     @Override
-    public void onDestroy() {
+    public void onDestroy()
+    {
         super.onDestroy();
         waveManager.removeEnemy(this);
     }
     
     @Override
-    public void onSceneChange() {
+    public void onSceneChange()
+    {
         super.onSceneChange();
         if(scene instanceof GameScene)
         {
@@ -104,6 +109,7 @@ public abstract class Enemy extends CollisionGameObject
     {
         if(position.distance(nextPoint) <= speed * deltaTime)
         {
+            // move to the next path point if it is very close
             position = nextPoint.clone();
             lastPointDistance = 0;
             pathIndex++;
@@ -119,6 +125,7 @@ public abstract class Enemy extends CollisionGameObject
         }
         else
         {
+            // move in the direction of the next path point otherwise
             Vector move = nextPoint.sub(position).normalized().mul(speed * deltaTime);
             position = position.add(move);
             lastPointDistance += move.magnitude();
@@ -131,7 +138,8 @@ public abstract class Enemy extends CollisionGameObject
     }
     
     @Override
-    public void render(RenderLayer layer, double deltaTime) {
+    public void render(RenderLayer layer, double deltaTime)
+    {
         sprite.position = position;
         if(layer.is("enemys"))
         {

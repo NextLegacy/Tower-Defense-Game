@@ -20,7 +20,7 @@ public class Scene extends Activateable
     
     public Scene(int collisionLayerCount, LayerCollision[] layerCollisions)
     {
-        deactivate();
+        deactivate(); // The Scene must be activated by the game loop so it should start inactive.
         
         gameObjects = new ArrayList<GameObject>();
         removedObjects = new Stack<GameObject>();
@@ -30,6 +30,9 @@ public class Scene extends Activateable
         collisions = new Collisions(collisionLayerCount, layerCollisions);
     }
     
+    /**
+     * Init is called before start when a Scene is startet and is used for adding GameObjects to the Scene.
+     */
     public void init() { }
     
     public final void setEngine(Engine engine) { this.engine = engine; }
@@ -41,14 +44,14 @@ public class Scene extends Activateable
         
         g.start();
         
-        newObjects.push(g);
+        newObjects.push(g); // GameObjects should not be added during an update
     }
     
     public final void removeObject(GameObject g)
     {
         g.setScene(this.engine, null);
         
-        removedObjects.push(g);
+        removedObjects.push(g); // GameObjects should not be removed during an update
     }
     
     public void start()

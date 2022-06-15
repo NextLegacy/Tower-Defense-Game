@@ -104,6 +104,7 @@ public abstract class Enemy extends CollisionGameObject
     {
         if(position.distance(nextPoint) <= speed * deltaTime)
         {
+            // move to the next path point if it is very close
             position = nextPoint.clone();
             lastPointDistance = 0;
             pathIndex++;
@@ -119,6 +120,7 @@ public abstract class Enemy extends CollisionGameObject
         }
         else
         {
+            // move in the direction of the next path point otherwise
             Vector move = nextPoint.sub(position).normalized().mul(speed * deltaTime);
             position = position.add(move);
             lastPointDistance += move.magnitude();

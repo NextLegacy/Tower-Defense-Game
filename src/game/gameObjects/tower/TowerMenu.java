@@ -9,10 +9,8 @@ import engine.math.Vector;
 import engine.scene.GameObject;
 import engine.utils.Sprite;
 import engine.window.RenderLayer;
-import game.gameObjects.tower.towers.Crossbow;
 import game.gameObjects.tower.towers.CrossbowTower;
 import game.gameObjects.tower.towers.ShapeBraker;
-import game.gameObjects.tower.towers.Stone;
 import game.gameObjects.tower.towers.StoneTower;
 import game.gameObjects.tower.upgrades.Upgrade;
 import game.gameObjects.tower.upgrades.UpgradePath;
@@ -36,7 +34,7 @@ public class TowerMenu extends GameObject
         this.placeableTowers = new TowerPlaceable[]
         {
             new TowerPlaceable<ShapeBraker>("ShapeBraker", "Zerstört Formen\nliebend gern", 250, ShapeBraker.TOWER_SPRITE_SHEET.getSprite(0, 0).setSize(ShapeBraker.SIZE), ShapeBraker::new),
-            new TowerPlaceable<Crossbow>("Crossbow", "Wirft Pfeile\nErweist sich als\nsehr nützlich gegen\nFormen", 400, new Sprite("towers/crossbow_default").setSize(Crossbow.SIZE), Crossbow::new),
+            new TowerPlaceable<CrossbowTower>("Crossbow", "Wirft Pfeile\nErweist sich als\nsehr nützlich gegen\nFormen", 400, new Sprite("towers/crossbow_default").setSize(CrossbowTower.SIZE), CrossbowTower::new),
             new TowerPlaceable<StoneTower>("Steini", "Wirft Zielsuchende Steine", 450, StoneTower.TOWER_SPRITE_SHEET.getSprite(0, 0).setSize(StoneTower.SIZE), StoneTower::new),
             //new TowerPlaceable<Stone>("Stein", "Wirft Steine\nErweist sich als\nsehr nützlich gegen\nFormen", 1000, new Sprite("towers/stein_default").setSize(Stone.SIZE), Stone::new),
         };

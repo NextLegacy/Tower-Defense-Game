@@ -71,6 +71,10 @@ public class GameScene extends Scene
         //addObject(new TestMouseCollider()); // debug
     }
     
+    /**
+     * used to decrease player health
+     * @param amount amount of damage
+     */
     public void damage(double amount)
     {
         health -= amount;
@@ -79,7 +83,8 @@ public class GameScene extends Scene
     }
     
     @Override
-    public void update(double deltaTime) {
+    public void update(double deltaTime)
+    {
         if(engine.getInputListener().key(KeyEvent.VK_S).isDown())
         {
             waveManager.startNextWave();
@@ -90,10 +95,13 @@ public class GameScene extends Scene
     }
     
     @Override
-    public void render(RenderLayer layer, double deltaTime) {
+    public void render(RenderLayer layer, double deltaTime)
+    {
+        // draw background
         if(layer.is("background"))
             layer.renderSprite(map.background);
         
+        // draw money and health on the right side of the screen
         if (layer.is("window"))
         {
             layer.graphics().setFont(MONEY_FONT);

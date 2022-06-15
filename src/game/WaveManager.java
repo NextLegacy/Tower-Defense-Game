@@ -24,7 +24,7 @@ public class WaveManager
     
     private GameScene scene;
     
-    private ArrayList<Enemy> sceneEnemies;
+    private ArrayList<Enemy> sceneEnemies; // used to keep track of how when there are no more enemies on screen and the next round can be started
     
     private static final HashMap<String, Func0<Enemy>> enemieTypes = getEnemies();
     private static final String[] enemyTypeList = getEnemiesList();

@@ -67,16 +67,21 @@ public abstract class Enemy extends CollisionGameObject
         }
     }
     
+    /**
+     * onKill is called before an Enemy is destroyed because it was killed.
+     */
     protected void onKill() { }
     
     @Override
-    public void onDestroy() {
+    public void onDestroy()
+    {
         super.onDestroy();
         waveManager.removeEnemy(this);
     }
     
     @Override
-    public void onSceneChange() {
+    public void onSceneChange()
+    {
         super.onSceneChange();
         if(scene instanceof GameScene)
         {
@@ -133,7 +138,8 @@ public abstract class Enemy extends CollisionGameObject
     }
     
     @Override
-    public void render(RenderLayer layer, double deltaTime) {
+    public void render(RenderLayer layer, double deltaTime)
+    {
         sprite.position = position;
         if(layer.is("enemys"))
         {

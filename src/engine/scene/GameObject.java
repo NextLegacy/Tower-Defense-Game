@@ -34,7 +34,9 @@ public abstract class GameObject extends Activateable
     {
         deactivate();
         onDestroy();
-        scene.removeObject(this);
+        
+        if (scene != null)
+            scene.removeObject(this);
     }
     
     /**

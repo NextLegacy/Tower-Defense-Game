@@ -67,6 +67,8 @@ public class Scene extends Activateable
     
     public void update(double deltaTime)
     {
+        syncGameObjects();
+
         // main GameObject update loop
         for(GameObject gameObject : gameObjects)
         {

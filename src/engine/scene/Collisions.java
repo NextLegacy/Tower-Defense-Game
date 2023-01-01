@@ -50,6 +50,8 @@ public class Collisions
     
     public void collisionsUpdate()
     {
+        syncObjects();
+
         for(int i = 0; i < layerCollisions.length; i++)
         {
             if(layerCollisions[i].active)
@@ -90,7 +92,10 @@ public class Collisions
                 }
             }
         }
-        
+    }
+
+    private void syncObjects()
+    {
         // add and remove objects to / from the layers
         while(!newObjects.empty())
         {

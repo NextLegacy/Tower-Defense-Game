@@ -36,7 +36,7 @@ public class WaveManager
     public WaveManager(GameScene scene)
     {
         this.scene = scene;
-        waveNumber = 0;
+        waveNumber = 1;
         
         sceneEnemies = new ArrayList<Enemy>();
 

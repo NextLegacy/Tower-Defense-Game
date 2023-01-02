@@ -109,7 +109,8 @@ public class GameScene extends Scene
             layer.drawStringCentered((int)money+"$", MENU_AREA_START.add(MENU_AREA_SIZE.x / 2 + 20, 20));
             layer.graphics().setColor(Color.RED);
             layer.drawStringCentered((int)health + "♥", MENU_AREA_START.add(40, 20));
-            
+            layer.graphics().setColor(Color.blue);
+            layer.drawStringCentered((int)waveManager.waveNumber + "/♾", Vector.zero().add(20, 20));
         }
             
         super.render(layer, deltaTime);

@@ -46,7 +46,7 @@ public class WaveManager
     public void startNextWave()
     {
         if(started) return;
-        
+
         if(waveNumber >= waves.length)
         {
             // generate random wave
@@ -62,7 +62,7 @@ public class WaveManager
             }
             for(int i = subCount; i < subCount + bossCount; i++) // add boss enemies
             {
-                System.out.println(bossCount);
+                //System.out.println(bossCount);
                 int type = random.nextInt(0, bossTypeList.length);
                 subs[i] = new SubWave(bossTypeList[type], 1, i * random.nextDouble(2, 5), 0);
             }
@@ -127,12 +127,17 @@ public class WaveManager
     
     public void waveEnd()
     {
-        int extra = 0;
+        int enemies = 0;
 
         for (int i = 0; i < currentWave.subWaves.length; i++)
-            extra += currentWave.subWaves[i].totalEnemies;
+            enemies += currentWave.subWaves[i].totalEnemies;
 
-        scene.money += (1 + waveNumber * (0.1255 + extra * 0.01)) * (250 + extra * 0.1);
+        double money = (Math.log(enemies + waveNumber) * 0.01 + (waveNumber * 0.01) + 1) * (150 + Math.log(waveNumber + enemies) * 0.00001);
+
+        scene.money += money;
+
+        System.out.println(money);
+
         started = false;
         currentWave = null;
         waveNumber++;

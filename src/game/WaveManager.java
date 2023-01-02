@@ -127,6 +127,12 @@ public class WaveManager
     
     public void waveEnd()
     {
+        int extra = 0;
+
+        for (int i = 0; i < currentWave.subWaves.length; i++)
+            extra += currentWave.subWaves[i].totalEnemies;
+
+        scene.money += (1 + waveNumber * (0.1255 + extra * 0.01)) * (250 + extra * 0.1);
         started = false;
         currentWave = null;
         waveNumber++;
@@ -249,6 +255,7 @@ public class WaveManager
     public class SubWave
     {
         public String enemyType;
+        public int totalEnemies;
         public int remainingEnemies;
         public double firstDelay;
         public double delay;
@@ -259,6 +266,7 @@ public class WaveManager
         public SubWave(String enemyType, int count, double firstDelay, double delay)
         {
             this.enemyType = enemyType;
+            this.totalEnemies = count;
             this.remainingEnemies = count;
             this.firstDelay = firstDelay;
             this.delay = delay;
